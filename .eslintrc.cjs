@@ -4,16 +4,47 @@ const { defineConfig } = require('eslint-define-config')
 module.exports = defineConfig({
   root: true,
   extends: [
+    'plugin:vue/vue3-recommended',
     'eslint:recommended',
     'plugin:node/recommended',
     'plugin:@typescript-eslint/recommended'
   ],
-  parser: '@typescript-eslint/parser',
+  parser: 'vue-eslint-parser',
   parserOptions: {
+    parser: '@typescript-eslint/parser',
     sourceType: 'module',
     ecmaVersion: 2021
   },
+  // https://eslint.vuejs.org/user-guide/#faq
+  env: {
+    'vue/setup-compiler-macros': true
+  },
+  // https://eslint.bootcss.com/docs/user-guide/configuring#specifying-globals
+  globals: {
+    Nullable: true,
+  },
   rules: {
+    // 关闭此规则 使用 prettier 的格式化规则， 感觉prettier 更加合理，
+    // 而且一起使用会有冲突
+    'vue/max-attributes-per-line': ['off'],
+    // 强制使用驼峰命名
+    'vue/component-name-in-template-casing': [
+      'error',
+      'PascalCase',
+      {
+        registeredComponentsOnly: false,
+        ignores: [],
+      },
+    ],
+    // https://github.com/vuejs/eslint-plugin-vue/issues/905
+    "vue/html-self-closing": ["error", {
+      "html": {
+        "void": "always",
+        "normal": "never",
+        "component": "any"
+      }
+    }],
+
     eqeqeq: ['warn', 'always', { null: 'never' }],
     'no-debugger': ['error'],
     'no-empty': ['warn', { allowEmptyCatch: true }],

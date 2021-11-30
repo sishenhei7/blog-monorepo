@@ -15,5 +15,4 @@ dist
 .eslintrc.js
 prettier.config.js
 /src/mock/*
-/packages/layout-vue3
 
