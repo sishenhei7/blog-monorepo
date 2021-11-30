@@ -21,29 +21,33 @@ module.exports = defineConfig({
   },
   // https://eslint.bootcss.com/docs/user-guide/configuring#specifying-globals
   globals: {
-    Nullable: true,
+    Nullable: true
   },
   rules: {
     // 关闭此规则 使用 prettier 的格式化规则， 感觉prettier 更加合理，
     // 而且一起使用会有冲突
     'vue/max-attributes-per-line': ['off'],
+    'vue/singleline-html-element-content-newline': ['off'], // 在单行元素的内容前后需要换行符
     // 强制使用驼峰命名
     'vue/component-name-in-template-casing': [
       'error',
       'PascalCase',
       {
         registeredComponentsOnly: false,
-        ignores: [],
-      },
+        ignores: []
+      }
     ],
     // https://github.com/vuejs/eslint-plugin-vue/issues/905
-    "vue/html-self-closing": ["error", {
-      "html": {
-        "void": "always",
-        "normal": "never",
-        "component": "any"
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'always',
+          normal: 'never',
+          component: 'any'
+        }
       }
-    }],
+    ],
 
     eqeqeq: ['warn', 'always', { null: 'never' }],
     'no-debugger': ['error'],

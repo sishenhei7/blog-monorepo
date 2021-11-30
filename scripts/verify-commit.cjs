@@ -11,7 +11,9 @@ const commitRE =
 if (!releaseRE.test(msg) && !commitRE.test(msg)) {
   console.log()
   console.error(
-    `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(`invalid commit message format.`)}\n\n` +
+    `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(
+      `invalid commit message format.`
+    )}\n\n` +
       chalk.red(
         `  Proper commit message format is required for automated changelog generation. Examples:\n\n`
       ) +

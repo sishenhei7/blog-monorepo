@@ -31,7 +31,15 @@ const skipBuild = args.skipBuild
 /**
  * @type {import('semver').ReleaseType[]}
  */
-const versionIncrements = ['patch', 'minor', 'major', 'prepatch', 'preminor', 'premajor', 'prerelease']
+const versionIncrements = [
+  'patch',
+  'minor',
+  'major',
+  'prepatch',
+  'preminor',
+  'premajor',
+  'prerelease'
+]
 
 /**
  * @param {import('semver').ReleaseType} i
@@ -43,14 +51,16 @@ const inc = (i) => semver.inc(currentVersion, i, 'beta')
  * @param {string[]} args
  * @param {object} opts
  */
-const run = (bin, args, opts = {}) => execa(bin, args, { stdio: 'inherit', ...opts })
+const run = (bin, args, opts = {}) =>
+  execa(bin, args, { stdio: 'inherit', ...opts })
 
 /**
  * @param {string} bin
  * @param {string[]} args
  * @param {object} opts
  */
-const dryRun = (bin, args, opts = {}) => console.log(chalk.blue(`[dryrun] ${bin} ${args.join(' ')}`), opts)
+const dryRun = (bin, args, opts = {}) =>
+  console.log(chalk.blue(`[dryrun] ${bin} ${args.join(' ')}`), opts)
 
 const runIfNotDry = isDryRun ? dryRun : run
 
@@ -74,7 +84,7 @@ async function main() {
       choices: versionIncrements
         .map((i) => `${i} (${inc(i)})`)
         .concat(['custom'])
-        .map((i) => ({ value: i, title: i })),
+        .map((i) => ({ value: i, title: i }))
     })
 
     if (release === 'custom') {
@@ -85,7 +95,7 @@ async function main() {
         type: 'text',
         name: 'version',
         message: 'Input custom version',
-        initial: currentVersion,
+        initial: currentVersion
       })
       targetVersion = res.version
     } else {
@@ -97,7 +107,8 @@ async function main() {
     throw new Error(`invalid target version: ${targetVersion}`)
   }
 
-  const tag = pkgName === 'vite' ? `v${targetVersion}` : `${pkgName}@${targetVersion}`
+  const tag =
+    pkgName === 'vite' ? `v${targetVersion}` : `${pkgName}@${targetVersion}`
 
   if (targetVersion.includes('beta') && !args.tag) {
     /**
@@ -106,7 +117,7 @@ async function main() {
     const { tagBeta } = await prompts({
       type: 'confirm',
       name: 'tagBeta',
-      message: `Publish under dist-tag "beta"?`,
+      message: `Publish under dist-tag "beta"?`
     })
 
     if (tagBeta) args.tag = 'beta'
@@ -118,7 +129,7 @@ async function main() {
   const { yes } = await prompts({
     type: 'confirm',
     name: 'yes',
-    message: `Releasing ${tag}. Confirm?`,
+    message: `Releasing ${tag}. Confirm?`
   })
 
   if (!yes) {
@@ -176,7 +187,14 @@ function updateVersion(version) {
  * @param {Function} runIfNotDry
  */
 async function publishPackage(version, runIfNotDry) {
-  const publicArgs = ['publish', '--no-git-tag-version', '--new-version', version, '--access', 'public']
+  const publicArgs = [
+    'publish',
+    '--no-git-tag-version',
+    '--new-version',
+    version,
+    '--access',
+    'public'
+  ]
   if (args.tag) {
     publicArgs.push(`--tag`, args.tag)
   }
@@ -184,7 +202,7 @@ async function publishPackage(version, runIfNotDry) {
     // important: we still use Yarn 1 to publish since we rely on its specific
     // behavior
     await runIfNotDry('yarn', publicArgs, {
-      stdio: 'pipe',
+      stdio: 'pipe'
     })
     console.log(chalk.green(`Successfully published ${pkgName}@${version}`))
   } catch (e) {

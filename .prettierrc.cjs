@@ -3,7 +3,7 @@ module.exports = {
   tabWidth: 2,
   singleQuote: true,
   printWidth: 80,
-  trailingComma: none,
+  trailingComma: 'none',
   overrides: [
     {
       files: ['*.json5'],
