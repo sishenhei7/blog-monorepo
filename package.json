@@ -1,0 +1,42 @@
+{
+  "name": "blog-monorepo",
+  "private": true,
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "format": "prettier --write .",
+    "lint": "eslint 'packages/*/{src,types}/**/*.{ts,vue}'"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "chalk": "^5.0.0",
+    "eslint": "^8.3.0",
+    "eslint-define-config": "^1.2.0",
+    "eslint-plugin-node": "^11.1.0",
+    "execa": "^6.0.0",
+    "lint-staged": "^12.1.2",
+    "minimist": "^1.2.5",
+    "prettier": "^2.5.0",
+    "prompts": "^2.4.2",
+    "semver": "^7.3.5",
+    "typescript": "~4.4.4"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged --concurrent false",
+    "commit-msg": "node scripts/verifyCommit.cjs"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write --ignore-unknown"
+    ],
+    "packages/*/{src,types}/**/*.ts": [
+      "eslint --ext .ts"
+    ],
+    "packages/**/*.d.ts": [
+      "eslint --ext .ts"
+    ]
+  }
+}
