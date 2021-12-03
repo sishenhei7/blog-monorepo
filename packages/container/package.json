@@ -1,0 +1,14 @@
+{
+  "name": "@blog-monorepo-yz/container",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "rimraf dist && rollup -c -w",
+    "build": "rimraf dist && npm run lint && run-s build-bundle build-types",
+    "lint": "eslint --ext .ts src/**",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --commit-path . --lerna-package container",
+    "release": "node ../../scripts/release.cjs --skipBuild"
+  },
+  "devDependencies": {
+    "rollup": "^2.60.2"
+  }
+}
