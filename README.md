@@ -32,6 +32,6 @@
 
 ## ongoing
 
-1.目前正在调研 vue2 和 vue3 的 ssr，会整理出一篇博文说明 ssr 的流程。
+1.为了弄清除 Vue 的 ssr 的流程，目前正在逐句阅读 vue2 和 vue3 的源码，后续会整理出一篇博文说明 ssr 的流程。
 
-（2021.12.6）今天看了 vue2.x 从 entry 到 init 的过程，它把很多 api 挂载到了 Vue 和 Vue.config 上面。在 Vue 文档上面的 api 那页找到了对应的初始化代码。
+（2021.12.6）今天看了 vue2.x 从 entry 到 init 的过程，它把很多 api 挂载到了 Vue 和 Vue.config 上面。在 Vue 文档上面的 api 那页找到了对应的初始化代码。（后面会看 update 的 hooks）
