@@ -37,8 +37,8 @@
 （2021.12.6）今天看了 vue2.x 从 entry 到 init 的过程：
 
 - 它把很多 api 挂载到了 Vue 和 Vue.config 上面。
+- Ctor 其实就是 Vue 的构造函数，在合并 config 的时候为了兼容 Vue.extend，做了很多向上查找和合并。
 - 稍微理解了 vue 项目的文件组织结构
 - 在 Vue 官方文档上面的 api 那页找到了全局配置和全局 API 对应的初始化代码
 - 为后面阅读代码的时候查找相关属性做准备
-
-（2021.12.7）接下来看 update 和 hooks
+  （接下来看 update 和 hooks）
