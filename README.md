@@ -58,4 +58,4 @@
 
 - 在 validateProp 的默认值的时候，为什么要 observe default value（感觉是一个缺陷？）
 - 为什么 store 里面的属性能够跨组件？因为不论是 definereactive 或者是 watcher，都是和组件无关的，所以只要这个属性被 definereactive 了，它就能在其它组件加入这个组件里面建立的 watcher。但是前提是在这个 store 里面的属性被求值之前，需要先有一个 watcher，目前只有计算属性能做到这个
-- observe 和 defineReactive 的区别，observe 只是一个壳子，相当于一个 traverse 方法，它主要有 2 个作用，第一个是给 value 添加`__ob__`标记，另一个是循环遍历对每个属性施加 observe。另外还有一点需要注意的是，observe 方法没有 key，也就是说不会给这个 key 本身添加响应式
+- observe 和 defineReactive 的区别，observe 只是一个壳子，相当于一个 traverse 方法，它主要有 2 个作用，第一个是给 value 添加`__ob__`标记，另一个是循环遍历对每个属性施加 observe。另外还有一点需要注意的是，observe 方法没有 key，也就是说不会给这个 key 本身添加响应式，所以 defineReactive 给自己和自己内部的所有属性添加响应式，而 observe 只会给自己内部的所有属性添加响应式。（然后 vue 内部还有一个全局的 shouldObserve 控制要不要给内部属性添加响应式，这个实现了 props 的浅层监听）
