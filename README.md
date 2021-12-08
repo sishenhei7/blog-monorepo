@@ -44,7 +44,7 @@
 
 （接下来看 update 和 hooks）
 
-（2021.12.7）今天仍然在看 \_init 初始化过程，看到了`callHook(vm, 'beforeCreate')`:
+（2021.12.7）今天仍然在看`_init`的初始化过程，看到了`callHook(vm, 'beforeCreate')`:
 
 - 对于 internal component 和非 internal component 的初始化过程是不同的，internal component 的 `$options` 多了几个属性比如`parent`等，这些属性在初始化的时候扮演了很重要的绝色
 - 对于事件，有二种，一种是普通事件，它被加到`vm._events`里面，还有一种 hook 事件，它也被加到`vm._events`里面；但是它在组件调用自身的 hook 事件的时候会被调用，并且这种 hook 事件又和直接写 created、mounted 这种也不同，在调用`callhook`的时候，会首先在`$options`里面查找 created、mounted 方法然后调用，然后在`vm._events`里面查找 hooks 并调用。
@@ -54,8 +54,11 @@
 
 （接下来看后面的 initInjections 等）
 
-（2021.12.8）
+（2021.12.8）leetcode 今天是困难题，花了不少时间。所以今天看的比较少。今天在研究响应式原理：
 
 - 在 validateProp 的默认值的时候，为什么要 observe default value（感觉是一个缺陷？）
 - 为什么 store 里面的属性能够跨组件？因为不论是 definereactive 或者是 watcher，都是和组件无关的，所以只要这个属性被 definereactive 了，它就能在其它组件加入这个组件里面建立的 watcher。但是前提是在这个 store 里面的属性被求值之前，需要先有一个 watcher，目前只有计算属性能做到这个
 - observe 和 defineReactive 的区别，observe 只是一个壳子，相当于一个 traverse 方法，它主要有 2 个作用，第一个是给 value 添加`__ob__`标记，另一个是循环遍历对每个属性施加 observe。另外还有一点需要注意的是，observe 方法没有 key，也就是说不会给这个 key 本身添加响应式，所以 defineReactive 给自己和自己内部的所有属性添加响应式，而 observe 只会给自己内部的所有属性添加响应式。（然后 vue 内部还有一个全局的 shouldObserve 控制要不要给内部属性添加响应式，这个实现了 props 的浅层监听）
+- 这里有一个疑问，props 里面的对象，如果在父组件已经对里面的属性设置响应式了的话，那传到子组件之后，在子组件中不是应该能继续触发响应式吗？为什么实际却不能？
+
+（接下来继续看后面的 initState 等）
