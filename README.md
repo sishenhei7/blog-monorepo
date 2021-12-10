@@ -34,7 +34,7 @@
 
 1.为了弄清除 Vue 的 ssr 的流程，目前正在逐句阅读 vue2 和 vue3 的源码，后续会整理出一篇博文说明 ssr 的流程。
 
-（2021.12.6）今天看了 vue2.x 从 entry 到 init 的过程：
+【2021.12.6】今天看了 vue2.x 从 entry 到 init 的过程：
 
 - 它把很多 api 挂载到了 Vue 和 Vue.config 上面。
 - Ctor 其实就是 Vue 的构造函数，在合并 config 的时候为了兼容 Vue.extend，做了很多向上查找和合并。
@@ -44,7 +44,7 @@
 
 （接下来看 update 和 hooks）
 
-（2021.12.7）今天仍然在看`_init`的初始化过程，看到了`callHook(vm, 'beforeCreate')`:
+【2021.12.7】今天仍然在看`_init`的初始化过程，看到了`callHook(vm, 'beforeCreate')`:
 
 - 对于 internal component 和非 internal component 的初始化过程是不同的，internal component 的 `$options` 多了几个属性比如`parent`等，这些属性在初始化的时候扮演了很重要的绝色
 - 对于事件，有二种，一种是普通事件，它被加到`vm._events`里面，还有一种 hook 事件，它也被加到`vm._events`里面；但是它在组件调用自身的 hook 事件的时候会被调用，并且这种 hook 事件又和直接写 created、mounted 这种也不同，在调用`callhook`的时候，会首先在`$options`里面查找 created、mounted 方法然后调用，然后在`vm._events`里面查找 hooks 并调用。
@@ -54,7 +54,7 @@
 
 （接下来看后面的 initInjections 等）
 
-（2021.12.8）leetcode 今天是困难题，花了不少时间。所以今天看的比较少。今天在研究响应式原理：
+【2021.12.8】leetcode 今天是困难题，花了不少时间。所以今天看的比较少。今天在研究响应式原理：
 
 - 在 validateProp 的默认值的时候，为什么要 observe default value（感觉是一个缺陷？）
 - 为什么 store 里面的属性能够跨组件？因为不论是 definereactive 或者是 watcher，都是和组件无关的，所以只要这个属性被 definereactive 了，它就能在其它组件加入这个组件里面建立的 watcher。但是前提是在这个 store 里面的属性被求值之前，需要先有一个 watcher，目前只有计算属性能做到这个
@@ -63,21 +63,22 @@
 
 （接下来继续看后面的 initState 等）
 
-（2021.12.8）今天在死磕 data 和 props 的初始化：
+【2021.12.8】今天在死磕 data 和 props 的初始化：
 
 - 上个问题想了很久还不知道答案，继续想 ing
 - 发现在`defineReactive`里面有 2 中 dep，一种是单个属性的 dep，这个 dep 是在定义 getter、setter 函数的时候设置的，它存在于闭包里面；还有一种是子对象或者子数组的 dep，这个 dep 是在 observe 的时候直接加到`__ob__`上面去的，它的作用是什么？目前只看到它会在父属性 setter 里面 depend，然后在$set 的时候 notify，但是想不出它的作用是什么？认真看了一下，应该是在添加和删除新属性的时候 notify，本来以为添加和删除新属性的时候不需要响应式，后来觉得还是有这种场景的。当时这里有一个问题，这里的 dep 和属性的 dep 能不能共用呢？（感觉是可以的，这个应该是缺陷？不过好像即使共用了，性能或者内存都没有什么提升）
 
 （接下来继续看后面的 initState 等）
 
-（2021.12.8）今天在死磕 watcher 和 dep：
+【2021.12.8】今天在死磕 watcher 和 dep：
 
 - 把 props 的问题想清楚了。props 在被传递给子组件的时候，是关闭了 observing 的，所以在给 props 的属性设置响应式的时候，不会设置内部属性的响应式，但这并不意味着内部属性没有响应式，内部属性有没有响应式取决于它在父组件里面本身被设置了响应式没有。所以父组件把 props 传到子组件，如果这个 props 在父组件里面被设置了响应式的话，那么在子组件里面也会有响应式；如果在父组件里面没有被设置为响应式的话，那么在子组件里面就没有响应式。
 - 今天把以前碰到的 2 个不触发响应式的问题的原因想清楚了。
 - observe 的第二个参数 asRootData 到底有啥用处？
 - 在初始化 data 的时候为什么要 pushTarget 来关闭收收集依赖，正常情况下是不会出现 data 函数里面出现响应式数据的，但是还是有特殊情况的，比如在 data 函数里面调用了具有响应式的 props
-- 在初始化 props 的时候关闭了深度监听，只使用 defineReactive 给 \_props 上面的属性设置了 getter 和 setter，所以 \_props 没有 `__ob__` 属性；在初始化 data 的时候是直接 observe 的 \_data 对象，所以 \_data 对象里面啥都有。
-- $data 其实就是 \_data, $props 其实就是 \_props
-- 以前我一直以为计算属性是初始化一个 watcher + defineReactive 的结合，所以才导致它能被依赖也能依赖别人，现在仔细看了一遍代码，才发现完全是错误的。计算属性其实就是一个 lazy watcher，它在被代理到 vm 上面的时候和 \_data 或者 \_props 不同，\_data 或者 \_props 是直接代理，而计算属性的这个 watcher 在被代理的时候会判断 dirty 再求值，并且在求值的时候会把自己这个 watcher 推到 watcher 队列的最前面，这就导致在 touch 到其它具有响应式的数据的时候会把这个计算属性 watcher 加到自己的依赖中；由于每个 watcher 自身也收集了依赖于这个 watcher 的 dep，所以在这个计算属性求值结束之后，它对自己调用 depend，就迫使这个 watcher 收集的所有依赖于它的 dep 再次收集依赖，而收集的这个依赖就是依赖于这个计算属性的计算属性，这就实现了计算属性的互相依赖。（其实不是互相依赖，而是在 A 依赖 B 的时候，B 强制让所有依赖它的 dep 也依赖 A 而已）
+- 在初始化 props 的时候关闭了深度监听，只使用 defineReactive 给 `_props` 上面的属性设置了 getter 和 setter，所以 `_props` 没有 `__ob__` 属性；在初始化 data 的时候是直接 observe 的 `_data` 对象，所以 `_data` 对象里面啥都有。
+- $data 其实就是 `_data`, $props 其实就是 `_props`
+- 以前我一直以为计算属性是初始化一个 watcher + defineReactive 的结合，所以才导致它能被依赖也能依赖别人，现在仔细看了一遍代码，才发现完全是错误的。计算属性其实就是一个 lazy watcher，它在被代理到 vm 上面的时候和 `_data` 或者 `_props` 不同，`_data` 或者 `_props` 是直接代理，而计算属性的这个 watcher 在被代理的时候会判断 dirty 再求值，并且在求值的时候会把自己这个 watcher 推到 watcher 队列的最前面，这就导致在 touch 到其它具有响应式的数据的时候会把这个计算属性 watcher 加到自己的依赖中；由于每个 watcher 自身也收集了依赖于这个 watcher 的 dep，所以在这个计算属性求值结束之后，它对自己调用 depend，就迫使这个 watcher 收集的所有依赖于它的 dep 再次收集依赖，而收集的这个依赖就是依赖于这个计算属性的计算属性，这就实现了计算属性的互相依赖。（其实不是互相依赖，而是在 A 依赖 B 的时候，B 强制让所有依赖它的 dep 也依赖 A 而已）
+- 在计算属性初始化的时候有一点需要注意，就是在 ssr 的情境下，计算属性会直接求值，不具备响应式。
 
 （接下来继续看 initWatch 和 initComputed 的不同，以及 dep、subs 里面的具体内容）
