@@ -90,3 +90,7 @@
 - 在劫持数组方法的时候，只劫持了 observe 的数组的方法
 - 在什么时候会依赖`$data.__ob__`？（这是一个 root 级别的 observer）（按理说应该不会依赖它，因为`__ob__`的依赖是通过调用这个响应式属性来更新的，而`_data`并不是 vm 的一个响应式属性。记住，data 的初始化是对`_data`使用 observe，而不是 defineReactive）
 - 看完了关于响应式的内容，只觉得所有的响应式机制都不依赖于组件，都是跨组件的，这就是为什么 vuex 的 store 里面的响应式数据能在任意组件里面触发响应式的原因。然后如果 render 的时候如果引用了计算属性，那么计算属性的变更是间接导致重新 render 的，计算属性在 evaluate 之后调用了自己这个 watcher 的 depend 方法，导致所有依赖它的 dep 再重新收集一次依赖，这又导致了触发计算属性变化的改动能够直接通知组件重新 render，并且由于 watcher 的调度，id 小的 watcher 先执行，导致 update 的 watcher 总是最后一个执行，所以组件总是最后一个重新 render。（如果在组件 mounted 之后使用`$watch`方法建立的 watcher 貌似是在 update 的 watcher 之后执行的，不过貌似也没有什么影响。）
+- provide 和 inject 的属性也和 props 一样，如果父组件里面的数据没有响应式，那么在子组件里面也没有响应式，如果在父组件里面有响应式，那么在子组件里面就有响应式；它和 props 有一点不同，provide 的属性在改变的时候，是没有响应式的，但是 props 的属性在改变的时候是一定有响应式，为什么呢？我看他们都使用了 defineReactive 了啊？
+- 为什么有一个 vm 为 vue 的 watcher ？是怎么建立组件的？
+
+（明天解决上面 2 个疑问，因为没有在`_props`的依赖里面看到 update watcher，所以怀疑是不是父组件造成的子组件更新，而不是 props 的响应式导致子组件更新的）
