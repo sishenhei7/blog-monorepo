@@ -91,6 +91,20 @@
 - 在什么时候会依赖`$data.__ob__`？（这是一个 root 级别的 observer）（按理说应该不会依赖它，因为`__ob__`的依赖是通过调用这个响应式属性来更新的，而`_data`并不是 vm 的一个响应式属性。记住，data 的初始化是对`_data`使用 observe，而不是 defineReactive）
 - 看完了关于响应式的内容，只觉得所有的响应式机制都不依赖于组件，都是跨组件的，这就是为什么 vuex 的 store 里面的响应式数据能在任意组件里面触发响应式的原因。然后如果 render 的时候如果引用了计算属性，那么计算属性的变更是间接导致重新 render 的，计算属性在 evaluate 之后调用了自己这个 watcher 的 depend 方法，导致所有依赖它的 dep 再重新收集一次依赖，这又导致了触发计算属性变化的改动能够直接通知组件重新 render，并且由于 watcher 的调度，id 小的 watcher 先执行，导致 update 的 watcher 总是最后一个执行，所以组件总是最后一个重新 render。（如果在组件 mounted 之后使用`$watch`方法建立的 watcher 貌似是在 update 的 watcher 之后执行的，不过貌似也没有什么影响。）
 - provide 和 inject 的属性也和 props 一样，如果父组件里面的数据没有响应式，那么在子组件里面也没有响应式，如果在父组件里面有响应式，那么在子组件里面就有响应式；它和 props 有一点不同，provide 的属性在改变的时候，是没有响应式的，但是 props 的属性在改变的时候是一定有响应式，为什么呢？我看他们都使用了 defineReactive 了啊？
-- 为什么有一个 vm 为 vue 的 watcher ？是怎么建立组件的？
+- 为什么有一个 vm 为 vue 的 watcher ？是怎么建立组件的？（因为最顶层`main.js`里面本来就初始化了一个 vue 实例，它被挂载到每个 vue 实例的 $root 属性上面）
 
 （明天解决上面 2 个疑问，因为没有在`_props`的依赖里面看到 update watcher，所以怀疑是不是父组件造成的子组件更新，而不是 props 的响应式导致子组件更新的）
+
+【2021.12.12】今天在看 vue 实例的渲染和挂载流程：
+
+- 因为设置响应式是在 beforeCreate 之后，所以我们可以在 beforeCreate 里面给 data 加上属性而不需要使用`$set`，这估计就是 beforeCreate 钩子设计的原因：在 vue 设置响应式之前，给用户提供一个处理东西的时机。
+- 初始化 watcher 的时候有一个 isRenderWatcher 参数，它会把 update 的 watcher（也叫做 render watcher）加在 \_watcher 属性上，把其它 watcher 放到 \_watchers 里面。
+- `vm.$vnode == null`这句是判断什么的？
+- hoc 的 vnode 为什么和 parent 的 vnode 是一样的？
+- `__patch__`方法会根据平台进行自动注入，如果是在浏览器端，则是平常的 patch，如果是在服务端，则会变成一个空函数，所以这个时候，在服务器端根本没有进行 patch，只是把数据都准备好了，最后等着调用 renderToString 方法。
+- directive 和 ref 是怎么工作的？后面需要看一下，还有 transition 组件为啥是“透明”的？为啥“transition”组件需要 vue 内部支持？
+- 在 vue 实例调用 update 函数之前，会先调用`_render`函数生成 vnode，`_render`函数其实是一个与平台无关的函数，它负责把用户定义的 render 函数用 createElement 生成一个 vnode，createElement 内部会判断当前的 vue 实例是否是一个子组件，如果不是，则直接 new Vnode，如果是的话，就调用 createComponent 先做一些子组件相关的处理，比如加上子组件的 hooks，然后再 new Vnode 生成 vnode。（那是怎么判断是不是一个子组件的呢？简单来说，就是判断当前要创建的 vnode 的 tag 是不是一个 html tag，如果不是的话，需要去找到这个 tag 的 Ctor，在寻找的时候，会消除驼峰和非驼峰的差异，所以我们在写的时候既能写驼峰也能写非驼峰）
+- 为什么在 vue.extend 里面初始化了 initProps 就能 avoids Object.defineProperty calls 了啊？
+- inlineTemplate 是什么？
+- 顶层 vue 实例的构造函数是 vue，其它都是 vuecomponent，它们的构造函数是 vuecomponent。他们的流程是这样的：首先是在顶层 new Vue 开始构造 Vue 实例，这个 Vue 实例在构造的时候会触发 render watcher，render watcher 调用`_render`方法生成自己的 vnode，此时也会生成这个 vnode 的 children 下的 vnode，由于顶层元素一定是一个平凡的 html 元素，所以顶层的 vnode 使用 new Vnode 的方式生成 Vnode；而其它的 vue 组件都作为 vuecomponent 使用 createComponent 来生成 Vnode，其中会先从 components 里面找到自己的 Ctor，再在 createComponent 里面使用 Vue.extend 进行合并 Ctor。然后 render watcher 调用`_update`方法开始 patch，这里判断如果是一个平凡的 html 的 vnode 就直接使用平台的 dom 方法生成 dom，如果是一个组件，则使用 createComponent 来生成组件 dom，注意`_update`的 createComponent 和`_render`的 createComponent 是两个不同的方法。
+- 在使用 createComponent 方法生成组件 dom 的时候，会先调用 vnode 的生命周期 hooks（分为 2 种 hooks，一种是生命周期 hooks，它被储存在`vnode.data.hook`里面，使用它来维护 vnode 生成的 componentInstance 的生命周期，；另一种是 module 的 hooks，它被储存在一个闭包 cbs 里面，它分为平台的 hooks 和 自定义 hooks，使用平台的 hooks 来操作 vnode 相关的 dom 的 class、attrs、events 等等，自定义的 hooks 是和 directive 相关的 hooks），此时会触发生命周期 hooks 的 init hook，这个 hook 会使用 Vnode 的 componentOptions 里面的 Ctor 来生成 vuecomponent 实例，这样就进入了子组件的生命周期。
