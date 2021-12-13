@@ -111,3 +111,10 @@
 - vue 实例的 mount 方法可以不传参数，此时会生成一个 dom 片段，然后可以通过`document.body.appendChild(vm.$el)`将它挂载。（参考 elementUI 的 message 组件的实现方式）
 - 在`_update`的 createComponent 方法里面可以不用管`vnode.children`，因为 vue 组件是用 slot 来行使 children 的功能的
 - isPatchable 的判断逻辑是判断当前`vnode.componentInstance._vnode`是否存在，原因是当前的 vnode 是在父组件里面使用 createElement 建立的 vnode，并不是组件的`_render`生成的 vnode，`vnode.componentInstance`是生成的 vuecomponent 实例，它下面的`_vnode`才是这个 vuecomponent 通过`_render`生成的 vnode。所以如果`vnode.componentInstance._vnode`存在，就表示这个 vnode 所代表的组件是通过`_render`生成的，是可以传给`_update`函数的，即是可以 patch 的。
+
+【2021.12.13】今天在看 vue 实例的建立和更新流程：
+
+- 每个 vm 的`$children`里面的 vueComponent 都是先由 createElement 建立 vnode，这个 vnode 被放在 `$vnode` 上面（也叫`_parentVnode`），然后通过 new Ctor 进行初始化实例（注意这里的 Ctor 是之前生成 creatElement 的时候，先从父组件的 components 里面找到子组件，然后使用 Vue.extend 生成的），这个实例就是前面说的 vueComponent，然后这个实例被放在`$vnode.componentInstance`上面，在 new 的时候，会通过自身的 `_render` 函数再生成一个组件的 vnode，这个 vnode 被放在`_vnode`上面，然后调用`_update`进行挂载，如果是第一次挂载，则给要挂载的 dom 建立一个空的 vnode 作为 oldVnode，然后调用 createElm 建立 dom，建立 dom 的时候，会把之前的那个空的 vnode 的 dom 的父组件作为 parentNode，然后把渲染的 dom 挂载到这个 parentNode 下面，注意这里会整个替换之前的 dom。挂载之前会先创建 children 的 dom，创建 children 的 dom 的时候又会维护一个队列，把创建完并且挂载了的 vnode 送入队列，最后在顶层组件挂载的时候一起从这个队列里面拿出 vnode 触发 mounted 钩子。注意，这个队列里面触发的是子组件的钩子，最顶层的 vue 实例的钩子由它自己的生命周期触发。（注意，如果顶层 vue 实例是第一次挂载，则它本身正常挂载，但是当子组件在初始化的时候，子组件也从`_update`进入到了 patch 函数里面，这个时候，由于没有传 el 进去，所以它的 oldVnode 不存在，此时会让 isInitialPatch 设置为 true，它会使所有子子组件的 insertedVnodeQueue 都放到子组件的 vnode 的 pendingInsert 里面去，而子组件又会把 pendingInsert 的内容放到父组件的 insertedVnodeQueue 里面去，这样一级一级最后把各级的 vnode 都放到顶层 vue 实例的 insertedVnodeQueue 队列里面去，当顶层 vue 实例被挂载之后再一起按顺序触发。）
+- patchVnode 里面比较新老 vnode 是否相等有什么意义？好像没有这种场景?
+
+（明天看为什么要 prepatch，prepatch 的作用是什么？）
