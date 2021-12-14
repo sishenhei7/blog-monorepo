@@ -118,3 +118,12 @@
 - patchVnode 里面比较新老 vnode 是否相等有什么意义？好像没有这种场景?
 
 （明天看为什么要 prepatch，prepatch 的作用是什么？）
+
+【2021.12.13】今天在看 vue 实例的更新流程：
+
+- prepatch 的作用是更新 parentVnode 数据，方便组件更新。由于组件是在 vnode 生命周期钩子的 init 里面初始化成 vuecomponent 的，所以在更新的时候，它不会重新使用`_vnode`建立 vuecomponent，只是触发 render watcher 来依次调用`_render`和`_update`进行更新。
+- vuecomponent 在因为 render watcher 重新渲染的时候，其实只是想重新渲染 html 节点罢了，它通过双边比较 parentVnode，进行 diff，然后更新 text、或者删除、或者新建一个组件。它只负责本组件的 template，并不负责子组件里面的 template，子组件的 template 通过子组件自己的 render watcher 来触发更新。
+- 由于`_props`是响应式的，所以在父组件传给子组件的 props 发生变化的时候，会触发子组件的 render watcher 进行更新，赋值的这一步是在 updateChildComponent 里面发生的，它造触发了组件的更新。但是为什么要把 injection 也设计成浅响应式，貌似没有这种赋值的场景啊？
+- beforeUpdate 是在 render watcher 的 before 钩子里面触发的，而 updated 则是在 watcher 的调度里面触发的。由于 watcher 里面有个 vm 属性绑定了 vm 实例，所以可以从 watcher 那里触发 updated 钩子。最后是调度的问题，由于 parent 的 render watcher 的 id 比 子组件的 render watcher 的 id 小，那讲道理应该父组件先触发 updated 生命周期钩子啊？
+
+（明天详细看一下 updateChildComponent 方法）
