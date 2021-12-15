@@ -119,7 +119,7 @@
 
 （明天看为什么要 prepatch，prepatch 的作用是什么？）
 
-【2021.12.13】今天在看 vue 实例的更新流程：
+【2021.12.14】今天在看 vue 实例的更新流程：
 
 - prepatch 的作用是更新 parentVnode 数据，方便组件更新。由于组件是在 vnode 生命周期钩子的 init 里面初始化成 vuecomponent 的，所以在更新的时候，它不会重新使用`_vnode`建立 vuecomponent，只是触发 render watcher 来依次调用`_render`和`_update`进行更新。
 - vuecomponent 在因为 render watcher 重新渲染的时候，其实只是想重新渲染 html 节点罢了，它通过双边比较 parentVnode，进行 diff，然后更新 text、或者删除、或者新建一个组件。它只负责本组件的 template，并不负责子组件里面的 template，子组件的 template 通过子组件自己的 render watcher 来触发更新。
@@ -127,3 +127,7 @@
 - beforeUpdate 是在 render watcher 的 before 钩子里面触发的，而 updated 则是在 watcher 的调度里面触发的。由于 watcher 里面有个 vm 属性绑定了 vm 实例，所以可以从 watcher 那里触发 updated 钩子。最后是调度的问题，由于 parent 的 render watcher 的 id 比 子组件的 render watcher 的 id 小，那讲道理应该父组件先触发 updated 生命周期钩子啊？（问题解决，看了下代码，watcher 的调度那里是从队列末尾开始触发的！）
 
 （明天详细看一下 updateChildComponent 方法和 hydrate 方法）
+
+【2021.12.14】今天在看 vue 实例的 hydrate 流程：
+
+- 在开始 patch 的时候，由于根 vue 实例的 oldVnode 传入的是一个 dom 元素，此时就回去判断这个 dom 元素上面有没有 data-server-rendered 属性，有的话，就启动 hydrate。由于此时子元素没有 data-server-rendered 属性，所以在根 vue 实例启动 hydrate 的时候，会把 hydrating 一级一级的传下去，让子组件也启动 hydrate。在启动 hydrate 之后，主要做了这几件事：1.判断 dom 和 vnode 是否匹配，如果 vnode 的 tag 是 dom 元素的 tag，则匹配成功；如果 vnode 的 tag 是 vuecomponent，也匹配成功，交给 vuecomponent 自己去匹配；其它情况下匹配失败。2.调用 vnode 的 init 的生命周期来生成一个 vuecomponent 实例（此时会把 dom 和 hydrating，这样就能在这个组件的 patch 阶段也进行 hydrate 了），3.判断所绑定的 dom 有没有子元素和 vnode 有没有子元素，如果 dom 有但是 vnode 没有，则不管；如果 dom 没有但是 vnode 有，则通过这些 vnode 进行生成新的 dom 元素；如果都有，则进入 children 的比较阶段，在 dom 上面使用 firstChild 和 nextSibling 一次获取子元素的 dom，把它和对应的 vnode 进行 hydrate。4.遍历 data 里面的数据，通过调用平台的方法给 vnode 添加 class、attrs、styles 等。5.如果 vnode.tag 不存在，则表明这是一个 text 或 comment 节点，所以判断 dom 和 vnode 的 text 是否一样，不一样就覆盖更新。
