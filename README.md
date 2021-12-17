@@ -140,3 +140,7 @@
 
 - directive 的服务端是怎么实现的？
 - 首先会建立一个 RenderContext ，这个 RenderContext 里面有个 renderStates 和 next，renderStates 是一个先进后出的栈结构（为什么？），里面存着当前渲染的元素的子元素，然后使用 next 方法可以从 renderStates 的末尾拿出一个元素进行渲染。建立完 RenderContext 就在 Vue 的 prototype 上面绑定辅助函数，绑定成功之后就规范组件的 render 函数，注意这里生成的 render 函数和客户端生成的 render 函数是不同的（有哪些不同）。然后根据 render 函数生成 vnode。最后根据生成的 vnode 函数进行渲染，当 renderStates 栈为空的时候，结束渲染，调用 done 方法，把渲染结果传入到用户的回调函数里面去。
+- 在带编译器的 vue 库中，vue 会先保存`$mount`方法，然后判断 template，如果 template 是一个 dom 元素，则通过 innerhtml 和 outerhtml 取它的 html 字符串，然后组装 render function 对 template 进行编译，编译之后会生成 render 和 staticRenderFns 函数，然后把他们挂载到 options 上面，最后启动之前保存的`$mount`方法。
+- 在生成 render 函数的时候，会先生成一个基础的 compiler，基础 compiler 的工作时编译、优化和生成。然后再这个基础的 compiler 上层做 2 层封装。第一层组装各种 options，第二层显示编译过程中的各种错误和 tips，并且把基础 compiler 生成的 render 和 staticRenderFns 字符串转化为函数，并且加上一个缓存，key 为分隔符 + template ，最后返回转化为函数的 render 和 staticRenderFns。（这里其实就是把一开始生成的 ast 转化为函数，和编译语言的编译很相似，也是把 IR 转化为语言代码。）
+
+（明天继续看编译流程）
