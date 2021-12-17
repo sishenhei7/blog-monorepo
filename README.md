@@ -134,4 +134,9 @@
 
 （明天继续看 createBasicRenderer 的流程）
 
-【2021.12.15】占个坑，今天加班到 10 点没时间看，后面补上
+【2021.12.16】占个坑，今天加班到 10 点没时间看，后面补上
+
+【2021.12.17】今天在看 createBasicRenderer 的编译过程：
+
+- directive 的服务端是怎么实现的？
+- 首先会建立一个 RenderContext ，这个 RenderContext 里面有个 renderStates 和 next，renderStates 是一个先进后出的栈结构（为什么？），里面存着当前渲染的元素的子元素，然后使用 next 方法可以从 renderStates 的末尾拿出一个元素进行渲染。建立完 RenderContext 就在 Vue 的 prototype 上面绑定辅助函数，绑定成功之后就规范组件的 render 函数，注意这里生成的 render 函数和客户端生成的 render 函数是不同的（有哪些不同）。然后根据 render 函数生成 vnode。最后根据生成的 vnode 函数进行渲染，当 renderStates 栈为空的时候，结束渲染，调用 done 方法，把渲染结果传入到用户的回调函数里面去。
