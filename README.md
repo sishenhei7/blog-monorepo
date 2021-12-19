@@ -145,7 +145,7 @@
 
 （明天继续看编译流程）
 
-【2021.12.17】今天在 vue 的编译过程：
+【2021.12.18】今天在 vue 的编译过程：
 
 - 理论上来说，data 可以不必强求用一个函数，因为可以在编译阶段使用一个函数包住？
 - 为什么 vue 的 template 里面的模板语法可以使用插值，因为 vue 在编译的时候会把这个插值放到一个函数里面去执行。
@@ -156,3 +156,8 @@
 - renderSlot 的第二个参数 fallback 是一个 vnode 数组，所以在 slot 里面可以继续写 vnode，表示如果父级没有传这个 slot 的话，就使用里面的 vnode 作为 fallback。
 
 （明天看 ssr 生成 html 的流程）
+
+【2021.12.19】今天在 vue ssr 生成 html 的过程：
+
+- 由于 vue 的差值是用这种形式`with(this){return ${code}}`包裹的，所以它不仅提供了作用域，而且 code 里面的表达式根本不需要写 this。
+- vue ssr 的编译流程和普通编译流程大致相同，它使用同样的方法生成 ast 树，但是在优化和生成阶段有些变化。由于在 ssr 的环境下，vue 是不具备响应式的，所以可以做更多的优化，不仅仅可以把 text 节点转化为字符串，还可以把表达式节点也转化为字符串，更可以把不具有`components/slots/custom directives`的 vue component 节点转化为字符串，vue 根据元素和子元素是否能转化为字符串，给元素打上标记。在生成阶段，vue 根据上一步中打的标记，给节点分成几个 type，比如 RAW、EXPRESSION、INTERPOLATION，然后分别对这几个 type 进行不同的处理；比如对于 RAW 则使用`_ssrNode`包裹，生成一个 stringNode 节点（注意，这里不是 vnode 节点）；如果没有标记，则退化为普通的编译进行处理（注意，由于我们在优化节点并没有标记静态节点，所以在 staticRenderFns 里面应该是没有值的）。由于在优化阶段 vue 既标记了父元素，也标记了子元素，所以会使用上面同样的方法处理子元素，处理完之后把父子元素打平塞到一个 mergedSegments 里面去连接起来。生成完毕之后，就用 witch 包裹把代码到一个 function 里面去作为 render 方法返回。
