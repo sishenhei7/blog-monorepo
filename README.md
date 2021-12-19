@@ -166,4 +166,6 @@
 - 异步组件在整个编译、渲染、ssr 的流程中是怎么进行的？
 - renderNode 方法的流程是这样的，首先判断 StringNode 的情况，如果是的话，就直接渲染它的 open 和 close 属性，这里的 open 指的不是 open tag，而是所有包括 text 的 string；如果这个 StringNode 有 children 的话，就把 children 推入 renderStates 里面去，使用 next 交给 renderStates 对子元素调用 renderNode 进行渲染；然后判断是 vue component 的情况，这里会像一般的渲染流程一样，调用 createComponentInstanceForVnode 建立一个 vue component，然后对它的 render 函数进行规范化，然后使用 `_render` 生成 vnode，最后对生成的 vnode 调用 renderNode 进行渲染（注意，这里有一个 cache 的场景，如果设置了 cache 的话，会在 renderStates 里面操作 cache 进行缓存，并且一步步合到 parent 里面去）；然后判断是 element 即原生 html 元素的情况，这个时候需要考虑 class、attr、style、dirs 等的情况，在 renderStartingTag 里面逐个判断这些场景，一步步加到 starting tag 里面去，然后判断 children 的场景，和前面那一样，移交给 renderStates 进行渲染，最后加上 end tag。然后是判断 comment 的情况，分为两种，一种是普通的 comment，另一种是代表异步组件的 comment，分别进行处理（异步组件的情况下次抽个时间一起看）。最后就是 text 文本节点了，直接使用 escape 之后添加到 write 流里面去即可。这样一步一步直到 renderStates 为空，就调用上层传来的 done 回调，这个 done 回调其实就是 renderToString 里面的 done 回调，它接收 2 个参数，第一个是 null，第二是上面所渲染的 result 即 html。这就是整个 create-basic-renderer 的 renderToString 的流程。（为什么第一个参数是 null，因为这是 node 风格的回调，第一个参数一般是 error，如果成功就是 null，如果失败就是失败的 error）
 - 其实一般我们并不使用 create-basic-renderer 里面的 renderToString，而是使用 create-renderer 里面的 renderToString，因为这个里面的 renderToString 做增加了 html 模板的插值处理。
-- vue 对 html 模板的编译使用的是 `lodash.template`。
+- vue 对 html 模板的编译使用的是 `lodash.template`。vue ssr 使用这个方法把用户提供的模板分成了三部分：head、neck、tail，然后分别渲染，并且在其中注入 css、script 等内容。（注意，vue ssr 还提供了手动注入的功能，它是通过把 TemplateRenderer 的 renderStyles、renderState 等方法挂载到 context 上面去实现的。）
+
+（明天看 TemplateRenderer 的 renderStyles、renderState 等方法的实现）
