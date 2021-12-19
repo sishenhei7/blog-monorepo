@@ -152,7 +152,7 @@
 - vue 的编译流程是，首先生成 ast 树，在生成的时候，从头到尾遍历 template 字符串，并使用正则检测开始节点、结束节点、注释节点等，然后对这些节点生成 ast node，在生成的同时，也会把相应的 data、props、listeners 解析出来，在 ast 节点上储存起来；还会把 v-if、v-for、v-else 解析出来，在 ast 节点上打上标记。然后对 ast 树进行优化，主要是给静态节点打上标记，静态节点有 2 种情况，一种是纯文本 html 节点；另一种是平台保留的 html 节点，并且这个节点的 class、style 属性都是静态的（注意这里还有个回溯操作，就是如果子元素有不是静态的节点，那么这个节点会被改成非静态节点）。除了给静态节点打上标记，还会给静态 root 打上标记，静态 root 是指本身是静态节点，并且子元素不全是纯文本节点的节点。最后根据 ast 生成 render 代码。主要是一层一层遍历 ast 节点，然后判断节点是否是静态节点、v-if 节点、v-once 节点、v-for 节点、slot 节点等等，然后分别对这些节点进行处理，生成 render 函数的代码字符串，最后使用 with 包在一个 function 里面（注意，这里需要提取对应的 data、props、listener、slot 到代码字符串里面去。并且，这里在给静态 root 节点生成代码的时候，会把所有的静态节点代码放到 staticRenderFns 里面去，在 render 函数的代码里面存的是 staticRenderFns 的引用，执行的时候会直接调用 staticRenderFns 里面的代码。）
 - 这个编译流程和 ssr 的生成 html 的流程有什么不同？
 - 标记的静态节点和静态 root 节点在后面 patch 的时候发挥着什么样的作用？静态节点的标记在后面没有被用到，它是用来帮助标记静态 root 节点的，如果是静态 root 节点，在编译的时候会把它的 render 函数放到 staticRenderFns 里面去，并且缓存起来，以后每次 patch 的时候就直接从这里面拿结果。
-- slot 在这整个流程里面是怎么被处理的？现在不使用 slot 统一使用 scopedSlot 了。它的机制是这样的，首先在 parentVnode 里面传递一个 scopedSlot 属性，里面是建立 slot vnode 的函数。然后，在 vue component 里面的 children 字段中使用`$scopedSlots[name]`来调用上面的函数来生成 vnode。（这里要注意判断存在的情况，在编译生成这段代码的时候判断了存不存在的情况的，所以在手写的时候也要判断）
+- slot 在这整个流程里面是怎么被处理的？现在不使用 slot 统一使用 scopedSlot 了。它的机制是这样的，首先在 parentVnode 里面传递一个 scopedSlot 属性，里面是建立 slot vnode 的函数。然后，在 vue component 的 render 函数里面的 children 字段中使用`$scopedSlots[name]`来调用上面的函数来生成 vnode。（这里要注意判断存在的情况，在编译生成这段代码的时候判断了存不存在的情况的，所以在手写的时候也要判断）
 - renderSlot 的第二个参数 fallback 是一个 vnode 数组，所以在 slot 里面可以继续写 vnode，表示如果父级没有传这个 slot 的话，就使用里面的 vnode 作为 fallback。
 
 （明天看 ssr 生成 html 的流程）
