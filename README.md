@@ -170,7 +170,7 @@
 
 （明天看 TemplateRenderer 的 renderStyles、renderState 等方法的实现）
 
-【2021.12.19】今天在 vue ssr renderToString 和 createBundleRenderer 的相关逻辑：
+【2021.12.20】今天在 vue ssr renderToString 和 createBundleRenderer 的相关逻辑：
 
 - TemplateRenderer 的所有注入 renderResourceHints、renderStyles、renderState、renderScripts 基本上都是从 clientManifest 里面和 context 里面取的。其中 clientManifest 是客户端代码打包的时候 VueSSRClientPlugin 生成的，context 是用户在服务端自己定义的。需要注意的是 state 的注入，首先用户在服务端代码里面在路由和 store 准备好了之后，会使用`context.state = store.state`把 store 里面的 state 加到 context 里面，然后在 TemplateRenderer 里面会把这个 state 序列化并注入到`window.__INITIAL_STATE__`里面去（注入的方式是把一个 script 加到 body 里面去，然后在这个 script 里面注入`window.__INITIAL_STATE__`，注入完毕之后通过`document.currentScript||document.scripts[document.scripts.length-1]`获取到当前执行的 script，然后把当前执行的这个 script 删除。），然后在客户端，在挂载应用之前，通过`store.replaceState(window.__INITIAL_STATE__)`把注入的数据填充到 store 里面去，这样应用在挂载的时候就能获取 store 里面的数据了。
 - vue-i18n 在 ssr 的时候是怎么注入的？为什么有些没有用到或者其他模块的 i18n 也被注入进来了？
