@@ -179,3 +179,7 @@
 - 上面的热重载功能需要浏览器请求服务器才能重新编译，但是怎么实现在 bundle 变化的时候自动重新编译，然后自动把新的编译文件推送到浏览器端的呢？这个貌似才是真正的热重载，在 createBundleRenderer 里面没有看见关于这个的代码，所以这个是在哪里实现的？
 
 （明天看相关插件 vue-style-loader、vue-loader、VueSSRServerPlugin、VueSSRClientPlugin 的实现）
+
+【2021.12.20】今天在 vue ssr VueSSRServerPlugin 和 VueSSRClientPlugin 的相关逻辑：
+
+- 突然想到，createBundleRenderer 为什么要用 vm 来执行脚本，直接执行不好吗？vm 是另一个进程能提升效率吗？
