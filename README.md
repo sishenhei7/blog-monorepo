@@ -180,7 +180,9 @@
 
 （明天看相关插件 vue-style-loader、vue-loader、VueSSRServerPlugin、VueSSRClientPlugin 的实现）
 
-【2021.12.20】今天在 vue ssr VueSSRServerPlugin 和 VueSSRClientPlugin 的相关逻辑：
+【2021.12.21】今天在 vue ssr VueSSRServerPlugin 和 VueSSRClientPlugin 的相关逻辑：
 
 - 突然想到，createBundleRenderer 为什么要用 vm 来执行脚本，直接执行不好吗？vm 是另一个进程能提升效率吗？
 - 在组件更新进行 patch 的时候，首先会比较新旧 vnode 是否是 sameVnode，标准就是 key、tag、data 是否一样等等，注意这里如果是 sameVnode 的话，并不是说直接跳过不渲染了，而是说不生成新的元素，然后进入 patchVnode 流程。在 patchVnode 的时候，首先会调用新 vnode 的 prepatch 钩子，在 prepatch 钩子里面，会给 oldVnode 的 componentInstance 实例更新数据（所以这里是跳过了新 vnode 的 componentInstance 的实例化），注意，就是在这一步，才触发了子组件的更新，是怎么触发的呢，主要表现在如下三点：1.更新 $attrs 和 $listeners，由于我们之前已经把 $attrs 和 $listeners 设置为响应式了，所以如果在组件 render 的时候用到了这两个变量的话，子组件就会更新（这个功能实现了 hoc 组件）。2.在浅响应式下更新 props，如果在组件 render 的时候用到了这个 props，则子组件也会更新。（值得一说的是，这里会有默认值，对默认值也会执行浅响应式）3.强制更新，如果有插槽发生了变化，或者有动态插槽，就需要强制更新了，通过调用`$forceUpdate`方法进行强制更新。`$forceUpdate`强制更新的原理，只不过是调用了组件的渲染 watcher 的 update 方法而已。
+
+（明天看[webpack 插件机制](https://zhuanlan.zhihu.com/p/94577244)和[tapable 库源码](https://github.com/webpack/tapable)）
