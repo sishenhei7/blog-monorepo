@@ -180,9 +180,15 @@
 
 （明天看相关插件 vue-style-loader、vue-loader、VueSSRServerPlugin、VueSSRClientPlugin 的实现）
 
-【2021.12.21】今天在 vue ssr VueSSRServerPlugin 和 VueSSRClientPlugin 的相关逻辑：
+【2021.12.21】今天在看 vue ssr VueSSRServerPlugin 和 VueSSRClientPlugin 的相关逻辑：
 
 - 突然想到，createBundleRenderer 为什么要用 vm 来执行脚本，直接执行不好吗？vm 是另一个进程能提升效率吗？
-- 在组件更新进行 patch 的时候，首先会比较新旧 vnode 是否是 sameVnode，标准就是 key、tag、data 是否一样等等，注意这里如果是 sameVnode 的话，并不是说直接跳过不渲染了，而是说不生成新的元素，然后进入 patchVnode 流程。在 patchVnode 的时候，首先会调用新 vnode 的 prepatch 钩子，在 prepatch 钩子里面，会给 oldVnode 的 componentInstance 实例更新数据（所以这里是跳过了新 vnode 的 componentInstance 的实例化），注意，就是在这一步，才触发了子组件的更新，是怎么触发的呢，主要表现在如下三点：1.更新 $attrs 和 $listeners，由于我们之前已经把 $attrs 和 $listeners 设置为响应式了，所以如果在组件 render 的时候用到了这两个变量的话，子组件就会更新（这个功能实现了 hoc 组件）。2.在浅响应式下更新 props，如果在组件 render 的时候用到了这个 props，则子组件也会更新。（值得一说的是，这里会有默认值，对默认值也会执行浅响应式）3.强制更新，如果有插槽发生了变化，或者有动态插槽，就需要强制更新了，通过调用`$forceUpdate`方法进行强制更新。`$forceUpdate`强制更新的原理，只不过是调用了组件的渲染 watcher 的 update 方法而已。
+- 在组件更新进行 patch 的时候，首先会比较新旧 vnode 是否是 sameVnode，标准就是 key、tag、data 是否一样等等，注意这里如果是 sameVnode 的话，并不是说直接跳过不渲染了，而是说不生成新的元素，然后进入 patchVnode 流程。在 patchVnode 的时候，首先会调用新 vnode 的 prepatch 钩子，在 prepatch 钩子里面，会给 oldVnode 的 componentInstance 实例更新数据（所以这里是跳过了新 vnode 的 componentInstance 的实例化），注意，就是在这一步，才触发了子组件的更新，是怎么触发的呢，主要表现在如下三点：1.更新 `$attrs` 和 `$listeners`，由于我们之前已经把 `$attrs` 和 `$listeners` 设置为响应式了，所以如果在组件 render 的时候用到了这两个变量的话，子组件就会更新（这个功能实现了 hoc 组件）。2.在浅响应式下更新 props，如果在组件 render 的时候用到了这个 props，则子组件也会更新。（值得一说的是，这里会有默认值，对默认值也会执行浅响应式）3.强制更新，如果有插槽发生了变化，或者有动态插槽，就需要强制更新了，通过调用`$forceUpdate`方法进行强制更新。`$forceUpdate`强制更新的原理，只不过是调用了组件的渲染 watcher 的 update 方法而已。
 
 （明天看[webpack 插件机制](https://zhuanlan.zhihu.com/p/94577244)和[tapable 库源码](https://github.com/webpack/tapable)）
+
+【2021.12.21】今天在看 webpack 的插件机制和 VueSSRServerPlugin 和 VueSSRClientPlugin 插件：
+
+- webpack 的插件是为了解决 loader 所不能解决的问题而诞生的，它向开发者提供了 webpack 引擎中完整的能力，开发者可以通过回调函数，将自己的行为引入到 webpack 的构建流程中。一个 webpack 插件就是一个 js 类，这个类需要提供一个 apply 方法，在这个 apply 方法里面开发者通过 [tapable](https://github.com/webpack/tapable) 可以给 webpack 引擎的各个阶段添加自己的回调函数。webpack 引擎主要分为 2 个阶段，第一个是 compiler，它是整个 compile 流程，[这个](https://github.com/webpack/webpack/blob/122db57e7bb0ddb8327b37eeaa0adb9bd5135962/lib/Compiler.js#L125)是在这个阶段开发者能插入的钩子；另一个是 compilation，它是单个文件的 compile 流程，[这个](https://github.com/webpack/webpack/blob/ccecc17c01af96edddb931a76e7a3b21ef2969d8/lib/Compilation.js#L605)是在这个阶段开发者能插入的钩子。可以看到，可以插入的钩子非常非常多。开发者也能插入不同类型的钩子，有同步钩子、异步钩子、promise 钩子、瀑布钩子等等，更多的可以看[这里](https://github.com/webpack/tapable/blob/master/lib/index.js#L8)。这就是 webpack plugin 的整体架构。
+- VueSSRServerPlugin 插件又做了什么呢？它其实主要是在 webpack compiler 的 emit 阶段，拦截所有输出，让所有的 js 文件和 sourcemap 文件都输出到`vue-ssr-server-bundle.json`里面去，这个 bundle 里面有 3 个字段，entry 就是 webpack 里面设置的入口文件，files 就是所有输出的 js 文件内容，maps 就是所有的 sourcemap 文件内容。
+- VueSSRClientPlugin 插件又做了什么呢？它也主要是在 webpack compiler 的 emit 阶段，统计文件内容信息，输出到`vue-ssr-client-manifest.json`里面去，这个就是之前 create-renderer 需要的 manifest 文件。主要统计如下信息：1.publicPath，即 webpack 里面设置的 publicPath 信息；2.all，所有输出的文件名字；3.initial，所有的入口 js 和 css 文件名字；4.async，所有不在 initial 里面的 js 和 css 文件名字；5.modules，所有的非空 chunks 在 all 里面的 index 映射数组，它结合 `_registeredComponents` 字段可以拿到本页用到的所有的文件的路径，有了这些文件路径就可以用 script 或者 links 标签把需要 async 加载的文件插入到模板 html 里面去。
