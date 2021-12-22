@@ -192,3 +192,16 @@
 - webpack 的插件是为了解决 loader 所不能解决的问题而诞生的，它向开发者提供了 webpack 引擎中完整的能力，开发者可以通过回调函数，将自己的行为引入到 webpack 的构建流程中。一个 webpack 插件就是一个 js 类，这个类需要提供一个 apply 方法，在这个 apply 方法里面开发者通过 [tapable](https://github.com/webpack/tapable) 可以给 webpack 引擎的各个阶段添加自己的回调函数。webpack 引擎主要分为 2 个阶段，第一个是 compiler，它是整个 compile 流程，[这个](https://github.com/webpack/webpack/blob/122db57e7bb0ddb8327b37eeaa0adb9bd5135962/lib/Compiler.js#L125)是在这个阶段开发者能插入的钩子；另一个是 compilation，它是单个文件的 compile 流程，[这个](https://github.com/webpack/webpack/blob/ccecc17c01af96edddb931a76e7a3b21ef2969d8/lib/Compilation.js#L605)是在这个阶段开发者能插入的钩子。可以看到，可以插入的钩子非常非常多。开发者也能插入不同类型的钩子，有同步钩子、异步钩子、promise 钩子、瀑布钩子等等，更多的可以看[这里](https://github.com/webpack/tapable/blob/master/lib/index.js#L8)。这就是 webpack plugin 的整体架构。
 - VueSSRServerPlugin 插件又做了什么呢？它其实主要是在 webpack compiler 的 emit 阶段，拦截所有输出，让所有的 js 文件和 sourcemap 文件都输出到`vue-ssr-server-bundle.json`里面去，这个 bundle 里面有 3 个字段，entry 就是 webpack 里面设置的入口文件，files 就是所有输出的 js 文件内容，maps 就是所有的 sourcemap 文件内容。
 - VueSSRClientPlugin 插件又做了什么呢？它也主要是在 webpack compiler 的 emit 阶段，统计文件内容信息，输出到`vue-ssr-client-manifest.json`里面去，这个就是之前 create-renderer 需要的 manifest 文件。主要统计如下信息：1.publicPath，即 webpack 里面设置的 publicPath 信息；2.all，所有输出的文件名字；3.initial，所有的入口 js 和 css 文件名字；4.async，所有不在 initial 里面的 js 和 css 文件名字；5.modules，所有的非空 chunks 在 all 里面的 index 映射数组，它结合 `_registeredComponents` 字段可以拿到本页用到的所有的文件的路径，有了这些文件路径就可以用 script 或者 links 标签把需要 async 加载的文件插入到模板 html 里面去。
+- 看了下 vue-loader 和 vue-style-loader 源码，放弃了，先做重要的事情：学习 vue3 和源码。
+
+（明天看[vue3](https://v3.cn.vuejs.org/guide/installation.html#%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)的官方文档）
+
+【2021.12.22】今天在看 vue3 的官方文档：
+
+- 动态参数预期会求出一个字符串， null 例外。这个特殊的 null 值可以用于显式地移除绑定。任何其它非字符串类型的值都将会触发一个警告
+- 在 DOM 中使用模板时（直接在一个 HTML 文件里撰写模板），还需要避免使用大写字符来命名键名，因为浏览器会把 attribute 名全部强制转为小写
+- 模板表达式都被放在沙盒中，只能访问一个受限的全局变量列表，如 Math 和 Date。你不应该在模板表达式中试图访问用户定义的全局变量
+- 但是，这种方法对于可复用组件有潜在的问题，因为它们都共享相同的防抖函数。为了使组件实例彼此独立，可以在生命周期钩子的 created 里添加该防抖函数
+- 此时，模板不再是简单的和声明性的。你必须先看一下它，然后才能意识到它执行的计算取决于 author.books。如果要在模板中多次包含此计算，则问题会变得更糟。
+- 计算属性将基于它们的响应依赖关系缓存，`Date.now ()`如果声明为计算属性将永远不会更新。
+-
