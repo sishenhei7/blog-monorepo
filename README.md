@@ -187,7 +187,7 @@
 
 （明天看[webpack 插件机制](https://zhuanlan.zhihu.com/p/94577244)和[tapable 库源码](https://github.com/webpack/tapable)）
 
-【2021.12.21】今天在看 webpack 的插件机制和 VueSSRServerPlugin 和 VueSSRClientPlugin 插件：
+【2021.12.22】今天在看 webpack 的插件机制和 VueSSRServerPlugin 和 VueSSRClientPlugin 插件：
 
 - webpack 的插件是为了解决 loader 所不能解决的问题而诞生的，它向开发者提供了 webpack 引擎中完整的能力，开发者可以通过回调函数，将自己的行为引入到 webpack 的构建流程中。一个 webpack 插件就是一个 js 类，这个类需要提供一个 apply 方法，在这个 apply 方法里面开发者通过 [tapable](https://github.com/webpack/tapable) 可以给 webpack 引擎的各个阶段添加自己的回调函数。webpack 引擎主要分为 2 个阶段，第一个是 compiler，它是整个 compile 流程，[这个](https://github.com/webpack/webpack/blob/122db57e7bb0ddb8327b37eeaa0adb9bd5135962/lib/Compiler.js#L125)是在这个阶段开发者能插入的钩子；另一个是 compilation，它是单个文件的 compile 流程，[这个](https://github.com/webpack/webpack/blob/ccecc17c01af96edddb931a76e7a3b21ef2969d8/lib/Compilation.js#L605)是在这个阶段开发者能插入的钩子。可以看到，可以插入的钩子非常非常多。开发者也能插入不同类型的钩子，有同步钩子、异步钩子、promise 钩子、瀑布钩子等等，更多的可以看[这里](https://github.com/webpack/tapable/blob/master/lib/index.js#L8)。这就是 webpack plugin 的整体架构。
 - VueSSRServerPlugin 插件又做了什么呢？它其实主要是在 webpack compiler 的 emit 阶段，拦截所有输出，让所有的 js 文件和 sourcemap 文件都输出到`vue-ssr-server-bundle.json`里面去，这个 bundle 里面有 3 个字段，entry 就是 webpack 里面设置的入口文件，files 就是所有输出的 js 文件内容，maps 就是所有的 sourcemap 文件内容。
@@ -196,7 +196,7 @@
 
 （明天看[vue3](https://v3.cn.vuejs.org/guide/installation.html#%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)的官方文档）
 
-【2021.12.22】今天在看 vue3 的官方文档：
+【2021.12.23】今天在看 vue3 的官方文档：
 
 - 动态参数预期会求出一个字符串， null 例外。这个特殊的 null 值可以用于显式地移除绑定。任何其它非字符串类型的值都将会触发一个警告
 - 在 DOM 中使用模板时（直接在一个 HTML 文件里撰写模板），还需要避免使用大写字符来命名键名，因为浏览器会把 attribute 名全部强制转为小写
@@ -209,4 +209,15 @@
 - 当被提供的内容只有默认插槽时，组件的标签才可以被当作插槽的模板来使用。这样我们就可以把 v-slot 直接用在组件上
 - 重新创建动态组件的行为通常是非常有用的，但是在这个案例中，我们更希望那些标签的组件实例能够被在它们第一次被创建的时候缓存下来。为了解决这个问题，我们可以用一个`<keep-alive>`元素将其动态组件包裹起来。
 - 异步组件在默认情况下是可挂起的。这意味着如果它在父链中有一个 `<Suspense>`，它将被视为该 `<Suspense>` 的异步依赖。在这种情况下，加载状态将由 `<Suspense>` 控制，组件自身的加载、错误、延迟和超时选项都将被忽略。
--
+
+（明天继续看[vue3](https://v3.cn.vuejs.org/guide/installation.html#%E5%8F%91%E5%B8%83%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E)的官方文档）
+
+【2021.12.24】今天在看 vue3 的官方文档：
+
+- 如果要对一个元素进行硬件加速，可以应用以下任何一个 property (并不是需要全部，任意一个就可以)：1.perspective: 1000px。2.backface-visibility: hidden。3.transform: translateZ(0)。4.will-change: transform。
+- 请注意，与 props 不同，attrs 和 slots 的 property 是非响应式的。如果你打算根据 attrs 或 slots 的更改应用副作用，那么应该在 onBeforeUpdate 生命周期钩子中执行此操作。
+- 为了增加 provide 值和 inject 值之间的响应性，我们可以在 provide 值时使用 ref 或 reactive。现在，如果这两个 property 中有任何更改，MyMarker 组件也将自动更新！
+- 当使用响应式 provide / inject 值时，建议尽可能将对响应式 property 的所有修改限制在定义 provide 的组件内部。有时我们需要在注入数据的组件内部更新 inject 的数据。在这种情况下，我们建议 provide 一个方法来负责改变响应式 property。
+- 如果要确保通过 provide 传递的数据不会被 inject 的组件更改，我们建议对提供者的 property 使用 readonly。
+- 但与生命周期钩子的一个关键区别是，watch() 和 watchEffect() 在 DOM 挂载或更新之前运行副作用，所以当侦听器运行时，模板引用还未被更新。因此，使用模板引用的侦听器应该用 flush: 'post' 选项来定义，这将在 DOM 更新后运行副作用，确保模板引用与 DOM 保持同步，并引用正确的元素。
+- 我们的自定义指令现在已经足够灵活，可以支持一些不同的用例。为了使其更具动态性，我们还可以允许修改绑定值。
