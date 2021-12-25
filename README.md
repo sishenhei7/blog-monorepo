@@ -241,3 +241,5 @@
 - 和使用 createApp 创建的、只能在客户端运行的 Vue 应用不同，创建一个服务端渲染应用需要使用 createSSRApp
 - Vue Router 提供了懒加载支持，允许 webpack 在此进行代码分离；因此在客户端和服务端我们都需要等待路由器先解析异步路由组件以合理地调用组件内的钩子。为此我们会使用 router.isReady 方法。
 - Vue 会断言客户端生成的虚拟 DOM 树与从服务器渲染出来的 DOM 结构是相匹配的。如果不匹配，则它会放弃激活的过程，抛弃已生成的 DOM 并从头开始渲染。这会在浏览器控制台产生一个警告，但网站还是能正常工作。
+
+（接下来开始使用 vue3 开发博客了，抄[bilibili 的专栏页](https://www.bilibili.com/read/home?from=category_17)和[专栏文章页](https://www.bilibili.com/read/cv14487379?from=category_0)），UI 框架使用[Naive UI](https://www.naiveui.com/zh-CN/os-theme)
