@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon -r ts-node/register server/index.ts",
     "build:client": "vite build --outDir dist/client --ssrManifest",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.js "
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --commit-path . --lerna-package layout-vue3",
+    "release": "node ../../scripts/release.cjs --skipBuild"
   },
   "author": "yangzhou",
   "license": "ISC",
