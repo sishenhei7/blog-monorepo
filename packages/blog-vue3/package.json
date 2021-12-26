@@ -1,0 +1,29 @@
+{
+  "name": "blog-vue3",
+  "version": "0.0.1",
+  "description": "vue3 ssr blog, powered by vite",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon -r ts-node/register server/index.ts",
+    "build:client": "vite build --outDir dist/client --ssrManifest",
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.js "
+  },
+  "author": "yangzhou",
+  "license": "ISC",
+  "_moduleAliases": {
+    "~": ".",
+    "~~": ".",
+    "@": ".",
+    "@@": "."
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.4",
+    "@types/koa-router": "^7.4.4",
+    "@vitejs/plugin-vue": "^1.9.3",
+    "cross-env": "^7.0.3",
+    "koa": "^2.13.4",
+    "module-alias": "^2.2.2",
+    "nodemon": "^2.0.15",
+    "vite": "^2.6.4"
+  }
+}
