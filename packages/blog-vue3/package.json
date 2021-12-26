@@ -1,6 +1,6 @@
 {
   "name": "blog-vue3",
-  "version": "0.0.1",
+  "version": "0.0.2-beta.0",
   "description": "vue3 ssr blog, powered by vite",
   "main": "index.js",
   "scripts": {
