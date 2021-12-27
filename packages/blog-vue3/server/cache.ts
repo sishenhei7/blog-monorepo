@@ -33,7 +33,7 @@ export default class Cache {
     this.lruClient = this.createLRUClient(cacheOptions)
   }
 
-  private async createRedisClient(redisOptions: RedisClientOptions) {
+  private createRedisClient(redisOptions: RedisClientOptions) {
     const redisClient = createClient(redisOptions)
 
     redisClient.on('error', (error: Error) => {
@@ -49,7 +49,7 @@ export default class Cache {
       this.redisAvailable = true
     })
 
-    await redisClient.connect()
+    redisClient.connect()
 
     return redisClient
   }
