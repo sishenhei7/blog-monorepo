@@ -5,8 +5,9 @@ import { createServer as createViteServer } from 'vite'
 import config from '~/server/config'
 import renderer from '~/server/render'
 import router from '~/server/router'
-import viteMiddleware from '~/server/middlewares/vite'
 import logger from '~/server/logger'
+import Cache from '~/server/cache'
+import viteMiddleware from '~/server/middlewares/vite'
 
 async function createServer() {
   const app = new koa()
@@ -15,6 +16,8 @@ async function createServer() {
       middlewareMode: 'ssr'
     }
   })
+
+  app.context.$cache = new Cache({ ...config.redis })
 
   app.use(router.routes()).use(router.allowedMethods())
 

@@ -18,7 +18,10 @@ export default class Cache {
   private lruClient: LRUCache<string, unknown>
   private lruMaxAge: number
 
-  constructor(cacheOptions: CacheOptions, redisOptions: RedisClientOptions) {
+  constructor(
+    redisOptions: RedisClientOptions,
+    cacheOptions: CacheOptions = new CacheOptions()
+  ) {
     const defaultCacheOptions = new CacheOptions()
     cacheOptions = { ...defaultCacheOptions, ...cacheOptions }
 
