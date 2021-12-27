@@ -1,4 +1,4 @@
-import { createClient, RedisClient, ClientOpts } from 'redis'
+import { createClient } from 'redis'
 import LRUCache from 'lru-cache'
 
 class CacheOptions {
@@ -7,14 +7,17 @@ class CacheOptions {
   redisMaxAge = 5 * 60
 }
 
+type RedisClientType = ReturnType<typeof createClient>
+type RedisClientOptions = Parameters<typeof createClient>[0]
+
 export default class Cache {
-  private redisClient: RedisClient
+  private redisClient: RedisClientType
   private redisAvailable: boolean
   private redisMaxAge: number
   private lruClient: LRUCache<string, undefined>
   private lruMaxAge: number
 
-  constructor(cacheOptions: CacheOptions, redisOptions: ClientOpts) {
+  constructor(cacheOptions: CacheOptions, redisOptions: RedisClientOptions) {
     const defaultCacheOptions = new CacheOptions()
     cacheOptions = { ...defaultCacheOptions, ...cacheOptions }
 
@@ -27,7 +30,7 @@ export default class Cache {
     this.redisClient = this.createRedisClient(redisOptions)
   }
 
-  createRedisClient(redisOptions: ClientOpts) {
+  createRedisClient(redisOptions: RedisClientOptions) {
     const redisClient = createClient(redisOptions)
 
     redisClient.on('error', (error: Error) => {
