@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { ViteDevServer } from 'vite'
 import { Context } from 'koa'
+import logger from '~/server/logger'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -28,10 +29,12 @@ export default async (ctx: Context, vite: ViteDevServer) => {
     // 4. 渲染应用的 HTML。这假设 entry-server.js 导出的 `render`
     //    函数调用了适当的 SSR 框架 API。
     //    例如 ReactDOMServer.renderToString()
-    const appHtml = await render(url)
+    const { appHtml, cssHtml } = await render(url)
 
     // 5. 注入渲染后的应用程序 HTML 到模板中。
-    const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+    const html = template
+      .replace(`<!--ssr-outlet-->`, appHtml)
+      .replace(`<!--css-outlet-->`, cssHtml)
 
     // 6. 返回渲染后的 HTML。
     ctx.set({ 'Content-Type': 'text/html' })
@@ -42,7 +45,7 @@ export default async (ctx: Context, vite: ViteDevServer) => {
       // 如果捕获到了一个错误，让 Vite 来修复该堆栈，这样它就可以映射回
       // 你的实际源码中。
       vite.ssrFixStacktrace(e)
-      console.error(e)
+      logger.error(e)
       ctx.status = 500
       ctx.body = e.message
     } else {

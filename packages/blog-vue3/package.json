@@ -23,6 +23,7 @@
     "@types/koa-router": "^7.4.4",
     "@types/lru-cache": "^5.1.1",
     "@vitejs/plugin-vue": "^1.9.3",
+    "@vue/compiler-sfc": "^3.2.26",
     "cross-env": "^7.0.3",
     "koa": "^2.13.4",
     "lru-cache": "^6.0.0",
@@ -31,5 +32,10 @@
     "ora": "^6.0.1",
     "redis": "^4.0.1",
     "vite": "^2.6.4"
+  },
+  "dependencies": {
+    "@css-render/vue3-ssr": "^0.15.6",
+    "naive-ui": "^2.23.1",
+    "vue": "^3.2.26"
   }
 }
