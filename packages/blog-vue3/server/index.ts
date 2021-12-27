@@ -1,6 +1,8 @@
 import 'module-alias/register'
 import koa from 'koa'
 import { createServer as createViteServer } from 'vite'
+
+import config from '~/server/config'
 import renderer from '~/server/render'
 import router from '~/server/router'
 import viteMiddleware from '~/server/middlewares/vite'

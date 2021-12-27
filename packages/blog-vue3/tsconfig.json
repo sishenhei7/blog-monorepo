@@ -20,7 +20,7 @@
       "~~/*": ["./*"],
       "@@/*": ["./*"]
     },
-    "types": ["./types/shims"]
+    "types": ["types/**/*.ts"]
   },
   "exclude": ["node_modules"]
 }

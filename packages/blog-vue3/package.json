@@ -21,11 +21,14 @@
   "devDependencies": {
     "@types/koa": "^2.13.4",
     "@types/koa-router": "^7.4.4",
+    "@types/lru-cache": "^5.1.1",
     "@vitejs/plugin-vue": "^1.9.3",
     "cross-env": "^7.0.3",
     "koa": "^2.13.4",
+    "lru-cache": "^6.0.0",
     "module-alias": "^2.2.2",
     "nodemon": "^2.0.15",
+    "redis": "^4.0.1",
     "vite": "^2.6.4"
   }
 }
