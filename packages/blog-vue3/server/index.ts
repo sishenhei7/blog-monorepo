@@ -6,6 +6,7 @@ import config from '~/server/config'
 import renderer from '~/server/render'
 import router from '~/server/router'
 import viteMiddleware from '~/server/middlewares/vite'
+import logger from '~/server/logger'
 
 async function createServer() {
   const app = new koa()
@@ -23,9 +24,9 @@ async function createServer() {
     renderer(ctx, vite)
   })
 
-  console.log('Ready to start Server')
+  logger.log('Ready to start Server')
   app.listen(9000, () => {
-    console.log(`Server listening on http://localhost:9000`)
+    logger.success(`Server listening on http://localhost:9000`)
   })
 }
 
