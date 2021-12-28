@@ -251,3 +251,7 @@
 【2021.12.27】今天在搭 blog ssr 的[框架](./packages/blog-vue3)
 
 【2021.12.28】今天在搭 blog ssr 的[框架](./packages/blog-vue3)
+
+- eslint 检测 server 的 @ 正常，检测 src 的 @ 报错了，为什么？
+- vue3 的插件怎么写？
+- 还需要集成 vuex、i18n
