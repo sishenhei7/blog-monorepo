@@ -1,18 +1,18 @@
 import fs from 'fs'
 import path from 'path'
 import { ViteDevServer } from 'vite'
-import { Context } from 'koa'
+import { Context, Next } from 'koa'
 import logger from '~/server/logger'
 
 // const isProd = process.env.NODE_ENV === 'production'
 
-export default async (ctx: Context, vite: ViteDevServer) => {
+async function render(ctx: Context, vite: ViteDevServer) {
   const { url } = ctx.req
 
   try {
     // 1. 读取 index.html
     let template = fs.readFileSync(
-      path.resolve(__dirname, '../index.html'),
+      path.resolve(__dirname, '../../index.html'),
       'utf-8'
     )
 
@@ -54,4 +54,9 @@ export default async (ctx: Context, vite: ViteDevServer) => {
       ctx.body = e
     }
   }
+}
+
+export default (vite: ViteDevServer) => async (ctx: Context, next: Next) => {
+  await render(ctx, vite)
+  next()
 }

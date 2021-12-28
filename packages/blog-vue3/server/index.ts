@@ -7,7 +7,8 @@ import renderer from '~/server/render'
 import router from '~/server/router'
 import logger from '~/server/logger'
 import Cache from '~/server/cache'
-import viteMiddleware from '~/server/middlewares/vite'
+import createViteMiddleware from '~/server/middlewares/vite'
+import createRenderer from '~/server/middlewares/render'
 
 async function createServer() {
   const app = new koa()
@@ -21,11 +22,9 @@ async function createServer() {
 
   app.use(router.routes()).use(router.allowedMethods())
 
-  app.use(viteMiddleware(vite))
+  app.use(createViteMiddleware(vite))
 
-  app.use((ctx) => {
-    renderer(ctx, vite)
-  })
+  app.use(createRenderer(vite))
 
   logger.log('Ready to start Server')
   app.listen(9000, () => {
