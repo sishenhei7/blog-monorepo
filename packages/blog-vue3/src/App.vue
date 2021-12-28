@@ -1,55 +1,22 @@
 <template>
-  <n-space vertical style="padding: 16px; max-width: 360px">
-    <n-button>Naive UI SSR</n-button>
-    <n-cascader :options="cascaderOptions" />
-    <n-select :options="selectOptions" />
-    <n-input-number />
-  </n-space>
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <router-view></router-view>
 </template>
 
 <script lang="ts">
-import { h, defineComponent } from 'vue'
-import { NButton, NSpace, NInputNumber, NCascader, NSelect } from 'naive-ui'
-/**
- * A Vue app with naive ui
- */
+import { defineComponent } from 'vue'
 export default defineComponent({
-  components: {
-    NButton,
-    NSpace,
-    NInputNumber,
-    NCascader,
-    NSelect
-  },
-  setup() {
-    return {
-      cascaderOptions: [
-        {
-          label: '0',
-          value: '0',
-          children: [
-            {
-              label: '0-0',
-              value: '0-0'
-            },
-            {
-              label: '0-1',
-              value: '0-1'
-            }
-          ]
-        }
-      ],
-      selectOptions: [
-        {
-          label: '0',
-          value: '0'
-        },
-        {
-          label: '1',
-          value: '1'
-        }
-      ]
-    }
-  }
+  name: 'App'
 })
 </script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>

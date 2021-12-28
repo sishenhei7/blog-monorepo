@@ -7,6 +7,7 @@ export default defineConfig((env) => ({
   base: env.command === 'serve' ? '' : '/app/client/',
   resolve: {
     alias: {
+      '~': path.resolve(__dirname, '.'),
       '@': path.resolve(__dirname, './src')
     }
   },
