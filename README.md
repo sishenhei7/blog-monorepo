@@ -255,3 +255,4 @@
 - eslint 检测 server 的 @ 正常，检测 src 的 @ 报错了，为什么？
 - vue3 的插件怎么写？
 - 还需要集成 vuex、i18n
+- logo 引入和顶部的 undefined 需要解决一下
