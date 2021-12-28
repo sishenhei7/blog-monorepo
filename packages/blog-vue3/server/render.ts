@@ -4,7 +4,7 @@ import { ViteDevServer } from 'vite'
 import { Context } from 'koa'
 import logger from '~/server/logger'
 
-const isProd = process.env.NODE_ENV === 'production'
+// const isProd = process.env.NODE_ENV === 'production'
 
 export default async (ctx: Context, vite: ViteDevServer) => {
   const { url } = ctx.req
@@ -24,7 +24,7 @@ export default async (ctx: Context, vite: ViteDevServer) => {
     // 3. 加载服务器入口。vite.ssrLoadModule 将自动转换
     //    你的 ESM 源码使之可以在 Node.js 中运行！无需打包
     //    并提供类似 HMR 的根据情况随时失效。
-    const { render } = await vite.ssrLoadModule('../src/entry-server.ts')
+    const { render } = await vite.ssrLoadModule('@/entry-server')
 
     // 4. 渲染应用的 HTML。这假设 entry-server.js 导出的 `render`
     //    函数调用了适当的 SSR 框架 API。
@@ -41,15 +41,15 @@ export default async (ctx: Context, vite: ViteDevServer) => {
     ctx.status = 200
     ctx.body = html
   } catch (e) {
+    ctx.status = 500
+
     if (e instanceof Error) {
       // 如果捕获到了一个错误，让 Vite 来修复该堆栈，这样它就可以映射回
       // 你的实际源码中。
       vite.ssrFixStacktrace(e)
       logger.error(e)
-      ctx.status = 500
       ctx.body = e.message
     } else {
-      // handle
       ctx.status = 500
       ctx.body = e
     }
