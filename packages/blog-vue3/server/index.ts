@@ -3,7 +3,6 @@ import koa from 'koa'
 import { createServer as createViteServer } from 'vite'
 
 import config from '~/server/config'
-import renderer from '~/server/render'
 import router from '~/server/router'
 import logger from '~/server/logger'
 import Cache from '~/server/cache'
