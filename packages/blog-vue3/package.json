@@ -12,12 +12,6 @@
   },
   "author": "yangzhou",
   "license": "ISC",
-  "_moduleAliases": {
-    "~": ".",
-    "~~": ".",
-    "@": ".",
-    "@@": "."
-  },
   "devDependencies": {
     "@types/koa": "^2.13.4",
     "@types/koa-router": "^7.4.4",
