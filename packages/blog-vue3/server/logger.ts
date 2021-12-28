@@ -1,5 +1,4 @@
 import colors from 'chalk'
-import spinner from './spinner'
 
 interface Options {
   logLevel?: 'verbose' | 'quiet'
@@ -37,7 +36,6 @@ class Logger {
   }
 
   log(...args: any[]) {
-    spinner.stop()
     if (this.isQuiet) return
     console.log(...args)
   }
@@ -47,10 +45,10 @@ class Logger {
     this.log(colors.magenta('verbose'), ...args)
   }
 
-  progress(text: string) {
-    if (this.isQuiet) return
-    spinner.start(text)
-  }
+  // progress(text: string) {
+  //   if (this.isQuiet) return
+  //   spinner.start(text)
+  // }
 }
 
 export default new Logger()

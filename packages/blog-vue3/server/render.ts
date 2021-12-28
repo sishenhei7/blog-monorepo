@@ -12,7 +12,7 @@ export default async (ctx: Context, vite: ViteDevServer) => {
   try {
     // 1. 读取 index.html
     let template = fs.readFileSync(
-      path.resolve(__dirname, 'index.html'),
+      path.resolve(__dirname, '../index.html'),
       'utf-8'
     )
 
@@ -24,7 +24,7 @@ export default async (ctx: Context, vite: ViteDevServer) => {
     // 3. 加载服务器入口。vite.ssrLoadModule 将自动转换
     //    你的 ESM 源码使之可以在 Node.js 中运行！无需打包
     //    并提供类似 HMR 的根据情况随时失效。
-    const { render } = await vite.ssrLoadModule('/src/entry-server.js')
+    const { render } = await vite.ssrLoadModule('../src/entry-server.ts')
 
     // 4. 渲染应用的 HTML。这假设 entry-server.js 导出的 `render`
     //    函数调用了适当的 SSR 框架 API。

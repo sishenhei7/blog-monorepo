@@ -1,4 +1,4 @@
-import 'module-alias/register'
+// require('module-alias/register')
 import koa from 'koa'
 import { createServer as createViteServer } from 'vite'
 
