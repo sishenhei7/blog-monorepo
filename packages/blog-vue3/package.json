@@ -9,6 +9,7 @@
     "build:vue-client": "vite build --outDir dist/app/client --ssrManifest",
     "build:vue-server": "vite build --outDir dist/app/server --ssr src/entry-server.ts",
     "build:server": "tsup-node server/index.ts -d dist/server",
+    "start": "cross-env NODE_ENV=production nodemon --exec node -r ts-node/register server/index.ts",
     "preview": "cross-env NODE_ENV=production node dist/server/index.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --commit-path . --lerna-package layout-vue3",
     "release": "node ../../scripts/release.cjs --skipBuild"

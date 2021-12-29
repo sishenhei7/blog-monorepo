@@ -54,13 +54,17 @@ async function render(ctx: Context, vite: ViteDevServer) {
     // 4. 渲染应用的 HTML。这假设 entry-server.js 导出的 `render`
     //    函数调用了适当的 SSR 框架 API。
     //    例如 ReactDOMServer.renderToString()
-    const { appHtml, cssHtml, preloadLinks } = await render(url, manifest)
+    const {
+      appHtml,
+      cssHtml = '',
+      preloadLinks = ''
+    } = await render(url, manifest)
 
     // 5. 注入渲染后的应用程序 HTML 到模板中。
     const html = template
       .replace(`<!--preload-links-->`, preloadLinks)
-      .replace(`<!--ssr-outlet-->`, appHtml)
       .replace(`<!--css-outlet-->`, cssHtml)
+      .replace(`<!--ssr-outlet-->`, appHtml)
 
     // 6. 返回渲染后的 HTML。
     ctx.set({ 'Content-Type': 'text/html' })
