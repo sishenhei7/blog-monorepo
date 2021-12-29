@@ -1,17 +1,13 @@
-import { createSSRApp } from 'vue'
+import createApp from '@/main'
 import { renderToString, SSRContext } from 'vue/server-renderer'
 import { setup } from '@css-render/vue3-ssr'
-import App from '@/App.vue'
-import createRouter from '@/router'
 
 /**
  * Render page with naive ui
  */
 export const render = async (url: string, manifest: any) => {
-  const app = createSSRApp(App)
+  const { app, router } = createApp()
 
-  const router = createRouter()
-  app.use(router)
   router.push(url)
   await router.isReady()
 

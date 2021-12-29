@@ -2,9 +2,7 @@ import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router'
 
 export default () =>
   createRouter({
-    history: import.meta.env.SSR
-      ? createMemoryHistory('/')
-      : createWebHistory('/'),
+    history: import.meta.env.SSR ? createMemoryHistory() : createWebHistory(),
     routes: [
       {
         path: '/',
