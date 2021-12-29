@@ -256,3 +256,5 @@
 - vue3 的插件怎么写？
 - 还需要集成 vuex、i18n
 - logo 引入和顶部的 undefined 需要解决一下
+
+【2021.12.29】今天在解决 blog ssr 的[框架](./packages/blog-vue3)的问题
