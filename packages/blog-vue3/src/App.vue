@@ -1,4 +1,5 @@
 <template>
+  <h1>blog framework</h1>
   <img alt="Vue logo" src="./assets/logo.png" />
   <RouterView />
 </template>
@@ -10,7 +11,9 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import '@/styles/variable.scss';
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -18,5 +21,11 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+h1 {
+  font-weight: bold;
+  font-size: 60px;
+  color: $--color-primary;
+  margin-bottom: 40px;
 }
 </style>

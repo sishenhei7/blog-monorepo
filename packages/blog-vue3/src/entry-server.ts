@@ -5,7 +5,7 @@ import { setup } from '@css-render/vue3-ssr'
 /**
  * Render page with naive ui
  */
-export const render = async (url: string, manifest: any) => {
+export async function render(url: string, manifest: any) {
   const { app, router } = createApp()
 
   router.push(url)
