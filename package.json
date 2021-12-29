@@ -7,7 +7,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "format": "prettier --write .",
-    "lint": "eslint 'packages/*/{src,types}/**/*.{ts,vue}'"
+    "lint": "eslint 'packages/*/{src,types,server}/**/*.{ts,vue}'"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
@@ -38,7 +38,7 @@
     "*": [
       "prettier --write --ignore-unknown"
     ],
-    "packages/*/{src,types}/**/*.ts": [
+    "packages/*/{src,types,server}/**/*.ts": [
       "eslint --ext .ts"
     ],
     "packages/**/*.d.ts": [

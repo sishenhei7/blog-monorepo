@@ -107,9 +107,9 @@ export default class Cache {
     } catch (error) {
       logger.error(JSON.stringify(error))
       return null
-    } finally {
-      return null
     }
+
+    return null
   }
 
   public async set(key: string, value: any) {

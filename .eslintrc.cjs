@@ -15,6 +15,19 @@ module.exports = defineConfig({
     sourceType: 'module',
     ecmaVersion: 2021
   },
+  // 暂时无用，需安装 eslint-plugin-import eslint-import-resolver-typescript
+  // plugins: ['import'],
+  // settings: {
+  //   'import/parsers': {
+  //     '@typescript-eslint/parser': ['.ts', '.tsx']
+  //   },
+  //   'import/resolver': {
+  //     typescript: {
+  //       alwaysTryTypes: true,
+  //       project: 'packages/*/tsconfig.json'
+  //     }
+  //   }
+  // },
   // https://eslint.vuejs.org/user-guide/#faq
   env: {
     'vue/setup-compiler-macros': true
@@ -61,20 +74,21 @@ module.exports = defineConfig({
       }
     ],
 
-    'node/no-missing-import': [
-      'error',
-      {
-        allowModules: [
-          'types',
-          'estree',
-          'testUtils',
-          'less',
-          'sass',
-          'stylus'
-        ],
-        tryExtensions: ['.ts', '.js', '.jsx', '.tsx', '.d.ts']
-      }
-    ],
+    // 'node/no-missing-import': [
+    //   'error',
+    //   {
+    //     allowModules: [
+    //       'types',
+    //       'estree',
+    //       'testUtils',
+    //       'less',
+    //       'sass',
+    //       'stylus'
+    //     ],
+    //     tryExtensions: ['.ts', '.js', '.jsx', '.tsx', '.d.ts']
+    //   }
+    // ],
+    'node/no-missing-import': 'off', // todo
     'node/no-missing-require': [
       'error',
       {

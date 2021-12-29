@@ -9,17 +9,17 @@ export default () =>
       {
         path: '/',
         name: 'Home',
-        component: () => import('../views/home/index.vue')
+        component: () => import('@/views/home/index.vue')
       },
       {
         path: '/hello',
         name: 'HelloWorld',
-        component: () => import('../views/hello-world/index.vue')
+        component: () => import('@/views/hello-world/index.vue')
       },
       {
         path: '/naive',
         name: 'Naive',
-        component: () => import('../views/naive/index.vue')
+        component: () => import('@/views/naive/index.vue')
       }
     ]
   })

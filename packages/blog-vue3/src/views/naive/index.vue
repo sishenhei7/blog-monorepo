@@ -1,10 +1,10 @@
 <template>
-  <n-space vertical style="padding: 16px; max-width: 360px">
-    <n-button>Naive UI SSR</n-button>
-    <n-cascader :options="cascaderOptions" />
-    <n-select :options="selectOptions" />
-    <n-input-number />
-  </n-space>
+  <NSpace vertical style="padding: 16px; max-width: 360px">
+    <NButton>Naive UI SSR</NButton>
+    <NCascader :options="cascaderOptions" />
+    <NSelect :options="selectOptions" />
+    <NInputNumber />
+  </NSpace>
 </template>
 
 <script lang="ts">
@@ -14,6 +14,7 @@ import { NButton, NSpace, NInputNumber, NCascader, NSelect } from 'naive-ui'
  * A Vue app with naive ui
  */
 export default defineComponent({
+  name: 'NaiveIndex',
   components: {
     NButton,
     NSpace,

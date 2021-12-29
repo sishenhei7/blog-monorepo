@@ -1,8 +1,8 @@
 import { createSSRApp } from 'vue'
 import { renderToString, SSRContext } from 'vue/server-renderer'
 import { setup } from '@css-render/vue3-ssr'
-import App from './App.vue'
-import createRouter from './router'
+import App from '@/App.vue'
+import createRouter from '@/router'
 
 /**
  * Render page with naive ui
