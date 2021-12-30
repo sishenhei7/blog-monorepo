@@ -260,3 +260,5 @@
 【2021.12.29】今天在解决 blog ssr 的[框架](./packages/blog-vue3)的问题，终于把框架在生产环境搭起来了。明天完善 server 。
 
 - 多语言的引入要找时间搞个方案
+
+【2021.12.30】今天在优化代码，并且引入了 robots 中间件。晚上花了一点时间写[年终总结（上）](https://github.com/sishenhei7/react-blog/issues/39)
