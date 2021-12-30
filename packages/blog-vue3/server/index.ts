@@ -1,18 +1,12 @@
 import koa from 'koa'
-import path from 'path'
 import { createServer as createViteServer } from 'vite'
-import mount from 'koa-mount'
-import staticMiddleware from 'koa-static'
 import compressMiddleware from 'koa-compress'
 
 import config from '~/server/config'
 import router from '~/server/router'
-import logger from '~/server/logger'
 import Cache from '~/server/cache'
-import createViteMiddleware from '~/server/middlewares/vite'
-import createRenderer from '~/server/middlewares/render'
-
-const isProd = process.env.NODE_ENV === 'production'
+import middlewares from '~/server/middlewares'
+import { logger, isProd } from '~/server/utils'
 
 async function createServer() {
   const app = new koa()
@@ -24,21 +18,18 @@ async function createServer() {
 
   app.context.$cache = new Cache({ ...config.redis })
 
+  app.use(middlewares.robots())
+
   app.use(router.routes()).use(router.allowedMethods())
 
   if (!isProd) {
-    app.use(createViteMiddleware(vite))
+    app.use(middlewares.viteMiddleware(vite))
   } else {
     app.use(compressMiddleware())
-    app.use(
-      mount(
-        '/app/client',
-        staticMiddleware(path.resolve(process.cwd(), 'dist/app/client'))
-      )
-    )
+    app.use(middlewares.mountStatic('/app/client', 'dist/app/client'))
   }
 
-  app.use(createRenderer(vite))
+  app.use(middlewares.renderHtml(vite))
 
   logger.log('Ready to start Server')
   app.listen(9000, () => {

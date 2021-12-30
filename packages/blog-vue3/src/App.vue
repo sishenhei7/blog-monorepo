@@ -1,5 +1,5 @@
 <template>
-  <h1>blog framework</h1>
+  <h1>test framework</h1>
   <img alt="Vue logo" src="./assets/logo.png" />
   <RouterView />
 </template>

@@ -1,6 +1,6 @@
 import { createClient } from 'redis'
 import LRUCache from 'lru-cache'
-import logger from '~/server/logger'
+import { logger } from '~/server/utils'
 
 class CacheOptions {
   lruMax = 1000
