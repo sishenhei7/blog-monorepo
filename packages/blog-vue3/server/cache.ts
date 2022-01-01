@@ -19,11 +19,11 @@ export default class Cache {
   private lruMaxAge: number
 
   constructor(
-    redisOptions: RedisClientOptions,
-    cacheOptions: CacheOptions = new CacheOptions()
+    redisOptions: RedisClientOptions = {},
+    cache: Partial<CacheOptions> = {}
   ) {
-    const defaultCacheOptions = new CacheOptions()
-    cacheOptions = { ...defaultCacheOptions, ...cacheOptions }
+    const cacheOptions = new CacheOptions()
+    Object.assign(cacheOptions, cache)
 
     this.lruMaxAge = cacheOptions.lruMaxAge
     this.redisMaxAge = cacheOptions.redisMaxAge
