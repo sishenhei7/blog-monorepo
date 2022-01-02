@@ -273,3 +273,10 @@
 - vite 在 rollup 打包的时候自己写了一个筛选替换的插件很有参考意义
 - vite 的入口是在 bin 文件夹的 vite 文件里面，首先它判断是否作为依赖，如果不作为依赖的话，就引入 source-map-support 库来矫正 V8 的错误堆栈；然后它判断 debug、filter 和 profile 参数来设置对应的环境变量，然后引入 perf_hooks 检测运行时间，引入 inspector 检测运行时的 CPU 占用，最后执行 cli 文件；在 cli 文件中，它使用 cac 库来建立一个 cli，然后设置 cli 的各种参数，在 dev 的环境下，它先使用 cleanOptions 清理不需要的参数，然后使用 createServer 建立一个服务器。这个 createServer 是在 server 文件中定义的，再来看 server 文件。createServer 是一个典型的工厂函数，它在闭包里面进行各种处理，最后导出了一个 server。在闭包里面它主要做了如下处理：1.使用 chokidar 监控文件改动，在文件修改、新增、改变 pkg 等不同文件的情况下做不同的处理，这个不同的处理主要是使用 ModuleGraph 类来完成的，它通过给 module 建立一个各种 map，然后对 module 执行各种操作。2.建立一个 rollup container，调用 rollup 的各种原生 api 对文件进行处理，就是在这一步来给 ModuleGraph 添加各种 module。3.建立 2 个服务器，http 服务器和 websocket 服务器。在建立 http 服务器的过程中会判断是否是 https 服务器，如果不是则直接建立 http 服务器，然后判断是否使用了代理，如果是则只能建立 http1 的 https 服务器，如果不是则建立 http2 服务器。而 websocket 服务器则主要用来支持 hmr 功能。4.给 http 服务器加上各种中间件，里面有很多有意思的中间件，比如打开浏览器的中间件、打开编辑器的中间件、csr 回退中间件等，这些所有的中间件以后要重点看一下。5.在 vite 关闭的时候做各种清理工作：关闭 watcher、关闭 ws 服务器、关闭 rollup container、关闭 http 服务器。
 - 需要集中看一下的东西：1.rollup container 做了什么？是怎么在 ModuleGraph 中添加各种 module 的？2. http 服务器的各种中间件的实现和作用
+
+【2022.1.2】今天去爬山了，不过还是看了一下 vite 的 server 中间件源码：
+
+- express 里面 redirect 都是直接修改 req.url 达成目的的，koa 里面能不能也这么做呢？我看我司里面都是 redirect 的。
+- proxy 库的原理？
+- magicstring 的原理到底是什么？
+- koa-send 库解决了什么问题？
