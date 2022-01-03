@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { ViteDevServer } from 'vite'
 import { Context, Next } from 'koa'
-import serve from 'koa-static'
+import serveStatic from 'koa-static'
 import { logger, resolve, resolveCwd, isProd } from '~/server/utils'
 
 async function render(vite: ViteDevServer, ctx: Context, next: Next) {
@@ -71,7 +71,7 @@ async function render(vite: ViteDevServer, ctx: Context, next: Next) {
     }
 
     // 回退到 csr
-    serve(resolveCwd('./dist'))(ctx, next)
+    serveStatic(resolveCwd('./dist'))(ctx, next)
   }
 }
 
