@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import { Context, Next } from 'koa'
 import { resolve, resolveCwd, isProd } from '~/server/utils'
 
-export default () => {
+export default function robotsMiddleware() {
   const file = fs.readFileSync(
     isProd
       ? resolveCwd('public/robots.txt')

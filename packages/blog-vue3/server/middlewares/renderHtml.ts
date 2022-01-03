@@ -74,7 +74,9 @@ async function render(ctx: Context, vite: ViteDevServer) {
   }
 }
 
-export default (vite: ViteDevServer) => async (ctx: Context, next: Next) => {
-  await render(ctx, vite)
-  next()
+export default function renderHtmlMiddleware(vite: ViteDevServer) {
+  return async (ctx: Context, next: Next) => {
+    await render(ctx, vite)
+    await next()
+  }
 }
