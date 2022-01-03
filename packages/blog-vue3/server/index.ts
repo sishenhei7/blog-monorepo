@@ -18,6 +18,8 @@ async function createServer() {
 
   app.context.$cache = new Cache({ ...config.redis })
 
+  app.use(middlewares.time())
+
   app.use(middlewares.robots())
 
   app.use(router.routes()).use(router.allowedMethods())
