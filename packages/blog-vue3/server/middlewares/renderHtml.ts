@@ -1,9 +1,10 @@
 import fs from 'fs'
 import { ViteDevServer } from 'vite'
 import { Context, Next } from 'koa'
+import serve from 'koa-static'
 import { logger, resolve, resolveCwd, isProd } from '~/server/utils'
 
-async function render(ctx: Context, vite: ViteDevServer) {
+async function render(vite: ViteDevServer, ctx: Context, next: Next) {
   const { url } = ctx.req
 
   try {
@@ -58,25 +59,24 @@ async function render(ctx: Context, vite: ViteDevServer) {
     ctx.set({ 'Content-Type': 'text/html' })
     ctx.status = 200
     ctx.body = html
+    await next()
   } catch (e) {
-    ctx.status = 500
-
     if (e instanceof Error) {
       // 如果捕获到了一个错误，让 Vite 来修复该堆栈，这样它就可以映射回
       // 你的实际源码中。
       vite.ssrFixStacktrace(e)
       logger.error(e)
-      ctx.body = e.message
     } else {
-      ctx.status = 500
-      ctx.body = JSON.stringify(e)
+      logger.error(JSON.stringify(e))
     }
+
+    // 回退到 csr
+    serve(resolveCwd('./dist'))(ctx, next)
   }
 }
 
 export default function renderHtmlMiddleware(vite: ViteDevServer) {
   return async (ctx: Context, next: Next) => {
-    await render(ctx, vite)
-    await next()
+    await render(vite, ctx, next)
   }
 }
