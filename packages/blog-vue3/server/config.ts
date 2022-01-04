@@ -6,11 +6,18 @@ const config: ServerConfig = {
   },
   server: {
     proxy: {
-      '/proxy_ping': '_ping',
+      '/proxy-ping': 'http://localhost:9000/_ping',
+      '/proxy_ping': {
+        target: 'http://localhost:9000/_ping',
+        ignorePath: true
+      },
       '^/proxy/.*': {
         target: 'http://jsonplaceholder.typicode.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/proxy/, '')
+        // configure: (proxy, options) => {
+        //   // proxy 是 'http-proxy' 的实例
+        // }
       }
     }
   }

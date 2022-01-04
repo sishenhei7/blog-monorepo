@@ -10,6 +10,12 @@ router.get('/_ping', async (ctx: Context) => {
   ctx.body = 'pong'
 })
 
+// 用于代理监测
+router.get('/_ping/proxy-ping', async (ctx: Context) => {
+  ctx.status = 200
+  ctx.body = 'pong'
+})
+
 // 单路由的 cors 设置
 router.all(
   '/test-cors',

@@ -3,6 +3,13 @@ import HttpProxy from 'http-proxy'
 import { logger } from '~/server/utils'
 import { ProxyOptions, ServerConfigProxyOptions } from '~/types/config.server'
 
+function doesProxyContextMatchUrl(context: string, url: string): boolean {
+  return (
+    (context.startsWith('^') && new RegExp(context).test(url)) ||
+    url.startsWith(context)
+  )
+}
+
 export default function proxyMiddleware(
   options: ServerConfigProxyOptions = {}
 ) {
@@ -26,29 +33,31 @@ export default function proxyMiddleware(
     proxies[context] = [proxy, { ...opts }]
   })
 
-  return async (ctx: Context, next: Next) => {
-    for (const context in proxies) {
-      const { req, res } = ctx
-      const [proxy, opts] = proxies[context]
+  return (ctx: Context, next: Next) =>
+    new Promise((resolve, reject) => {
+      const { url = '' } = ctx.req
+      const context = Object.keys(proxies).find((context) =>
+        doesProxyContextMatchUrl(context, url)
+      )
 
-      if (opts.rewrite) {
-        req.url = opts.rewrite(req.url!)
+      if (context) {
+        const { req, res } = ctx
+        const [proxy, opts] = proxies[context]
+
+        if (opts.rewrite) {
+          req.url = opts.rewrite(req.url!)
+        }
+
+        proxy.web(req, res, {}, (err: Error) => {
+          if (err) {
+            logger.error(err.stack)
+            reject(err)
+          } else {
+            resolve(1)
+          }
+        })
+      } else {
+        resolve(next())
       }
-
-      // res.on('close', () => {
-      //   reject(
-      //     new Error(`Http response closed while proxying ${ctx.req.oldPath}`)
-      //   )
-      // })
-
-      // res.on('finish', () => {
-      //   resolve()
-      // })
-
-      proxy.web(req, res)
-      return
-    }
-
-    await next()
-  }
+    })
 }
