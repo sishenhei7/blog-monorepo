@@ -22,10 +22,12 @@ async function createServer() {
 
   app.use(middlewares.robots())
 
+  app.use(middlewares.proxy(config.server!.proxy))
+
   app.use(router.routes()).use(router.allowedMethods())
 
   if (!isProd) {
-    app.use(middlewares.viteMiddleware(vite))
+    app.use(middlewares.vite(vite))
   } else {
     app.use(compressMiddleware())
     app.use(middlewares.mountStatic('/app/client', 'dist/app/client'))

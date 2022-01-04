@@ -1,15 +1,17 @@
-import viteMiddleware from './viteMiddleware'
+import vite from './vite'
 import renderHtml from './renderHtml'
 import mountStatic from './mountStatic'
 import robots from './robots'
 import time from './time'
+import proxy from './proxy'
 
 const middlewares = {
   robots,
-  viteMiddleware,
+  vite,
   renderHtml,
   mountStatic,
-  time
+  time,
+  proxy
 }
 
 export default middlewares
