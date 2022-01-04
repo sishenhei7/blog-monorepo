@@ -291,4 +291,4 @@
 - 重看 koa-router 源码，有这么几点需要注意：1.它其实就是给路由用了中间件模型，并且支持多个路径、命名路由和多个路由的写法。koa 的中间件也可以直接塞到路由里面使用。2.我们是这么使用路由中间件的`app.use(router.routes()).use(router.allowedMethods())`，其中`router.routes()`返回所有匹配到的路由，并使用 koa-compose 合在一起当做 koa 的中间件进行执行，然后`router.allowedMethods()`其实就是在洋葱模型的返回路径上，判断有没有正常返回，如果没有的话，就查看是否有匹配，如果有匹配的话，就添加一个 allow 的 http 头告诉客户端支持哪些 methods，同时也在这里处理 OPTIONS 请求，如果是 OPTIONS 请求的话，就正常返回。
 - 看 node-http-proxy 源码，我们简要说明一下在使用的时候做了什么。首先，初始化语句`var proxy = httpProxy.createProxyServer({target:'http://localhost:9000'})`其实并没有建立一个 server，而只是做了一个代理配置的初始化；然后就有 2 种方式代理了，一种是`proxy.listen(8000)`，这里才会实际建立一个 server 代理请求；另一种是在其它 server 里面`proxy.web(req, res, { target: 'http://127.0.0.1:5050' })`进行转发，注意这里其实并没有建立 server，而是使用包裹它的 server。最后，这个代理库到底做了什么呢？代理到底是什么意思？其实简单来说代理的意思就是修改请求的 url 即`req.url`，复杂来说的话，还要把相关的 cookie、headers 转发过去，就这么简单！
 
-【2022.1.3】今天在给自己的服务器加中间件
+【2022.1.3】今天自己重写了 koa 上面的 proxy 中间件，看了下 http 相关的 node 文档。

@@ -47,10 +47,14 @@ importers:
   packages/blog-vue3:
     specifiers:
       '@css-render/vue3-ssr': ^0.15.6
+      '@koa/cors': ^3.1.0
+      '@types/http-proxy': ^1.17.8
       '@types/koa': ^2.13.4
+      '@types/koa__cors': ^3.1.1
       '@types/koa-compress': ^4.0.3
       '@types/koa-mount': ^4.0.1
       '@types/koa-router': ^7.4.4
+      '@types/koa-send': ^4.1.3
       '@types/koa-static': ^4.0.2
       '@types/lru-cache': ^5.1.1
       '@types/node': ^16.11.11
@@ -58,6 +62,7 @@ importers:
       '@vue/compiler-sfc': ^3.2.26
       chalk: ^4.1.2
       cross-env: ^7.0.3
+      http-proxy: ^1.18.1
       koa: ^2.13.4
       koa-compress: ^5.1.0
       koa-mount: ^4.0.0
@@ -85,10 +90,14 @@ importers:
       vue-router: 4.0.12_vue@3.2.26
     devDependencies:
       '@css-render/vue3-ssr': 0.15.6_vue@3.2.26
+      '@koa/cors': 3.1.0
+      '@types/http-proxy': 1.17.8
       '@types/koa': 2.13.4
+      '@types/koa__cors': 3.1.1
       '@types/koa-compress': 4.0.3
       '@types/koa-mount': 4.0.1
       '@types/koa-router': 7.4.4
+      '@types/koa-send': 4.1.3
       '@types/koa-static': 4.0.2
       '@types/lru-cache': 5.1.1
       '@types/node': 16.11.11
@@ -96,6 +105,7 @@ importers:
       '@vue/compiler-sfc': 3.2.26
       chalk: 4.1.2
       cross-env: 7.0.3
+      http-proxy: 1.18.1
       koa: 2.13.4
       koa-compress: 5.1.0
       koa-mount: 4.0.0
@@ -594,6 +604,13 @@ packages:
       chalk: 4.1.2
     dev: false
 
+  /@koa/cors/3.1.0:
+    resolution: {integrity: sha512-7ulRC1da/rBa6kj6P4g2aJfnET3z8Uf3SWu60cjbtxTA5g8lxRdX/Bd2P92EagGwwAhANeNw8T8if99rJliR6Q==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      vary: 1.1.2
+    dev: true
+
   /@mapbox/node-pre-gyp/1.0.7:
     resolution: {integrity: sha512-PplSvl4pJ5N3BkVjAdDzpPhVUPdC73JgttkR+LnBx2OORC1GCQsBjUeEuipf9uOaAM1SbxcdZFfR3KDTKm2S0A==}
     hasBin: true
@@ -759,6 +776,12 @@ packages:
     resolution: {integrity: sha512-e+2rjEwK6KDaNOm5Aa9wNGgyS9oSZU/4pfSMMPYNOfjvFI0WVXm29+ITRFr6aKDvvKo7uU1jV68MW4ScsfDi7Q==}
     dev: true
 
+  /@types/http-proxy/1.17.8:
+    resolution: {integrity: sha512-5kPLG5BKpWYkw/LVOGWpiq3nEVqxiN32rTgI53Sk12/xHFQ2rG3ehI9IO+O3W2QoKeyB92dJkoka8SUm6BX1pA==}
+    dependencies:
+      '@types/node': 16.11.11
+    dev: true
+
   /@types/istanbul-lib-coverage/2.0.4:
     resolution: {integrity: sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g==}
     dev: false
@@ -843,6 +866,12 @@ packages:
       '@types/keygrip': 1.0.2
       '@types/koa-compose': 3.2.5
       '@types/node': 16.11.11
+    dev: true
+
+  /@types/koa__cors/3.1.1:
+    resolution: {integrity: sha512-O7MBkCocnLrpEvkMrYAp17arUDS+KuS5bXMG/Z4aPSbrO7vrYB6YrqcsTD3Dp2OnAL3j4WME2k/x2kOcyzwNUw==}
+    dependencies:
+      '@types/koa': 2.13.4
     dev: true
 
   /@types/lodash-es/4.17.5:
@@ -2869,6 +2898,10 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /eventemitter3/4.0.7:
+    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
+    dev: true
+
   /evtd/0.2.3:
     resolution: {integrity: sha512-tmiT1YUVqFjTY+BSBOAskL83xNx41iUfpvKP6Gcd/xMHjg3mnER98jXGXJyKnxCG19uPc6EhZiUC+MUyvoqCtw==}
     dev: false
@@ -3018,6 +3051,16 @@ packages:
 
   /flatted/3.2.4:
     resolution: {integrity: sha512-8/sOawo8tJ4QOBX8YlQBMxL8+RLZfxMQOif9o0KUKTNTjMYElWPE0r/m5VNFxTRd0NSw8qSy8dajrwX4RYI1Hw==}
+    dev: true
+
+  /follow-redirects/1.14.6:
+    resolution: {integrity: sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
     dev: true
 
   /forwarded/0.2.0:
@@ -3393,6 +3436,17 @@ packages:
       setprototypeof: 1.2.0
       statuses: 1.5.0
       toidentifier: 1.0.1
+    dev: true
+
+  /http-proxy/1.18.1:
+    resolution: {integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      eventemitter3: 4.0.7
+      follow-redirects: 1.14.6
+      requires-port: 1.0.0
+    transitivePeerDependencies:
+      - debug
     dev: true
 
   /https-proxy-agent/5.0.0:
@@ -4942,6 +4996,10 @@ packages:
   /require-directory/2.1.1:
     resolution: {integrity: sha1-jGStX9MNqxyXbiNE/+f3kqam30I=}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /requires-port/1.0.0:
+    resolution: {integrity: sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=}
     dev: true
 
   /resize-observer-polyfill/1.5.1:
