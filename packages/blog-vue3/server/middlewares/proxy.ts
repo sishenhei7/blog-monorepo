@@ -48,12 +48,14 @@ export default function proxyMiddleware(
           req.url = opts.rewrite(req.url!)
         }
 
+        // Let the promise be solved correctly after the proxy.web.
+        // The solution comes from https://github.com/nodejitsu/node-http-proxy/issues/951#issuecomment-179904134
+        res.on('finish', () => resolve(1))
+
         proxy.web(req, res, {}, (err: Error) => {
           if (err) {
             logger.error(err.stack)
             reject(err)
-          } else {
-            resolve(1)
           }
         })
       } else {
