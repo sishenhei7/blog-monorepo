@@ -299,4 +299,6 @@
 - 当匹配不到的时候就取 index.html 这个逻辑到底在哪儿？
 - 使用 sirv 库改写 koa-static 提升性能
 - 重学环境变量：前端的环境变量分为 shell 的环境变量和打包时候的环境变量 2 种。shell 的环境变量可以通过 process.env 访问；然后可以在 script 里面通过 export（mac）和 set（windows）两种方式来定义，如果 cross-env 库解决了前面跨平台的问题，在不同平台上只需使用 cross-env 来定义即可。在使用 webpack 打包的时候也有一个环境变量的概念，在打包文件里面也可以通过 process.env 来访问，在 webpack 打包的时候会直接使用定义的环境变量进行替换；这里的环境变量可以通过 definePlugin 来定义，在 vue-cli 里面，一般是通过 development、production 相关的环境文件来定义，但是也可以直接定义在 shell 的环境变量里面，vue-cli 会自动引入，但是前提是需要以 VUE*APP* 开头，vue-cli 引入相关的代码在[这里](https://github.com/vuejs/vue-cli/blob/60140af5ba029e30d433ebf5afd442f754ee87e5/packages/%40vue/cli-service/lib/config/base.js#L183)
--
+- koa-static 真是太狡猾了，其实所有的事情都代理给 koa-send 去做了，它自己只做了 methods 判断和简单的错误处理。
+- 为什么`http://localhost:9000`的 ctx.req.url 的值是`/`，然后`http://localhost:9000/`的 ctx.req.url 的值也是`/` ？koa 里面 ctx.req.url 是这样处理的，它先使用 node 原生的 url.parse 解析出一个 URL 对象，然后支持对 search 等的各种处理，最后通过 url.format 组装成 url 返回给 ctx.req.url。因为在解析出 URL 对象的时候`http://localhost:9000`解析出的 URL 对象的 pathname 就是`/`，所以`http://localhost:9000`和`http://localhost:9000/`的 ctx.req.url 是一样的。
+- 为什么 koa-static 支持自动在路径下面加 index.html？就是在请求文件的时候，它会自动把 index.html 文件返回给我们？因为在 koa-send 里面，会判断路径是否是斜线结尾的，如果是的话，会默认自动加 index.html（这个支持自定义。）由于在 koa-static 里面会把传入的参数当做 root ，把 url 的 path 当做 path 传给 koa-send，所以 koa-static 并不支持完成后端路由的功能，只能用 koa-send 了。
