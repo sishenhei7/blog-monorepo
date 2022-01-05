@@ -4,7 +4,7 @@ import { Context, Next } from 'koa'
 import send from 'koa-send'
 import { logger, resolve, resolveCwd, isProd } from '~/server/utils'
 
-async function render(vite: ViteDevServer, ctx: Context, next: Next) {
+async function render(vite: ViteDevServer, ctx: Context) {
   const { url } = ctx.req
 
   try {
@@ -59,7 +59,6 @@ async function render(vite: ViteDevServer, ctx: Context, next: Next) {
     ctx.set({ 'Content-Type': 'text/html' })
     ctx.status = 200
     ctx.body = html
-    await next()
   } catch (e) {
     if (e instanceof Error) {
       // 如果捕获到了一个错误，让 Vite 来修复该堆栈，这样它就可以映射回
@@ -79,6 +78,10 @@ async function render(vite: ViteDevServer, ctx: Context, next: Next) {
 
 export default function renderHtmlMiddleware(vite: ViteDevServer) {
   return async (ctx: Context, next: Next) => {
-    await render(vite, ctx, next)
+    if (ctx.method === 'HEAD' || ctx.method === 'GET') {
+      await render(vite, ctx)
+    } else {
+      await next()
+    }
   }
 }
