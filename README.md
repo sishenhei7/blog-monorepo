@@ -292,3 +292,7 @@
 - 看 node-http-proxy 源码，我们简要说明一下在使用的时候做了什么。首先，初始化语句`var proxy = httpProxy.createProxyServer({target:'http://localhost:9000'})`其实并没有建立一个 server，而只是做了一个代理配置的初始化；然后就有 2 种方式代理了，一种是`proxy.listen(8000)`，这里才会实际建立一个 server 代理请求；另一种是在其它 server 里面`proxy.web(req, res, { target: 'http://127.0.0.1:5050' })`进行转发，注意这里其实并没有建立 server，而是使用包裹它的 server。最后，这个代理库到底做了什么呢？代理到底是什么意思？其实简单来说代理的意思就是修改请求的 url 即`req.url`，复杂来说的话，还要把相关的 cookie、headers 转发过去，就这么简单！
 
 【2022.1.3】今天自己重写了 koa 上面的 proxy 中间件，看了下 http 相关的 node 文档。
+
+【2022.1.4】vite 上面的中间件迁移完毕，开始迁移公司上面的部分中间件。
+
+- 除非万不得已，最好不要使用 path alias，为了能更好的支持查看代码的时候的编辑器跳转！像 vite 里面就很少使用 path alias。
