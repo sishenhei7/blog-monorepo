@@ -298,3 +298,5 @@
 - 在写代码的时候要注意支持查看代码的时候的编辑器跳转
 - 当匹配不到的时候就取 index.html 这个逻辑到底在哪儿？
 - 使用 sirv 库改写 koa-static 提升性能
+- 重学环境变量：前端的环境变量分为 shell 的环境变量和打包时候的环境变量 2 种。shell 的环境变量可以通过 process.env 访问；然后可以在 script 里面通过 export（mac）和 set（windows）两种方式来定义，如果 cross-env 库解决了前面跨平台的问题，在不同平台上只需使用 cross-env 来定义即可。在使用 webpack 打包的时候也有一个环境变量的概念，在打包文件里面也可以通过 process.env 来访问，在 webpack 打包的时候会直接使用定义的环境变量进行替换；这里的环境变量可以通过 definePlugin 来定义，在 vue-cli 里面，一般是通过 development、production 相关的环境文件来定义，但是也可以直接定义在 shell 的环境变量里面，vue-cli 会自动引入，但是前提是需要以 VUE*APP* 开头，vue-cli 引入相关的代码在[这里](https://github.com/vuejs/vue-cli/blob/60140af5ba029e30d433ebf5afd442f754ee87e5/packages/%40vue/cli-service/lib/config/base.js#L183)
+-

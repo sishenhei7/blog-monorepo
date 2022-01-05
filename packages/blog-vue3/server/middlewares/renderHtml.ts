@@ -23,8 +23,6 @@ async function render(vite: ViteDevServer, ctx: Context, next: Next) {
       )
     }
 
-    throw new Error()
-
     // 2. 应用 Vite HTML 转换。这将会注入 Vite HMR 客户端，
     //    同时也会从 Vite 插件应用 HTML 转换。
     //    例如：@vitejs/plugin-react 中的 global preambles
