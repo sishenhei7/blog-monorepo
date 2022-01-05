@@ -4,9 +4,9 @@ import compressMiddleware from 'koa-compress'
 
 import config from './config'
 import router from './router'
-import Cache from './cache'
-import timeMiddleware from './middlewares/time'
+import { requestIdMiddleware, cacheMiddleware } from './middlewares/common'
 import robotsMiddleware from './middlewares/robots'
+import timeMiddleware from './middlewares/time'
 import proxyMiddleware from './middlewares/proxy'
 import viteMiddleware from './middlewares/vite'
 import mountStaticMiddleware from './middlewares/mountStatic'
@@ -21,11 +21,13 @@ async function createServer() {
     }
   })
 
-  app.context.$cache = new Cache({ ...config.redis })
+  app.use(robotsMiddleware())
+
+  app.use(requestIdMiddleware())
+
+  app.use(cacheMiddleware())
 
   app.use(timeMiddleware())
-
-  app.use(robotsMiddleware())
 
   app.use(proxyMiddleware(config.server!.proxy))
 

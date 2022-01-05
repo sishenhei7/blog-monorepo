@@ -11,7 +11,7 @@ class CacheOptions {
 type RedisClientType = ReturnType<typeof createClient>
 type RedisClientOptions = Parameters<typeof createClient>[0]
 
-export default class Cache {
+class Cache {
   private redisClient: RedisClientType
   private redisAvailable: boolean
   private redisMaxAge: number
@@ -134,3 +134,5 @@ export default class Cache {
     }
   }
 }
+
+export default new Cache()

@@ -8,7 +8,13 @@ export default function timeMiddleware() {
     const { bytesWritten = 0 } = ctx.req.socket
 
     ctx.res.on('finish', () => {
-      logger.log(`${ctx.method} ${ctx.url} ${timeFrom(start)} ${bytesWritten}b`)
+      const id = ctx.state.requestId
+      const url = ctx.url
+      const method = ctx.req.method || 'UNKNOWN'
+      const time = timeFrom(start)
+      const bytes = bytesWritten
+      const status = ctx.res.statusCode
+      logger.log(`${id} ${method} ${url} ${status} ${time} ${bytes}b`)
     })
 
     await next()

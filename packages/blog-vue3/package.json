@@ -27,6 +27,7 @@
     "@types/koa__cors": "^3.1.1",
     "@types/lru-cache": "^5.1.1",
     "@types/node": "^16.11.11",
+    "@types/uuid": "^8.3.3",
     "cross-env": "^7.0.3",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
