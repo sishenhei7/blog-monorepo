@@ -70,8 +70,10 @@ async function render(vite: ViteDevServer, ctx: Context, next: Next) {
       logger.error(JSON.stringify(e))
     }
 
-    // 回退到 csr
-    serveStatic(resolveCwd('./dist'))(ctx, next)
+    // 生产环境回退到 csr
+    if (isProd) {
+      await serveStatic(resolveCwd('dist/app/client'))(ctx, next)
+    }
   }
 }
 
