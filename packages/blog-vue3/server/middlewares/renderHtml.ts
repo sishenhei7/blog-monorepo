@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { ViteDevServer } from 'vite'
 import { Context, Next } from 'koa'
-import serveStatic from 'koa-static'
+import send from 'koa-send'
 import { logger, resolve, resolveCwd, isProd } from '~/server/utils'
 
 async function render(vite: ViteDevServer, ctx: Context, next: Next) {
@@ -22,6 +22,8 @@ async function render(vite: ViteDevServer, ctx: Context, next: Next) {
         'utf-8'
       )
     }
+
+    throw new Error()
 
     // 2. 应用 Vite HTML 转换。这将会注入 Vite HMR 客户端，
     //    同时也会从 Vite 插件应用 HTML 转换。
@@ -72,7 +74,7 @@ async function render(vite: ViteDevServer, ctx: Context, next: Next) {
 
     // 生产环境回退到 csr
     if (isProd) {
-      await serveStatic(resolveCwd('dist/app/client'))(ctx, next)
+      await send(ctx, 'dist/app/client/index.html')
     }
   }
 }
