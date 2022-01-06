@@ -7,7 +7,10 @@ import router from './router'
 import {
   requestIdMiddleware,
   cacheMiddleware,
-  parseIpMiddleware
+  parseIpMiddleware,
+  detectDeviceMiddleware,
+  detectCountryMiddleware,
+  detectLanguageMiddleware
 } from './middlewares/common'
 import robotsMiddleware from './middlewares/robots'
 import timeMiddleware from './middlewares/time'
@@ -35,8 +38,11 @@ async function createServer() {
   }
 
   app.use(timeMiddleware())
+
   app.use(requestIdMiddleware())
+
   app.use(cacheMiddleware())
+
   app.use(parseIpMiddleware(mmdb))
 
   app.use(proxyMiddleware(config.server!.proxy))
@@ -47,6 +53,11 @@ async function createServer() {
   if (!isProd) {
     app.use(viteMiddleware(vite))
   }
+
+  // 页面需要用到的数据
+  app.use(detectCountryMiddleware())
+  app.use(detectLanguageMiddleware(true))
+  app.use(detectDeviceMiddleware())
 
   app.use(renderHtmlMiddleware(vite))
 

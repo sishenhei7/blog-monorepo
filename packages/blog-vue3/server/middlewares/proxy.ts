@@ -35,9 +35,8 @@ export default function proxyMiddleware(
 
   return (ctx: Context, next: Next) =>
     new Promise((resolve, reject) => {
-      const { url = '' } = ctx.req
       const context = Object.keys(proxies).find((context) =>
-        doesProxyContextMatchUrl(context, url)
+        doesProxyContextMatchUrl(context, ctx.url)
       )
 
       if (context) {
@@ -45,7 +44,7 @@ export default function proxyMiddleware(
         const [proxy, opts] = proxies[context]
 
         if (opts.rewrite) {
-          req.url = opts.rewrite(req.url!)
+          ctx.url = opts.rewrite(ctx.url)
         }
 
         // Let the promise be solved correctly after the proxy.web.
