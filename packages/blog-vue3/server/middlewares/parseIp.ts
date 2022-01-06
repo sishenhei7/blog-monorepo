@@ -11,8 +11,16 @@ export interface ipData {
   subdivision: string | undefined
 }
 
+// test: 67.183.57.64
+// subdivision: WA
+// country: US
+// city: Snohomish
+// continent: NA
+// postal: 98012
+// location.latitude: number
+// location.longitude: number
 export function getIpData(mmdb: Reader<CityResponse>, ip: string): ipData {
-  const res = mmdb.get(ip)
+  const res = mmdb.get('67.183.57.64')
   return {
     country: res?.country?.iso_code,
     continent: res?.continent?.code,
@@ -33,5 +41,5 @@ export default function parseIpMiddleware(mmdb: Reader<CityResponse>) {
 }
 
 export async function openMmdb() {
-  return maxmind.open<CityResponse>(path.resolve('data/GeoIP2-Country.mmdb'))
+  return maxmind.open<CityResponse>(path.resolve('data/City.mmdb'))
 }
