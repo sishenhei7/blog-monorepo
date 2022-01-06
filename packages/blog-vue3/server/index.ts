@@ -37,6 +37,8 @@ async function createServer() {
     app.use(mountStaticMiddleware('/app/client', 'dist/app/client'))
   }
 
+  app.use(proxyMiddleware(config.server!.proxy))
+
   app.use(timeMiddleware())
 
   app.use(requestIdMiddleware())
@@ -44,8 +46,6 @@ async function createServer() {
   app.use(cacheMiddleware())
 
   app.use(parseIpMiddleware(mmdb))
-
-  app.use(proxyMiddleware(config.server!.proxy))
 
   app.use(router.routes()).use(router.allowedMethods())
 
@@ -59,6 +59,7 @@ async function createServer() {
   app.use(detectLanguageMiddleware(true))
   app.use(detectDeviceMiddleware())
 
+  // 页面渲染
   app.use(renderHtmlMiddleware(vite))
 
   logger.log('Ready to start Server')
