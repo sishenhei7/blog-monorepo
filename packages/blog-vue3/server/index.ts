@@ -32,16 +32,13 @@ async function createServer() {
   }
 
   app.use(timeMiddleware())
-
   app.use(requestIdMiddleware())
-
   app.use(cacheMiddleware())
+  app.use(parseIpMiddleware(mmdb))
 
   app.use(proxyMiddleware(config.server!.proxy))
 
   app.use(router.routes()).use(router.allowedMethods())
-
-  app.use(parseIpMiddleware(mmdb))
 
   // 开发环境让 vite 处理资源问题
   if (!isProd) {

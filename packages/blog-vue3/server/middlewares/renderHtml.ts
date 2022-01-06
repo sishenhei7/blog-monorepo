@@ -1,24 +1,28 @@
 import fs from 'fs'
+import path from 'path'
 import { ViteDevServer } from 'vite'
 import { Context, Next } from 'koa'
 import send from 'koa-send'
-import { logger, resolve, resolveCwd, isProd } from '~/server/utils'
+import { logger, isProd } from '~/server/utils'
 
 async function render(vite: ViteDevServer, ctx: Context) {
   const { url } = ctx.req
 
   try {
     const manifest = isProd
-      ? require(resolveCwd('dist/app/client/ssr-manifest.json'))
+      ? require(path.resolve('dist/app/client/ssr-manifest.json'))
       : {}
 
     // 1. 读取 index.html
     let template
     if (!isProd) {
-      template = fs.readFileSync(resolve('../../index.html'), 'utf-8')
+      template = fs.readFileSync(
+        path.resolve(__dirname, '../../index.html'),
+        'utf-8'
+      )
     } else {
       template = fs.readFileSync(
-        resolveCwd('dist/app/client/index.html'),
+        path.resolve('dist/app/client/index.html'),
         'utf-8'
       )
     }
@@ -37,7 +41,7 @@ async function render(vite: ViteDevServer, ctx: Context) {
     if (!isProd) {
       render = (await vite.ssrLoadModule('@/entry-server')).render
     } else {
-      render = require(resolveCwd('dist/app/server/entry-server.js')).render
+      render = require(path.resolve('dist/app/server/entry-server.js')).render
     }
 
     // 4. 渲染应用的 HTML。这假设 entry-server.js 导出的 `render`

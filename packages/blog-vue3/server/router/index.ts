@@ -24,7 +24,7 @@ router.all(
   }),
   async (ctx: Context) => {
     ctx.status = 200
-    ctx.body = 'test cors'
+    ctx.body = JSON.stringify(ctx.state.ipData)
   }
 )
 

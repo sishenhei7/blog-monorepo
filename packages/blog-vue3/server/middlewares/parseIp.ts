@@ -1,17 +1,17 @@
+import path from 'path'
 import { Context, Next } from 'koa'
-import maxmind, { CityResponse, Reader, LocationRecord } from 'maxmind'
-import { resolve, resolveCwd, isProd } from '~/server/utils'
+import maxmind, { CityResponse, Reader } from 'maxmind'
 
 export interface ipData {
   country: string | undefined
   continent: string | undefined
   postal: string | undefined
   city: string | undefined
-  location: LocationRecord | undefined
+  location: CityResponse['location'] | undefined
   subdivision: string | undefined
 }
 
-function getIpData(mmdb: Reader<CityResponse>, ip: string): ipData {
+export function getIpData(mmdb: Reader<CityResponse>, ip: string): ipData {
   const res = mmdb.get(ip)
   return {
     country: res?.country?.iso_code,
@@ -33,8 +33,5 @@ export default function parseIpMiddleware(mmdb: Reader<CityResponse>) {
 }
 
 export async function openMmdb() {
-  const path = isProd
-    ? resolveCwd('dist/app/server/GeoIP2-Country.mmdb')
-    : resolve('./GeoIP2-Country.mmdb')
-  return maxmind.open<CityResponse>(path)
+  return maxmind.open<CityResponse>(path.resolve('data/GeoIP2-Country.mmdb'))
 }

@@ -1,13 +1,9 @@
-import * as fs from 'fs'
+import fs from 'fs'
+import path from 'path'
 import { Context, Next } from 'koa'
-import { resolve, resolveCwd, isProd } from '~/server/utils'
 
 export default function robotsMiddleware() {
-  const file = fs.readFileSync(
-    isProd
-      ? resolveCwd('public/robots.txt')
-      : resolve('../../public/robots.txt')
-  )
+  const file = fs.readFileSync(path.resolve('data/robots.txt'))
 
   return async (ctx: Context, next: Next) => {
     if (ctx.url === '/robots.txt') {
