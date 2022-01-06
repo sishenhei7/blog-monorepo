@@ -4,15 +4,18 @@ import compressMiddleware from 'koa-compress'
 
 import config from './config'
 import router from './router'
-import { requestIdMiddleware, cacheMiddleware } from './middlewares/common'
+import {
+  requestIdMiddleware,
+  cacheMiddleware,
+  parseIpMiddleware
+} from './middlewares/common'
 import robotsMiddleware from './middlewares/robots'
 import timeMiddleware from './middlewares/time'
 import proxyMiddleware from './middlewares/proxy'
 import viteMiddleware from './middlewares/vite'
 import mountStaticMiddleware from './middlewares/mountStatic'
 import renderHtmlMiddleware from './middlewares/renderHtml'
-import parseIpMiddleware, { openMmdb } from './middlewares/parseIp'
-import { logger, isProd } from './utils'
+import { logger, isProd, getMmdb } from './utils'
 
 async function createServer() {
   const app = new koa()
@@ -21,7 +24,7 @@ async function createServer() {
       middlewareMode: 'ssr'
     }
   })
-  const mmdb = await openMmdb()
+  const mmdb = await getMmdb()
 
   app.use(robotsMiddleware())
 
