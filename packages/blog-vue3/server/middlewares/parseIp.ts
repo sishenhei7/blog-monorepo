@@ -1,6 +1,8 @@
+import fs from 'fs'
 import path from 'path'
 import { Context, Next } from 'koa'
 import maxmind, { CityResponse, Reader } from 'maxmind'
+import { logger } from '~/server/utils'
 
 export interface ipData {
   country: string | undefined
@@ -41,5 +43,15 @@ export default function parseIpMiddleware(mmdb: Reader<CityResponse>) {
 }
 
 export async function openMmdb() {
-  return maxmind.open<CityResponse>(path.resolve('data/City.mmdb'))
+  let p = path.resolve('data/Country.mmdb')
+
+  try {
+    const cityPath = path.resolve('data/City.mmdb')
+    fs.accessSync(cityPath)
+    p = cityPath
+  } catch (error) {
+    logger.warn('Can not read mmdb city path!')
+  }
+
+  return maxmind.open<CityResponse>(p)
 }
