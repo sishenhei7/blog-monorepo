@@ -293,7 +293,7 @@
 
 【2022.1.3】今天自己重写了 koa 上面的 proxy 中间件，看了下 http 相关的 node 文档。
 
-【2022.1.4】vite 上面的中间件迁移完毕，开始迁移公司上面的部分中间件。
+【2022.1.4】vite 上面的中间件迁移完毕，开始迁移库上面的部分中间件。
 
 - 在写代码的时候要注意支持查看代码的时候的编辑器跳转
 - 当匹配不到的时候就取 index.html 这个逻辑到底在哪儿？
@@ -302,3 +302,5 @@
 - koa-static 真是太狡猾了，其实所有的事情都代理给 koa-send 去做了，它自己只做了 methods 判断和简单的错误处理。
 - 为什么`http://localhost:9000`的 ctx.req.url 的值是`/`，然后`http://localhost:9000/`的 ctx.req.url 的值也是`/` ？koa 里面 ctx.req.url 是这样处理的，它先使用 node 原生的 url.parse 解析出一个 URL 对象，然后支持对 search 等的各种处理，最后通过 url.format 组装成 url 返回给 ctx.req.url。因为在解析出 URL 对象的时候`http://localhost:9000`解析出的 URL 对象的 pathname 就是`/`，所以`http://localhost:9000`和`http://localhost:9000/`的 ctx.req.url 是一样的。
 - 为什么 koa-static 支持自动在路径下面加 index.html？就是在请求文件的时候，它会自动把 index.html 文件返回给我们？因为在 koa-send 里面，会判断路径是否是斜线结尾的，如果是的话，会默认自动加 index.html（这个支持自定义。）由于在 koa-static 里面会把传入的参数当做 root ，把 url 的 path 当做 path 传给 koa-send，所以 koa-static 并不支持完成后端路由的功能，只能用 koa-send 了。
+
+【2022.1.5】vite 上面的中间件迁移完毕，开始迁移库上面的部分中间件。

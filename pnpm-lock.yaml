@@ -71,6 +71,7 @@ importers:
       koa-send: ^5.0.1
       koa-static: ^5.0.0
       lru-cache: ^6.0.0
+      maxmind: ^4.3.3
       naive-ui: ^2.23.1
       nodemon: ^2.0.15
       ora: ^6.0.1
@@ -100,6 +101,7 @@ importers:
       koa-send: 5.0.1
       koa-static: 5.0.0
       lru-cache: 6.0.0
+      maxmind: 4.3.3
       naive-ui: 2.23.1_vue@3.2.26
       ora: 6.0.1
       redis: 4.0.1
@@ -4073,6 +4075,14 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /maxmind/4.3.3:
+    resolution: {integrity: sha512-Btj2ZAy5lyu43Nwk+BBQ19ERpbN8f9UTqctbMdq2V+FxwVRdGn1btRHHFcPCidqQd/unJfy2cL3eT6XEDDcecg==}
+    engines: {node: '>=10', npm: '>=6'}
+    dependencies:
+      mmdb-lib: 1.3.1
+      tiny-lru: 7.0.6
+    dev: false
+
   /media-typer/0.3.0:
     resolution: {integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=}
     engines: {node: '>= 0.6'}
@@ -4186,6 +4196,11 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: false
+
+  /mmdb-lib/1.3.1:
+    resolution: {integrity: sha512-BP/ZqBZ1+Sty+LjFSVjxql4Udk4lU06fQl1vLKCHGcMlqm6YUTqztE9BwnUW2Qi9+uPssrJR3rGW8IybbWhjUA==}
+    engines: {node: '>=10', npm: '>=6'}
     dev: false
 
   /modify-values/1.0.1:
@@ -5439,6 +5454,11 @@ packages:
     dependencies:
       readable-stream: 3.6.0
     dev: true
+
+  /tiny-lru/7.0.6:
+    resolution: {integrity: sha512-zNYO0Kvgn5rXzWpL0y3RS09sMK67eGaQj9805jlK9G6pSadfriTczzLHFXa/xcW4mIRfmlB9HyQ/+SgL0V1uow==}
+    engines: {node: '>=6'}
+    dev: false
 
   /to-fast-properties/2.0.0:
     resolution: {integrity: sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=}
