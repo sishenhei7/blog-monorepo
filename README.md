@@ -291,9 +291,9 @@
 - 重看 koa-router 源码，有这么几点需要注意：1.它其实就是给路由用了中间件模型，并且支持多个路径、命名路由和多个路由的写法。koa 的中间件也可以直接塞到路由里面使用。2.我们是这么使用路由中间件的`app.use(router.routes()).use(router.allowedMethods())`，其中`router.routes()`返回所有匹配到的路由，并使用 koa-compose 合在一起当做 koa 的中间件进行执行，然后`router.allowedMethods()`其实就是在洋葱模型的返回路径上，判断有没有正常返回，如果没有的话，就查看是否有匹配，如果有匹配的话，就添加一个 allow 的 http 头告诉客户端支持哪些 methods，同时也在这里处理 OPTIONS 请求，如果是 OPTIONS 请求的话，就正常返回。
 - 看 node-http-proxy 源码，我们简要说明一下在使用的时候做了什么。首先，初始化语句`var proxy = httpProxy.createProxyServer({target:'http://localhost:9000'})`其实并没有建立一个 server，而只是做了一个代理配置的初始化；然后就有 2 种方式代理了，一种是`proxy.listen(8000)`，这里才会实际建立一个 server 代理请求；另一种是在其它 server 里面`proxy.web(req, res, { target: 'http://127.0.0.1:5050' })`进行转发，注意这里其实并没有建立 server，而是使用包裹它的 server。最后，这个代理库到底做了什么呢？代理到底是什么意思？其实简单来说代理的意思就是修改请求的 url 即`req.url`，复杂来说的话，还要把相关的 cookie、headers 转发过去，就这么简单！
 
-【2022.1.3】今天自己重写了 koa 上面的 proxy 中间件，看了下 http 相关的 node 文档。
+【2022.1.4】今天自己重写了 koa 上面的 proxy 中间件，看了下 http 相关的 node 文档。
 
-【2022.1.4】vite 上面的中间件迁移完毕，开始迁移库上面的部分中间件。
+【2022.1.5】vite 上面的中间件迁移完毕，开始迁移库上面的部分中间件。
 
 - 在写代码的时候要注意支持查看代码的时候的编辑器跳转
 - 当匹配不到的时候就取 index.html 这个逻辑到底在哪儿？
@@ -303,4 +303,6 @@
 - 为什么`http://localhost:9000`的 ctx.req.url 的值是`/`，然后`http://localhost:9000/`的 ctx.req.url 的值也是`/` ？koa 里面 ctx.req.url 是这样处理的，它先使用 node 原生的 url.parse 解析出一个 URL 对象，然后支持对 search 等的各种处理，最后通过 url.format 组装成 url 返回给 ctx.req.url。因为在解析出 URL 对象的时候`http://localhost:9000`解析出的 URL 对象的 pathname 就是`/`，所以`http://localhost:9000`和`http://localhost:9000/`的 ctx.req.url 是一样的。
 - 为什么 koa-static 支持自动在路径下面加 index.html？就是在请求文件的时候，它会自动把 index.html 文件返回给我们？因为在 koa-send 里面，会判断路径是否是斜线结尾的，如果是的话，会默认自动加 index.html（这个支持自定义。）由于在 koa-static 里面会把传入的参数当做 root ，把 url 的 path 当做 path 传给 koa-send，所以 koa-static 并不支持完成后端路由的功能，只能用 koa-send 了。
 
-【2022.1.5】vite 上面的中间件迁移完毕，开始迁移库上面的部分中间件。
+【2022.1.6】在写中间件
+
+- path.resolve()、\_\_dirname、process.cwd()、require.resolve()，重新认识相关的 resolve 路径问题
