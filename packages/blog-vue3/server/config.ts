@@ -21,6 +21,10 @@ const config: ServerConfig = {
         // }
       }
     }
+  },
+  pageCache: {
+    include: [/^\/$/],
+    exclude: []
   }
 }
 

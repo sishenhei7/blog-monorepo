@@ -2,15 +2,14 @@ import { v4 as uuidv4 } from 'uuid'
 import { Context, Next } from 'koa'
 import cache from '~/server/cache'
 import { Mmdb } from '~/server/utils/getMmdb'
-import { countryLanguageMap, CountryKey } from '~/server/utils'
+import { countryLanguageMap, CountryKey, isSearchBot } from '~/server/utils'
 
 /* 原则上这里都是在 ctx.state 上加属性的方法 */
 
 export function isStaticOrApiMiddleware() {
   return async (ctx: Context, next: Next) => {
-    const { path } = ctx
     ctx.state.isStaticOrApi =
-      /\.[a-z]{2,4}$|__webpack_hmr/.test(path) ||
+      /\.[a-z]{2,4}$|__webpack_hmr/.test(ctx.path) ||
       ctx.path.startsWith('/static') ||
       ctx.path.startsWith('/api') ||
       ctx.get('x-requested-with') === 'XMLHttpRequest'
@@ -112,6 +111,21 @@ export function detectLanguageMiddleware(isAddToUrl = false) {
       return ctx.redirect(`/${language}/`)
     }
 
+    await next()
+  }
+}
+
+export function detectFeatureMiddleware() {
+  return async (ctx: Context, next: Next) => {
+    let isSupportWebp = (ctx.get('accept') || '').includes('image/webp')
+
+    // 对所有的 IOS 不处理, 部分用户出现图片无法打开的情况
+    if (/(iPhone|iPad|iPod)/i.test(ctx.get('user-agent'))) {
+      isSupportWebp = false
+    }
+
+    ctx.state.isSupportWebp = isSupportWebp
+    ctx.state.isSearchBot = isSearchBot(ctx.get('user-agent'))
     await next()
   }
 }

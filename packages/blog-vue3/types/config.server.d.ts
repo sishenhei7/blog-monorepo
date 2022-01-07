@@ -15,4 +15,8 @@ export interface ServerConfig {
     isAddLangToUrl?: boolean
     proxy?: ServerConfigProxyOptions
   }
+  readonly pageCache?: {
+    include?: RegExp[]
+    exclude?: RegExp[]
+  }
 }

@@ -14,3 +14,9 @@ export function timeFrom(start: number, subtract = 0): string {
     return chalk.red(timeString)
   }
 }
+
+export function isSearchBot(ua: string = '') {
+  return /(Sogou web spider)|(bingbot)|(Googlebot)|(Baiduspider)|(AdsBot)|(TweetmemeBot)|(Slackbot)|(James BOT)|(Applebot)|(Facebot)|(YandexMobileBot)|(AhrefsBot)|(contxbot)|(Livechat OpenGraph Robot)|(Mail.RU_Bot)|(archive.org_bot)|(MojeekBot)|(Discordbot)|(startmebot)/i.test(
+    ua
+  )
+}

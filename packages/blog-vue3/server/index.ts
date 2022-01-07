@@ -10,7 +10,8 @@ import {
   parseIpMiddleware,
   detectDeviceMiddleware,
   detectCountryMiddleware,
-  detectLanguageMiddleware
+  detectLanguageMiddleware,
+  detectFeatureMiddleware
 } from './middlewares/common'
 import robotsMiddleware from './middlewares/robots'
 import timeMiddleware from './middlewares/time'
@@ -18,6 +19,7 @@ import proxyMiddleware from './middlewares/proxy'
 import viteMiddleware from './middlewares/vite'
 import mountStaticMiddleware from './middlewares/mountStatic'
 import renderHtmlMiddleware from './middlewares/renderHtml'
+import cacheHtmlMiddleware from './middlewares/cacheHtml'
 import { logger, isProd, getMmdb } from './utils'
 
 async function createServer() {
@@ -58,6 +60,10 @@ async function createServer() {
   app.use(detectCountryMiddleware())
   app.use(detectLanguageMiddleware(config?.server?.isAddLangToUrl))
   app.use(detectDeviceMiddleware())
+  app.use(detectFeatureMiddleware())
+
+  // 页面缓存
+  app.use(cacheHtmlMiddleware(config?.pageCache))
 
   // 页面渲染
   app.use(renderHtmlMiddleware(vite))
