@@ -37,7 +37,7 @@ async function createServer() {
     app.use(mountStaticMiddleware('/app/client', 'dist/app/client'))
   }
 
-  app.use(proxyMiddleware(config.server!.proxy))
+  app.use(proxyMiddleware(config?.server?.proxy))
 
   app.use(timeMiddleware())
 
@@ -56,7 +56,7 @@ async function createServer() {
 
   // 页面需要用到的数据
   app.use(detectCountryMiddleware())
-  app.use(detectLanguageMiddleware(true))
+  app.use(detectLanguageMiddleware(config?.server?.isAddLangToUrl))
   app.use(detectDeviceMiddleware())
 
   // 页面渲染

@@ -12,6 +12,7 @@ export interface ServerConfig {
     url: string
   }
   readonly server?: {
+    isAddLangToUrl?: boolean
     proxy?: ServerConfigProxyOptions
   }
 }

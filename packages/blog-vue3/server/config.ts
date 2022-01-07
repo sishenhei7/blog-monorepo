@@ -5,6 +5,7 @@ const config: ServerConfig = {
     url: 'redis://localhost:6379'
   },
   server: {
+    isAddLangToUrl: false,
     proxy: {
       '/proxy-ping': 'http://localhost:9000/_ping',
       '/proxy_ping': {
