@@ -64,7 +64,7 @@ export default function cacheHtmlMiddleware(
 
     await next()
 
-    // 如果需要缓存，则存到 redis
+    // 如果需要缓存，则存到缓存中
     if (cacheKey) {
       const { cache } = ctx.state
       await cache.set(cacheKey, ctx.body)
