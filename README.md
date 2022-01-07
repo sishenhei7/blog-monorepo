@@ -306,3 +306,5 @@
 【2022.1.6】在写中间件
 
 - path.resolve()、\_\_dirname、process.cwd()、require.resolve()，重新认识相关的 resolve 路径问题
+- nuxt 的 fetch 是怎么实现的？
+- 在 url 上面有语言链接的情况下，router 是怎么正确 parse 的？
