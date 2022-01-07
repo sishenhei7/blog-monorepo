@@ -311,3 +311,4 @@
 
 - nuxt 的 fetch 是怎么实现的？
 - 在 url 上面有语言链接的情况下，router 是怎么正确 parse 的？
+- nuxt 里面的 module 和 plugin 的原理分别是什么？
