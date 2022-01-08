@@ -1,7 +1,5 @@
 <template>
-  <h1>test framework</h1>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <RouterView />
+  <router-view />
 </template>
 
 <script lang="ts">
@@ -21,11 +19,5 @@ export default defineComponent({
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-h1 {
-  font-weight: bold;
-  font-size: 60px;
-  color: $--color-primary;
-  margin-bottom: 40px;
 }
 </style>

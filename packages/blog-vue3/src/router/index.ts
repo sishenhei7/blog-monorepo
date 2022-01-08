@@ -15,9 +15,14 @@ export default () =>
         component: () => import('@/views/hello-world/index.vue')
       },
       {
-        path: '/naive',
-        name: 'Naive',
-        component: () => import('@/views/naive/index.vue')
+        path: '/blog',
+        name: 'Blog',
+        component: () => import('@/views/blog/index.vue')
+      },
+      {
+        path: '/article',
+        name: 'Artical',
+        component: () => import('@/views/article/index.vue')
       }
     ]
   })
