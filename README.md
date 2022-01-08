@@ -313,3 +313,5 @@
 - 在 url 上面有语言链接的情况下，router 是怎么正确 parse 的？
 - nuxt 里面的 module 和 plugin 的原理分别是什么？
 - 调研一下怎么压测，使用 sirv 替换 koa-static 进行对比
+
+【2022.1.8】今天爬山，没写太多，准备开始写网站了（服务端还差 axios 封装，到时候和客户端 axios 一起）
