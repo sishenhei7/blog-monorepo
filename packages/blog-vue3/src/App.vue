@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import TopNav from '@/components/top-nav'
+import TopNav from '@/components/top-nav/index.vue'
 
 export default defineComponent({
   name: 'App',

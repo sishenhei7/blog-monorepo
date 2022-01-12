@@ -3,6 +3,7 @@ import path from 'path'
 import { ViteDevServer } from 'vite'
 import { Context, Next } from 'koa'
 import send from 'koa-send'
+import htmlMinifier from 'html-minifier'
 import { logger, isProd } from '~/server/utils'
 
 async function render(vite: ViteDevServer, ctx: Context) {
@@ -51,7 +52,7 @@ async function render(vite: ViteDevServer, ctx: Context) {
       appHtml,
       cssHtml = '',
       preloadLinks = ''
-    } = await render(url, manifest)
+    } = await render(url, manifest, ctx)
 
     // 5. 注入渲染后的应用程序 HTML 到模板中。
     const html = template
@@ -62,7 +63,7 @@ async function render(vite: ViteDevServer, ctx: Context) {
     // 6. 返回渲染后的 HTML。
     ctx.set({ 'Content-Type': 'text/html' })
     ctx.status = 200
-    ctx.body = html
+    ctx.body = htmlMinifier.minify(html)
   } catch (e) {
     if (e instanceof Error) {
       // 如果捕获到了一个错误，让 Vite 来修复该堆栈，这样它就可以映射回

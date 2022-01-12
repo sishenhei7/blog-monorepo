@@ -17,6 +17,7 @@
   "author": "yangzhou",
   "license": "ISC",
   "devDependencies": {
+    "@types/html-minifier": "^4.0.2",
     "@types/http-proxy": "^1.17.8",
     "@types/koa": "^2.13.4",
     "@types/koa-compress": "^4.0.3",
@@ -38,10 +39,12 @@
   },
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.8",
+    "@iconify/vue": "^3.1.2",
     "@koa/cors": "^3.1.0",
     "@vitejs/plugin-vue": "^1.9.3",
     "@vue/compiler-sfc": "^3.2.26",
     "chalk": "^4.1.2",
+    "html-minifier": "^4.0.0",
     "http-proxy": "^1.18.1",
     "koa": "^2.13.4",
     "koa-compress": "^5.1.0",

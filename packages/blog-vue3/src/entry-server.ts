@@ -1,20 +1,21 @@
 import createApp from '@/main'
+import { Context } from 'koa'
 import { renderToString, SSRContext } from 'vue/server-renderer'
 import { setup } from '@css-render/vue3-ssr'
 
 /**
  * Render page with naive ui
  */
-export async function render(url: string, manifest: any) {
-  const { app, router } = createApp()
+export async function render(url: string, manifest: any, ctx: Context) {
+  const { app, router } = createApp(ctx)
 
   router.push(url)
   await router.isReady()
 
-  const ctx: SSRContext = {}
+  const SSRCtx: SSRContext = {}
   const { collect } = setup(app)
 
-  const appHtml = await renderToString(app, ctx)
+  const appHtml = await renderToString(app, SSRCtx)
   const cssHtml = collect()
   const preloadLinks = renderPreloadLinks(ctx.modules, manifest)
 

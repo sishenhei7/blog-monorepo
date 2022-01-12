@@ -7,6 +7,7 @@ export default () =>
       {
         path: '/',
         name: 'Home',
+        redirect: '/blog',
         component: () => import('@/views/home/index.vue')
       },
       {
@@ -18,6 +19,11 @@ export default () =>
         path: '/blog',
         name: 'Blog',
         component: () => import('@/views/blog/index.vue')
+      },
+      {
+        path: '/about',
+        name: 'About',
+        component: () => import('@/views/about/index.vue')
       },
       {
         path: '/article',

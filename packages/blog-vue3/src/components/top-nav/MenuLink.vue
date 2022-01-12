@@ -2,9 +2,36 @@
   <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, h, resolveComponent, ref } from 'vue'
 
-const menuOptions = []
+const menuOptions = [
+  {
+    key: 'nav-link-blog',
+    label: () =>
+      h(
+        resolveComponent('router-link'),
+        {
+          to: {
+            name: 'Blog'
+          }
+        },
+        ''
+      )
+  },
+  {
+    key: 'nav-link-about',
+    label: () =>
+      h(
+        resolveComponent('router-link'),
+        {
+          to: {
+            name: 'About'
+          }
+        },
+        ''
+      )
+  }
+]
 
 export default defineComponent({
   name: 'MenuLink',
