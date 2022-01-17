@@ -2,33 +2,33 @@ import createApp from '@/main'
 import { Context } from 'koa'
 import { renderToString, SSRContext } from 'vue/server-renderer'
 import { setup } from '@css-render/vue3-ssr'
-import useContextStore from '@/store/context'
+import plugins from '@/plugins'
 
 /**
  * Render page with naive ui
  */
 export async function render(url: string, manifest: any, ctx: Context) {
-  const { head, app, router, store } = createApp(ctx)
-
-  // 向 store 里面注入 context
-  const contextStore = useContextStore()
-  const { ipData, platform, language, isIOS, isSupportWebp, isBot } = ctx.state
-  contextStore.$patch({
-    language: language,
-    ip: ipData.ip,
-    country: ipData.country,
-    platform: platform,
-    webp: isSupportWebp,
-    isIOS: isIOS,
-    isBot: isBot
-  })
+  const { head, app, router, store, i18n } = await createApp()
 
   router.push(url)
   await router.isReady()
 
+  // 服务端插件
+  await Promise.all(
+    plugins.map((plugin) =>
+      plugin({
+        isClient: false,
+        ctx,
+        app,
+        store,
+        router,
+        i18n
+      })
+    )
+  )
+
   const SSRCtx: SSRContext = {}
   const { collect } = setup(app)
-
   const appHtml = await renderToString(app, SSRCtx)
   const storeHtml = `<script>window.__INITIAL_STATE__=${JSON.stringify(
     store.state.value
