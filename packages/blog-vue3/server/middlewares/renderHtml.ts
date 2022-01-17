@@ -3,6 +3,7 @@ import path from 'path'
 import { ViteDevServer } from 'vite'
 import { Context, Next } from 'koa'
 import send from 'koa-send'
+import { renderHeadToString } from '@vueuse/head'
 import htmlMinifier from 'html-minifier'
 import { logger, isProd } from '~/server/utils'
 
@@ -49,16 +50,23 @@ async function render(vite: ViteDevServer, ctx: Context) {
     //    函数调用了适当的 SSR 框架 API。
     //    例如 ReactDOMServer.renderToString()
     const {
+      head,
       appHtml,
+      storeHtml,
       cssHtml = '',
       preloadLinks = ''
     } = await render(url, manifest, ctx)
+    const { htmlAttrs, headTags, bodyAttrs } = renderHeadToString(head)
 
     // 5. 注入渲染后的应用程序 HTML 到模板中。
     const html = template
-      .replace(`<!--preload-links-->`, preloadLinks)
-      .replace(`<!--css-outlet-->`, cssHtml)
-      .replace(`<!--ssr-outlet-->`, appHtml)
+      .replace(`{{ html_attrs }}`, htmlAttrs)
+      .replace(`{{ head_tags }}`, headTags)
+      .replace(`{{ body_attrs }}`, bodyAttrs)
+      .replace(`{{ preload_links }}`, preloadLinks)
+      .replace(`{{ css_outlet }}`, cssHtml)
+      .replace(`{{ store_outlet }}`, storeHtml)
+      .replace(`{{ ssr_outlet }}`, appHtml)
 
     // 6. 返回渲染后的 HTML。
     ctx.set({ 'Content-Type': 'text/html' })

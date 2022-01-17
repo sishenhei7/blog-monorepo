@@ -2,12 +2,26 @@ import createApp from '@/main'
 import { Context } from 'koa'
 import { renderToString, SSRContext } from 'vue/server-renderer'
 import { setup } from '@css-render/vue3-ssr'
+import useContextStore from '@/store/context'
 
 /**
  * Render page with naive ui
  */
 export async function render(url: string, manifest: any, ctx: Context) {
-  const { app, router } = createApp(ctx)
+  const { head, app, router, store } = createApp(ctx)
+
+  // 向 store 里面注入 context
+  const contextStore = useContextStore()
+  const { ipData, platform, language, isIOS, isSupportWebp, isBot } = ctx.state
+  contextStore.$patch({
+    language: language,
+    ip: ipData.ip,
+    country: ipData.country,
+    platform: platform,
+    webp: isSupportWebp,
+    isIOS: isIOS,
+    isBot: isBot
+  })
 
   router.push(url)
   await router.isReady()
@@ -16,12 +30,17 @@ export async function render(url: string, manifest: any, ctx: Context) {
   const { collect } = setup(app)
 
   const appHtml = await renderToString(app, SSRCtx)
+  const storeHtml = `<script>window.__INITIAL_STATE__=${JSON.stringify(
+    store.state.value
+  )}</script>`
   const cssHtml = collect()
   const preloadLinks = renderPreloadLinks(ctx.modules, manifest)
 
   return {
-    cssHtml,
+    head,
     appHtml,
+    storeHtml,
+    cssHtml,
     preloadLinks
   }
 }
@@ -29,17 +48,20 @@ export async function render(url: string, manifest: any, ctx: Context) {
 function renderPreloadLinks(modules: any, manifest: any) {
   let links = ''
   const seen = new Set()
-  modules.forEach((id: string) => {
-    const files = manifest[id]
-    if (files) {
-      files.forEach((file: string) => {
-        if (!seen.has(file)) {
-          seen.add(file)
-          links += renderPreloadLink(file)
-        }
-      })
-    }
-  })
+  if (modules) {
+    modules.forEach((id: string) => {
+      const files = manifest[id]
+      if (files) {
+        files.forEach((file: string) => {
+          if (!seen.has(file)) {
+            seen.add(file)
+            links += renderPreloadLink(file)
+          }
+        })
+      }
+    })
+  }
+  return links
 }
 
 function renderPreloadLink(file: string) {

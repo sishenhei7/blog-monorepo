@@ -1,4 +1,13 @@
 import createApp from '@/main'
 
-const { app } = createApp()
-app.mount('#app')
+;(async () => {
+  const { app, router, store } = createApp()
+  await router.isReady()
+
+  const initialState = window.__INITIAL_STATE__
+  if (initialState && store) {
+    store.state.value = JSON.parse(initialState)
+  }
+
+  app.mount('#app')
+})()

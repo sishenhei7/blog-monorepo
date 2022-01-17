@@ -1,8 +1,9 @@
 <template>
-  <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
+  <NMenu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
 </template>
 <script lang="ts">
 import { defineComponent, h, resolveComponent, ref } from 'vue'
+import { NMenu } from 'naive-ui'
 
 const menuOptions = [
   {
@@ -35,6 +36,9 @@ const menuOptions = [
 
 export default defineComponent({
   name: 'MenuLink',
+  components: {
+    NMenu
+  },
   setup() {
     return {
       activeKey: ref(null),

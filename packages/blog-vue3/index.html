@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html {{ html_attrs }}>
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-    <!--preload-links-->
-    <!--css-outlet-->
+
+    {{ head_tags }}
+
+    <link rel="icon" href="/favicon.ico" />
+
+    {{ preload_links }} {{ css_outlet }}
   </head>
-  <body>
-    <div id="app"><!--ssr-outlet--></div>
+  <body {{ body_attrs }}>
+    <div id="app">{{ ssr_outlet }}</div>
+    {{ store_outlet }}
     <script type="module" src="/src/entry-client.ts"></script>
   </body>
 </html>

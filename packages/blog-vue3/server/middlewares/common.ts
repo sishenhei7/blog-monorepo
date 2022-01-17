@@ -125,7 +125,7 @@ export function detectFeatureMiddleware() {
     }
 
     ctx.state.isSupportWebp = isSupportWebp
-    ctx.state.isSearchBot = isSearchBot(ctx.get('user-agent'))
+    ctx.state.isBot = isSearchBot(ctx.get('user-agent'))
     await next()
   }
 }
