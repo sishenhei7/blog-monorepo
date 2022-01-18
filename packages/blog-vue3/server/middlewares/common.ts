@@ -3,6 +3,9 @@ import { Context, Next } from 'koa'
 import cache from '~/server/cache'
 import { Mmdb } from '~/server/utils/getMmdb'
 import { countryLanguageMap, CountryKey, isSearchBot } from '~/server/utils'
+import config from '~/server/config'
+
+const isAddLangToUrl = config?.server?.isAddLangToUrl || false
 
 /* 原则上这里都是在 ctx.state 上加属性的方法 */
 
@@ -87,7 +90,7 @@ export function detectCountryMiddleware() {
   }
 }
 
-export function detectLanguageMiddleware(isAddToUrl = false) {
+export function detectLanguageMiddleware() {
   const languages = ['en', 'zh-CN']
   const languageRE = new RegExp(`^/${languages.join('|')}/`)
 
@@ -107,7 +110,7 @@ export function detectLanguageMiddleware(isAddToUrl = false) {
     ctx.state.language = language
 
     // 是否把语言加到 url 上，示例：/blog/1 => /zh-CN/blog/1
-    if (isAddToUrl && !languageRE.test(ctx.path)) {
+    if (isAddLangToUrl && !languageRE.test(ctx.path)) {
       return ctx.redirect(`/${language}/`)
     }
 

@@ -1,35 +1,11 @@
 import { Context, Next } from 'koa'
 import { URL } from 'url'
-import { ServerConfig } from '~/types/config.server'
+import config from '~/server/config'
 import { logger, isProd } from '~/server/utils'
 
-function getQueryByKey(key: string, query: Context['query'] = {}) {
-  const res = query[key]
-  return Array.isArray(res) ? res[0] : res
-}
+const pageCache = config?.pageCache || {}
 
-function genCacheKey(ctx: Context) {
-  try {
-    const url = new URL(`${ctx.origin}${ctx.originalUrl}`)
-    const query = {
-      language: ctx.state.language,
-      country: ctx.state.country,
-      platform: ctx.state.platform,
-      page: getQueryByKey('page', ctx.query) || '1',
-      source: getQueryByKey('source', ctx.query) || ''
-    } as Record<string, string>
-
-    url.search = new URLSearchParams(query).toString()
-    return url.toString()
-  } catch (error) {
-    logger.error('Can not gen cachekey: ', error)
-    return ''
-  }
-}
-
-export default function cacheHtmlMiddleware(
-  pageCache: ServerConfig['pageCache'] = {}
-) {
+export default function cacheHtmlMiddleware() {
   return async (ctx: Context, next: Next) => {
     const { include = [], exclude = [] } = pageCache
     let cacheKey = null
@@ -69,5 +45,29 @@ export default function cacheHtmlMiddleware(
       const { cache } = ctx.state
       await cache.set(cacheKey, ctx.body)
     }
+  }
+}
+
+function getQueryByKey(key: string, query: Context['query'] = {}) {
+  const res = query[key]
+  return Array.isArray(res) ? res[0] : res
+}
+
+function genCacheKey(ctx: Context) {
+  try {
+    const url = new URL(`${ctx.origin}${ctx.originalUrl}`)
+    const query = {
+      language: ctx.state.language,
+      country: ctx.state.country,
+      platform: ctx.state.platform,
+      page: getQueryByKey('page', ctx.query) || '1',
+      source: getQueryByKey('source', ctx.query) || ''
+    } as Record<string, string>
+
+    url.search = new URLSearchParams(query).toString()
+    return url.toString()
+  } catch (error) {
+    logger.error('Can not gen cachekey: ', error)
+    return ''
   }
 }

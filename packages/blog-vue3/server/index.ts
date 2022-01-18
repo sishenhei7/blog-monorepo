@@ -1,9 +1,9 @@
 import koa from 'koa'
 import { createServer as createViteServer } from 'vite'
 import compressMiddleware from 'koa-compress'
+import helmetMiddeware from 'koa-helmet'
 
-import config from './config'
-import router from './router'
+import router from '~/server/router'
 import {
   requestIdMiddleware,
   cacheMiddleware,
@@ -12,15 +12,15 @@ import {
   detectCountryMiddleware,
   detectLanguageMiddleware,
   detectFeatureMiddleware
-} from './middlewares/common'
-import robotsMiddleware from './middlewares/robots'
-import timeMiddleware from './middlewares/time'
-import proxyMiddleware from './middlewares/proxy'
-import viteMiddleware from './middlewares/vite'
-import mountStaticMiddleware from './middlewares/mountStatic'
-import renderHtmlMiddleware from './middlewares/renderHtml'
-import cacheHtmlMiddleware from './middlewares/cacheHtml'
-import { logger, isProd, getMmdb } from './utils'
+} from '~/server/middlewares/common'
+import robotsMiddleware from '~/server/middlewares/robots'
+import timeMiddleware from '~/server/middlewares/time'
+import proxyMiddleware from '~/server/middlewares/proxy'
+import viteMiddleware from '~/server/middlewares/vite'
+import mountStaticMiddleware from '~/server/middlewares/mountStatic'
+import renderHtmlMiddleware from '~/server/middlewares/renderHtml'
+import cacheHtmlMiddleware from '~/server/middlewares/cacheHtml'
+import { logger, isProd, getMmdb } from '~/server/utils'
 
 async function createServer() {
   const app = new koa()
@@ -39,9 +39,15 @@ async function createServer() {
     app.use(mountStaticMiddleware('/app/client', 'dist/app/client'))
   }
 
-  app.use(proxyMiddleware(config?.server?.proxy))
+  app.use(proxyMiddleware())
 
   app.use(timeMiddleware())
+
+  app.use(
+    helmetMiddeware({
+      contentSecurityPolicy: false
+    })
+  )
 
   app.use(requestIdMiddleware())
 
@@ -58,12 +64,12 @@ async function createServer() {
 
   // 页面需要用到的数据
   app.use(detectCountryMiddleware())
-  app.use(detectLanguageMiddleware(config?.server?.isAddLangToUrl))
+  app.use(detectLanguageMiddleware())
   app.use(detectDeviceMiddleware())
   app.use(detectFeatureMiddleware())
 
   // 页面缓存
-  app.use(cacheHtmlMiddleware(config?.pageCache))
+  app.use(cacheHtmlMiddleware())
 
   // 页面渲染
   app.use(renderHtmlMiddleware(vite))

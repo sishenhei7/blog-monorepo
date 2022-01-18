@@ -1,6 +1,6 @@
-import { pluginOptions } from '@/plugins'
+import { PluginOptions } from '@/plugins'
 
-export default ({ app }: pluginOptions) => {
+export default ({ app }: PluginOptions) => {
   app.config.globalProperties = {
     test: 'test'
   }

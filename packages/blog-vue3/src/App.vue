@@ -3,21 +3,19 @@
 
   <router-view />
 
-  <NBackTop :bottom="100" :visibility-height="300">
+  <n-backTop :bottom="100" :visibility-height="300">
     <div class="back-to-top">回到顶部</div>
-  </NBackTop>
+  </n-backTop>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { NBackTop } from 'naive-ui'
 import TopNav from '@/components/top-nav/index.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    TopNav,
-    NBackTop
+    TopNav
   }
 })
 </script>

@@ -5,8 +5,11 @@ import { Context } from 'koa'
 import { I18n } from 'vue-i18n'
 import storePlugin from './store'
 import commonPlugin from './common'
+import naiveUiPlugin from './naive-ui'
 
-export interface pluginOptions {
+export type Plugin = (options: PluginOptions) => void
+
+export interface PluginOptions {
   ctx?: Context
   isClient: boolean
   app: App<Element>
@@ -15,4 +18,4 @@ export interface pluginOptions {
   i18n: I18n
 }
 
-export default [storePlugin, commonPlugin]
+export default [storePlugin, commonPlugin, naiveUiPlugin]

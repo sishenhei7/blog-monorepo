@@ -1,7 +1,7 @@
-import { pluginOptions } from '@/plugins'
+import { PluginOptions } from '@/plugins'
 import useContextStore from '@/store/context'
 
-export default ({ ctx, store, isClient }: pluginOptions) => {
+export default ({ ctx, store, isClient }: PluginOptions) => {
   if (isClient) {
     const initialState = window.__INITIAL_STATE__
     if (initialState && store) {

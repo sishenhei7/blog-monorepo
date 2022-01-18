@@ -1,22 +1,15 @@
 import { Context, Next } from 'koa'
 import HttpProxy from 'http-proxy'
 import { logger } from '~/server/utils'
-import { ProxyOptions, ServerConfigProxyOptions } from '~/types/config.server'
+import config, { ProxyOptions } from '~/server/config'
 
-function doesProxyContextMatchUrl(context: string, url: string): boolean {
-  return (
-    (context.startsWith('^') && new RegExp(context).test(url)) ||
-    url.startsWith(context)
-  )
-}
+const proxyOptions = config?.server?.proxy || {}
 
-export default function proxyMiddleware(
-  options: ServerConfigProxyOptions = {}
-) {
+export default function proxyMiddleware() {
   const proxies: Record<string, [HttpProxy, ProxyOptions]> = {}
 
-  Object.keys(options).forEach((context) => {
-    let opts = options[context]
+  Object.keys(proxyOptions).forEach((context) => {
+    let opts = proxyOptions[context]
     if (typeof opts === 'string') {
       opts = { target: opts, changeOrigin: true }
     }
@@ -61,4 +54,11 @@ export default function proxyMiddleware(
         resolve(next())
       }
     })
+}
+
+function doesProxyContextMatchUrl(context: string, url: string): boolean {
+  return (
+    (context.startsWith('^') && new RegExp(context).test(url)) ||
+    url.startsWith(context)
+  )
 }
