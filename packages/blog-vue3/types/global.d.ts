@@ -2,6 +2,6 @@ export {}
 
 declare global {
   interface Window {
-    __INITIAL_STATE__: string
+    __INITIAL_STATE__: any
   }
 }

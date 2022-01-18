@@ -5,8 +5,9 @@ export default ({ ctx, store, isClient }: PluginOptions) => {
   if (isClient) {
     const initialState = window.__INITIAL_STATE__
     if (initialState && store) {
-      store.state.value = JSON.parse(initialState)
+      store.state.value = initialState
     }
+    delete window.__INITIAL_STATE__
     return
   }
 
