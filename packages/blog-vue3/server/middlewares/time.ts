@@ -1,5 +1,6 @@
 import { Context, Next } from 'koa'
 import { performance } from 'perf_hooks'
+
 import { logger, timeFrom } from '~/server/utils'
 
 export default function timeMiddleware() {

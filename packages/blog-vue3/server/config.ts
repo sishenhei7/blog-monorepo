@@ -18,6 +18,7 @@ export interface ServerConfig {
     exclude?: RegExp[]
   }
   readonly cacheControl?: {
+    static?: number
     robots?: number
   }
 }
@@ -49,7 +50,8 @@ const config: ServerConfig = {
     exclude: []
   },
   cacheControl: {
-    robots: 60 * 60 * 5
+    static: 60 * 60 * 24 * 7,
+    robots: 60 * 60 * 24
   }
 }
 

@@ -5,6 +5,7 @@ import { Context, Next } from 'koa'
 import send from 'koa-send'
 import { renderHeadToString } from '@vueuse/head'
 import htmlMinifier from 'html-minifier'
+
 import { logger, isProd } from '~/server/utils'
 
 async function render(vite: ViteDevServer, ctx: Context) {

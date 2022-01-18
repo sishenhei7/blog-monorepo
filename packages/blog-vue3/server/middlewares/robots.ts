@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { Context, Next } from 'koa'
+
 import config from '~/server/config'
 
 const robots = fs.readFileSync(path.resolve('data/robots.txt')).toString()
