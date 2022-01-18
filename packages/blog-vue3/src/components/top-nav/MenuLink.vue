@@ -1,44 +1,30 @@
 <template>
-  <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
+  <ul class="menu-link">
+    <li v-for="menuItem in menuData" :key="menuItem.name">
+      <router-link :to="{ path: menuItem.path }">
+        {{ menuItem.name }}
+      </router-link>
+    </li>
+  </ul>
 </template>
 <script lang="ts">
-import { defineComponent, h, resolveComponent, ref } from 'vue'
-
-const menuOptions = [
-  {
-    key: 'nav-link-blog',
-    label: () =>
-      h(
-        resolveComponent('router-link'),
-        {
-          to: {
-            name: 'Blog'
-          }
-        },
-        ''
-      )
-  },
-  {
-    key: 'nav-link-about',
-    label: () =>
-      h(
-        resolveComponent('router-link'),
-        {
-          to: {
-            name: 'About'
-          }
-        },
-        ''
-      )
-  }
-]
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'MenuLink',
   setup() {
+    const menuData = [
+      {
+        name: 'Blog',
+        path: '/blog'
+      },
+      {
+        name: 'About',
+        path: '/about'
+      }
+    ]
     return {
-      activeKey: ref(null),
-      menuOptions: menuOptions
+      menuData
     }
   }
 })

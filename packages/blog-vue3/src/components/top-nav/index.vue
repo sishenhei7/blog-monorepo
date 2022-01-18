@@ -1,10 +1,8 @@
 <template>
-  <n-affix :top="0" :trigger-top="0" class="top-nav">
-    <div class="top-nav-content">
-      <MenuLink />
-      <UserCenter />
-    </div>
-  </n-affix>
+  <div class="top-nav">
+    <MenuLink />
+    <UserCenter />
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -23,5 +21,12 @@ export default defineComponent({
 .top-nav {
   margin: 0;
   padding: 0;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  min-width: 999px;
+  min-height: 56px;
+  z-index: 1000;
 }
 </style>
