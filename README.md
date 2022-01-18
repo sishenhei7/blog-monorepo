@@ -342,6 +342,8 @@
 
 【2022.1.15】今天在看 webpack 源码，明天写总结
 
+【2022.1.16】今天在总结 webpack 源码
+
 - 首先从`webpack.js`进入，里面会先校验传给 webpack 的 options 参数，然后使用这个 options 创建一个 compiler 对象，最后判断加了回调函数没有，如果加了就自动执行`compiler.run()`，如果没有就返回这个 compiler 对象（值得注意的是，使用 cli 运行 webpack 的时候，在 cli 里面就加了回调函数，然后自动执行了`compiler.run()`，我们手动引入 webpack 的时候就没有加回调，所以需要手动再 run 一下）。这里说一下创建 compiler 对象的时候做了什么，它是用 createCompiler 创建的，在 createCompiler 函数中，会首先标准化 options，比如把字符串形式的 entry 标准化为对象形式，然后对 options 参数添加默认选项，就是说如果用户没有指定相关字段的话，就用默认选项填充。最后才 创建 compiler 对象，在创建的时候会初始化 compiler 实例中的各种字段和钩子，创建完了之后添加第一个 plugin，环境 plugin，初始化环境，调用 environment 和 afterEnvironment 钩子，然后使用`WebpackOptionsApply`来添加各种内置 plugin，调用 initialize 钩子。
 - 然后就进入了`compiler.js`里面，看看执行`compiler.run()`的时候做了什么。很简单，首先调用了 beforeRun 和 run 钩子，然后读取[records 路径](https://webpack.docschina.org/configuration/other-options/#recordspath)，如果有设置的话，webpack 会把相关的记录放到这个文件夹下面。最后开始 compile 了。
 - 在 compile 阶段，首先会初始化[normalModuleFactory](https://webpack.docschina.org/api/normalmodulefactory-hooks/)和[contextModuleFactory](https://webpack.docschina.org/api/contextmodulefactory-hooks/)（这里说明一下 normalModuleFactory 和 contextModuleFactory，webpack 使用 NormalModuleFactory 从入口开始，一步步解析文件请求最后生成一个模块实例；而 contextModuleFactory 则是为了 require.context api 而设置了，它会匹配文件夹下面的所有模块，并把这些模块传入到 NormalModuleFactory 中进行处理），然后调用 beforeCompile 和 compile 钩子，之后使用 normalModuleFactory 和 contextModuleFactory 初始化 compilation 对象，最后一步步调用 make、finishMake、compilation.finish、compilation.seal、afterCompile 钩子就完成了。
@@ -349,4 +351,6 @@
 - 在 addEntry 里面，首先会把 entry 组装成 entryData，然后调用 addEntry 钩子，最后调用 addModuleTree 方法。在 addModuleTree 方法里面会检查参数，之后调用 handleModuleCreation 方法。在 handleModuleCreation 方法里面首先会初始化 currentProfile，这里面是各种需要记录的时间，然后又调用 factorizeModule 方法，factorizeModule 方法会把这个 entry 加入到 factorizeQueue 这个 AsyncQueue 里面去，它会使用前面的 normalModuleFactory 依次调用 beforeResolve、factorize 钩子，在调用 factorize 钩子的时候又会调用 resolve、afterResolve、createModule 钩子，在这个过程中，它正确解析了 entry 的 url，并且获得了需要加载的 loaders，最后生成了一个 module。生成 module 之后就会回到 compilation 的 handleModuleCreation 方法的回调函数里面，在这里会执行 addModule 方法加入之前生成 module。
 - 在 addModule 阶段，首先会把它加到 addModuleQueue 里面去，在里面会调用 \_addModule 方法进行处理，处理完之后回调用 \_handleModuleBuildAndDependencies 方法，在 \_handleModuleBuildAndDependencies 方法里面又会调用 buildModule 方法，buildModule 方法又会把这个 module 放到 buildQueue 里面进行处理，处理的时候会判断是否需要 build，并且执行 needBuild 钩子，然后调用这个 module 的 build 方法，它是一个 normalModule，所以就转到`NormalModule.js`文件里面去，在 build 的时候，会先调用 \_dobuild 方法，在这个方法里面会抽出需要使用的 loaders 然后使用 runLoaders 执行 loaders，然后会回到 build 方法里面执行回调函数，它会先检查 dependencies，然后执行 beforeParse 钩子，调用 parser 的 parse 方法（注意：这里的 parser 是在 plugin 里面初始化的，如果是 js 就使用 js parser 生成 ast，如果是 css 就使用 css parser）完成之后就生成 hash 文件名，并生成 snapshot，最后回到 compilation 的 \_buildModule 方法里面去调用 `this._modulesCache.store` 进行储存。然后回到 \_handleModuleBuildAndDependencies 方法的回调函数，执行 processModuleDependencies 方法，它会把 module 加入到 processDependenciesQueue 里面去进行处理，在这里会给 dependencies 加上 webpack 自己的 require 和 module 相关的代码。这样就处理完了从 entry 进入到生成打包文件的整个流程了。
 
-【2022.1.15】今天加入了 pinia 作为状态管理库和 i18n 作为多语言库。参考[vue3-ssr-template](https://github.com/xmimiex/vue3-ssr-template)
+【2022.1.17】今天加入了 pinia 作为状态管理库和 i18n 作为多语言库。参考[vue3-ssr-template](https://github.com/xmimiex/vue3-ssr-template)
+
+【2022.1.18】今天在精简 server 代码，并且做了一部分业务代码
