@@ -1,6 +1,6 @@
 <template>
-  <ul class="menu-link">
-    <li v-for="menuItem in menuData" :key="menuItem.name">
+  <ul class="flex relative">
+    <li v-for="menuItem in menuData" :key="menuItem.name" class="mr-4">
       <router-link :to="{ path: menuItem.path }">
         {{ menuItem.name }}
       </router-link>
@@ -29,4 +29,3 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped></style>

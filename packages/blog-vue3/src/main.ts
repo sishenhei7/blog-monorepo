@@ -4,7 +4,7 @@ import App from '@/App.vue'
 import createRouter from '@/router'
 import createI18n from '@/i18n'
 import createStore from '@/store'
-import './index.css'
+import 'virtual:windi.css'
 
 export default async () => {
   const app = createSSRApp(App)

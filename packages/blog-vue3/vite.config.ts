@@ -1,6 +1,6 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { plugins } from './build'
 
 // https://vitejs.dev/config/
 export default defineConfig((env) => ({
@@ -23,5 +23,5 @@ export default defineConfig((env) => ({
   build: {
     target: 'esnext'
   },
-  plugins: [vue()]
+  plugins
 }))
