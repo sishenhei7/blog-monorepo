@@ -1,5 +1,5 @@
 <template>
-  <div class="top-nav">
+  <div class="sticky top-0 z-40 w-full h-12 border-b backdrop-blur bg-white">
     <MenuLink />
     <UserCenter />
   </div>
@@ -17,16 +17,3 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped>
-.top-nav {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-
-  min-width: 999px;
-  min-height: 56px;
-  z-index: 1000;
-}
-</style>
