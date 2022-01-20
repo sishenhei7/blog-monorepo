@@ -15,7 +15,7 @@
     "sourceMap": true,
     "strict": true,
     "noEmit": true,
-    "types": ["vite/client"],
+    "types": ["vite/client", "unplugin-icons/types/vue"],
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./src/*"]
