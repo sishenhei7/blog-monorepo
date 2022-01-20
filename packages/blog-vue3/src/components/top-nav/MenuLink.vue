@@ -7,25 +7,15 @@
     </li>
   </ul>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'MenuLink',
-  setup() {
-    const menuData = [
-      {
-        name: 'Blog',
-        path: '/blog'
-      },
-      {
-        name: 'About',
-        path: '/about'
-      }
-    ]
-    return {
-      menuData
-    }
+<script lang="ts" setup>
+const menuData = [
+  {
+    name: 'Blog',
+    path: '/blog'
+  },
+  {
+    name: 'About',
+    path: '/about'
   }
-})
+]
 </script>

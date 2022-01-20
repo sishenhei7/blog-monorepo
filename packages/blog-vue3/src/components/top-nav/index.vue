@@ -9,16 +9,7 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import MenuLink from './MenuLink.vue'
 import UserCenter from './UserCenter.vue'
-
-export default defineComponent({
-  name: 'TopNav',
-  components: {
-    MenuLink,
-    UserCenter
-  }
-})
 </script>
