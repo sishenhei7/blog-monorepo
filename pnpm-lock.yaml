@@ -47,8 +47,7 @@ importers:
   packages/blog-vue3:
     specifiers:
       '@css-render/vue3-ssr': ^0.15.8
-      '@iconify/json': ^1.1.458
-      '@iconify/vue': ^3.1.2
+      '@iconify-json/mdi': ^1.0.12
       '@koa/cors': ^3.1.0
       '@types/html-minifier': ^4.0.2
       '@types/http-proxy': ^1.17.8
@@ -89,7 +88,6 @@ importers:
       tsup: ^5.11.9
       typescript: ^4.5.4
       unplugin-icons: ^0.13.0
-      unplugin-vue-components: ^0.17.13
       uuid: ^8.3.2
       vite: ^2.6.4
       vite-plugin-windicss: ^1.6.3
@@ -127,8 +125,7 @@ importers:
       vue-i18n: 9.2.0-beta.25_vue@3.2.26
       vue-router: 4.0.12_vue@3.2.26
     devDependencies:
-      '@iconify/json': 1.1.458
-      '@iconify/vue': 3.1.2_vue@3.2.26
+      '@iconify-json/mdi': 1.0.12
       '@types/html-minifier': 4.0.2
       '@types/http-proxy': 1.17.8
       '@types/koa': 2.13.4
@@ -148,7 +145,6 @@ importers:
       tsup: 5.11.9_ts-node@10.4.0+typescript@4.5.4
       typescript: 4.5.4
       unplugin-icons: 0.13.0_08a8bb053bb0e7e6359fb2cf309d7fa4
-      unplugin-vue-components: 0.17.13_vite@2.6.14+vue@3.2.26
       vite-plugin-windicss: 1.6.3_vite@2.6.14
       vue-tsc: 0.3.0_typescript@4.5.4
       windicss: 3.4.3
@@ -605,8 +601,10 @@ packages:
     engines: {node: '>=6.9.0'}
     dev: true
 
-  /@iconify/json/1.1.458:
-    resolution: {integrity: sha512-ZAU4WGRIqCwvIj65Lxp2yMgZx7CjRRlgBcwOUL53qnQMAVC9x/mGYxwOALQBwx3WNqvYOSkcNMvmwhFbdsn+6w==}
+  /@iconify-json/mdi/1.0.12:
+    resolution: {integrity: sha512-smYQpxDqSCUdySFSYZpH0BAEVbgFnU4IE/Hb36zavseOl3zFlKDvGOEFPC7djkEabrIWi9KDAUdbtIREcgVE8A==}
+    dependencies:
+      '@iconify/types': 1.0.12
     dev: true
 
   /@iconify/types/1.0.12:
@@ -624,15 +622,6 @@ packages:
       local-pkg: 0.4.1
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@iconify/vue/3.1.2_vue@3.2.26:
-    resolution: {integrity: sha512-c777kFKOaEpiJCwz5lOgETWZnq4lEermMQ0RBCzTyRaGC/lmvw2SLF7aJQGri1sGFt4Z5GuXpnlX4DNf3aN+qA==}
-    peerDependencies:
-      vue: 3.x
-    dependencies:
-      cross-fetch: 3.1.4
-      vue: 3.2.26
     dev: true
 
   /@intlify/core-base/9.2.0-beta.25:
@@ -765,14 +754,6 @@ packages:
 
   /@rollup/pluginutils/4.1.1:
     resolution: {integrity: sha512-clDjivHqWGXi7u+0d2r2sBi4Ie6VLEAzWMIkvJLnDmxoOhBYOTfzGbOQBA32THHm11/LiJbd01tJUpJsbshSWQ==}
-    engines: {node: '>= 8.0.0'}
-    dependencies:
-      estree-walker: 2.0.2
-      picomatch: 2.3.0
-    dev: true
-
-  /@rollup/pluginutils/4.1.2:
-    resolution: {integrity: sha512-ROn4qvkxP9SyPeHaf7uQC/GPFY6L/OWy9+bd9AwcjOAWQwxRscoEyAUD8qCY5o5iL4jqQwoLk2kaTKJPb/HwzQ==}
     engines: {node: '>= 8.0.0'}
     dependencies:
       estree-walker: 2.0.2
@@ -2256,12 +2237,6 @@ packages:
     hasBin: true
     dependencies:
       cross-spawn: 7.0.3
-    dev: true
-
-  /cross-fetch/3.1.4:
-    resolution: {integrity: sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==}
-    dependencies:
-      node-fetch: 2.6.1
     dev: true
 
   /cross-spawn/5.1.0:
@@ -4522,11 +4497,6 @@ packages:
     resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
     dev: false
 
-  /node-fetch/2.6.1:
-    resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
-    engines: {node: 4.x || >=6.0.0}
-    dev: true
-
   /node-fetch/2.6.6:
     resolution: {integrity: sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==}
     engines: {node: 4.x || >=6.0.0}
@@ -5303,15 +5273,6 @@ packages:
       is-core-module: 2.8.0
       path-parse: 1.0.7
 
-  /resolve/1.21.0:
-    resolution: {integrity: sha512-3wCbTpk5WJlyE4mSOtDLhqQmGFi0/TD9VPwmiolnk8U0wRgMEktqCXd3vy5buTO3tljvalNvKrjHEfrd2WpEKA==}
-    hasBin: true
-    dependencies:
-      is-core-module: 2.8.0
-      path-parse: 1.0.7
-      supports-preserve-symlinks-flag: 1.0.0
-    dev: true
-
   /responselike/1.0.2:
     resolution: {integrity: sha1-kYcg7ztjHFZCvgaPFa3lpG9Loec=}
     dependencies:
@@ -5700,11 +5661,6 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /supports-preserve-symlinks-flag/1.0.0:
-    resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
-    engines: {node: '>= 0.4'}
-    dev: true
-
   /svg-tags/1.0.0:
     resolution: {integrity: sha1-WPcc7jvVGbWdSyqEO2x95krAR2Q=}
     dev: true
@@ -6038,38 +5994,6 @@ packages:
       - webpack
     dev: true
 
-  /unplugin-vue-components/0.17.13_vite@2.6.14+vue@3.2.26:
-    resolution: {integrity: sha512-WII6hAW+HSvlXDx4t0LqcAvLg4ESsoBz1nuUDMPx6ZGuKBPjSRP4Wmnk559nZ6qpaOW41iY48cBeUpWSPjH7WA==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@babel/parser': ^7.15.8
-      '@babel/traverse': ^7.15.4
-      vue: 2 || 3
-    peerDependenciesMeta:
-      '@babel/parser':
-        optional: true
-      '@babel/traverse':
-        optional: true
-    dependencies:
-      '@antfu/utils': 0.4.0
-      '@rollup/pluginutils': 4.1.2
-      chokidar: 3.5.2
-      debug: 4.3.3
-      fast-glob: 3.2.11
-      local-pkg: 0.4.1
-      magic-string: 0.25.7
-      minimatch: 3.0.4
-      resolve: 1.21.0
-      unplugin: 0.3.0_vite@2.6.14
-      vue: 3.2.26
-    transitivePeerDependencies:
-      - esbuild
-      - rollup
-      - supports-color
-      - vite
-      - webpack
-    dev: true
-
   /unplugin/0.2.21_vite@2.6.14:
     resolution: {integrity: sha512-IJ15/L5XbhnV7J09Zjk0FT5HEkBjkXucWAXQWRsmEtUxmmxwh23yavrmDbCF6ZPxWiVB28+wnKIHePTRRpQPbQ==}
     peerDependencies:
@@ -6077,27 +6001,6 @@ packages:
       vite: ^2.3.0
       webpack: 4 || 5
     peerDependenciesMeta:
-      rollup:
-        optional: true
-      vite:
-        optional: true
-      webpack:
-        optional: true
-    dependencies:
-      vite: 2.6.14_sass@1.45.2
-      webpack-virtual-modules: 0.4.3
-    dev: true
-
-  /unplugin/0.3.0_vite@2.6.14:
-    resolution: {integrity: sha512-9yLlOo+XC4NdIRgpkDSHOAHkQDq2x4mbuVNO/eKVa3C8WTn5wWGfzEFfRJFL8euqnX3Gf7hEur0AhXxy+WSwkg==}
-    peerDependencies:
-      esbuild: '>=0.13'
-      rollup: ^2.50.0
-      vite: ^2.3.0
-      webpack: 4 || 5
-    peerDependenciesMeta:
-      esbuild:
-        optional: true
       rollup:
         optional: true
       vite:

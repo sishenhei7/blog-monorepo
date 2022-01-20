@@ -354,3 +354,7 @@
 【2022.1.17】今天加入了 pinia 作为状态管理库和 i18n 作为多语言库。参考[vue3-ssr-template](https://github.com/xmimiex/vue3-ssr-template)
 
 【2022.1.18】今天在精简 server 代码，并且做了一部分业务代码
+
+【2022.1.19】今天在调研 tailwind css 和 windicss，考虑项目的 css 方案，最终接入了 windicss
+
+【2022.1.20】今天在调研 icon 方案，最终使用了 antfu 的 icon 方案。
