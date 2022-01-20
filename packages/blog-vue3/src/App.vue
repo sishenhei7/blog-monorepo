@@ -8,14 +8,6 @@
   </n-backTop>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import TopNav from '@/components/top-nav/index.vue'
-
-export default defineComponent({
-  name: 'App',
-  components: {
-    TopNav
-  }
-})
 </script>

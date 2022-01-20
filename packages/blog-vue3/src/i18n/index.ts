@@ -3,11 +3,10 @@ import useContextStore from '@/store/context'
 
 export default async () => {
   const contextStore = useContextStore()
-
-  let country = contextStore.country.toUpperCase()
-  let language = contextStore.language
+  let { country = 'CN', language = 'zh-CN' } = contextStore
 
   // 格式化
+  country = country.toUpperCase()
   country = ['CN', 'UK'].includes(country) ? country : 'CN'
   language = ['en', 'zh-CN'].includes(language) ? language : 'zh-CN'
 

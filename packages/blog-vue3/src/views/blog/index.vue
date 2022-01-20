@@ -5,22 +5,6 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import BlogNav from './BlogNav.vue'
-
-export default defineComponent({
-  name: 'BlogIndex',
-  components: {
-    BlogNav
-  }
-})
+<script lang="ts" setup>
+import BlogNav from './components/BlogNav.vue'
 </script>
-
-<style lang="scss" scoped>
-.blog {
-  margin: 0 auto;
-  padding-left: 180px;
-  width: 980px;
-}
-</style>

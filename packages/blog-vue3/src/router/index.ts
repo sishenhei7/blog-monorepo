@@ -18,7 +18,19 @@ export default () =>
       {
         path: '/blog',
         name: 'Blog',
-        component: () => import('@/views/blog/index.vue')
+        component: () => import('@/views/blog/index.vue'),
+        children: [
+          {
+            path: 'home',
+            name: 'BlogHome',
+            component: () => import('@/views/blog/BlogHome.vue')
+          },
+          {
+            path: 'life',
+            name: 'BlogLife',
+            component: () => import('@/views/blog/BlogLife.vue')
+          }
+        ]
       },
       {
         path: '/about',
