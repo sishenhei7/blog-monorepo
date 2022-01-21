@@ -9,13 +9,26 @@ import {
   NMenu,
   NTabs,
   NTabPane,
-  NIcon
+  NIcon,
+  NEllipsis,
+  NThing
 } from 'naive-ui'
 import { PluginOptions } from '@/plugins'
 
 export default ({ app }: PluginOptions) => {
   const naive = create({
-    components: [NButton, NAffix, NTag, NBackTop, NMenu, NTabs, NTabPane, NIcon]
+    components: [
+      NButton,
+      NAffix,
+      NTag,
+      NBackTop,
+      NMenu,
+      NTabs,
+      NTabPane,
+      NIcon,
+      NEllipsis,
+      NThing
+    ]
   })
   app.use(naive)
 }
