@@ -18,6 +18,7 @@ export default () =>
       {
         path: '/blog',
         name: 'Blog',
+        redirect: '/blog/home',
         component: () => import('@/views/blog/index.vue'),
         children: [
           {

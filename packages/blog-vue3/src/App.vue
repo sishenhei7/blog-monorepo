@@ -1,5 +1,5 @@
 <template>
-  <TopNav />
+  <TopNav class="min-w-980px" />
 
   <router-view />
 

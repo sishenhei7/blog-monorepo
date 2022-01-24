@@ -11,7 +11,10 @@ import {
   NTabPane,
   NIcon,
   NEllipsis,
-  NThing
+  NThing,
+  NImage,
+  NSpace,
+  NDivider
 } from 'naive-ui'
 import { PluginOptions } from '@/plugins'
 
@@ -27,7 +30,10 @@ export default ({ app }: PluginOptions) => {
       NTabPane,
       NIcon,
       NEllipsis,
-      NThing
+      NThing,
+      NImage,
+      NSpace,
+      NDivider
     ]
   })
   app.use(naive)
