@@ -5,6 +5,6 @@ export default {
   },
   safelist: [],
   darkMode: 'class',
-  plugins: [],
+  plugins: [require('windicss/plugin/line-clamp')],
   theme: {}
 }

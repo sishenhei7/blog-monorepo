@@ -7,21 +7,12 @@
   >
     <div class="flex-1 pr-20px">
       <n-space vertical>
-        <n-ellipsis
-          :tooltip="false"
-          :line-clamp="1"
-          class="text-2xl group-hover:text-sky-400"
-        >
+        <h4 class="text-2xl line-clamp-1 group-hover:text-sky-400">
           {{ props.cardData.title }}
-        </n-ellipsis>
-        <n-ellipsis
-          v-if="props.cardData.subtitle"
-          :tooltip="false"
-          :line-clamp="1"
-          class="text-base"
-        >
+        </h4>
+        <p v-if="props.cardData.subtitle" class="text-base line-clamp-1">
           {{ props.cardData.subtitle }}
-        </n-ellipsis>
+        </p>
         <n-space>
           <n-tag type="info" size="small" round>
             {{ props.cardData.author }}
