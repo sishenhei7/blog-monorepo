@@ -39,7 +39,7 @@ export default () =>
         component: () => import('@/views/about/index.vue')
       },
       {
-        path: '/article',
+        path: '/article/:id',
         name: 'Artical',
         component: () => import('@/views/article/index.vue')
       }
