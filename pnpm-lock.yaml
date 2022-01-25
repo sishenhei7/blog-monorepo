@@ -64,6 +64,7 @@ importers:
       '@vitejs/plugin-vue': ^1.9.3
       '@vue/compiler-sfc': ^3.2.26
       '@vueuse/head': ^0.7.4
+      axios: ^0.25.0
       chalk: ^4.1.2
       cross-env: ^7.0.3
       html-minifier: ^4.0.0
@@ -102,6 +103,7 @@ importers:
       '@vitejs/plugin-vue': 1.10.1_vite@2.6.14
       '@vue/compiler-sfc': 3.2.26
       '@vueuse/head': 0.7.4_vue@3.2.26
+      axios: 0.25.0
       chalk: 4.1.2
       html-minifier: 4.0.0
       http-proxy: 1.18.1
@@ -1618,6 +1620,14 @@ packages:
 
   /async-validator/4.0.7:
     resolution: {integrity: sha512-Pj2IR7u8hmUEDOwB++su6baaRi+QvsgajuFB9j95foM1N2gy5HM4z60hfusIO0fBPG5uLAEl6yCJr1jNSVugEQ==}
+    dev: false
+
+  /axios/0.25.0:
+    resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
+    dependencies:
+      follow-redirects: 1.14.7
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /babel-walk/3.0.0-canary-5:
@@ -3198,6 +3208,16 @@ packages:
 
   /follow-redirects/1.14.6:
     resolution: {integrity: sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
+  /follow-redirects/1.14.7:
+    resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
