@@ -14,18 +14,15 @@ export async function render(url: string, manifest: any, ctx: Context) {
   await router.isReady()
 
   // 服务端插件
-  await Promise.all(
-    plugins.map((plugin) =>
-      plugin({
-        isClient: false,
-        ctx,
-        app,
-        store,
-        router,
-        i18n
-      })
-    )
-  )
+  const pluginContext = {
+    isClient: false,
+    ctx,
+    app,
+    store,
+    router,
+    i18n
+  }
+  await Promise.all(plugins.map((plugin) => plugin(pluginContext)))
 
   const SSRCtx: SSRContext = {}
   const { collect } = setup(app)

@@ -1,7 +1,7 @@
 <template>
   <n-tabs type="line" class="w-680px">
     <n-tab-pane
-      v-for="item in tabData"
+      v-for="item in props.blogListData"
       :key="item.name"
       :name="item.name"
       :tab="item.tab"
@@ -27,6 +27,4 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   blogListData: () => []
 })
-
-const tabData = props.blogListData.map((item) => ({ ...item }))
 </script>

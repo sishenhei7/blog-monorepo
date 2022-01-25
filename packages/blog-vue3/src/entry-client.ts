@@ -6,17 +6,14 @@ async function main() {
   await router.isReady()
 
   // 客户端插件
-  await Promise.all(
-    plugins.map((plugin) =>
-      plugin({
-        isClient: true,
-        app,
-        store,
-        router,
-        i18n
-      })
-    )
-  )
+  const pluginContext = {
+    isClient: true,
+    app,
+    store,
+    router,
+    i18n
+  }
+  await Promise.all(plugins.map((plugin) => plugin(pluginContext)))
 
   app.mount('#app')
 }
