@@ -59,6 +59,7 @@ importers:
       '@types/koa-router': ^7.4.4
       '@types/koa-send': ^4.1.3
       '@types/koa-static': ^4.0.2
+      '@types/lodash': ^4.14.178
       '@types/lru-cache': ^5.1.1
       '@types/node': ^16.11.11
       '@types/uuid': ^8.3.3
@@ -68,6 +69,8 @@ importers:
       axios: ^0.25.0
       chalk: ^4.1.2
       cross-env: ^7.0.3
+      dotenv: ^14.3.2
+      dotenv-expand: ^6.0.1
       html-minifier: ^4.0.0
       http-proxy: ^1.18.1
       js-cookie: ^3.0.1
@@ -78,6 +81,7 @@ importers:
       koa-router: ^10.1.1
       koa-send: ^5.0.1
       koa-static: ^5.0.0
+      lodash: ^4.17.21
       lru-cache: ^6.0.0
       maxmind: ^4.3.3
       naive-ui: ^2.23.1
@@ -107,6 +111,8 @@ importers:
       '@vueuse/head': 0.7.4_vue@3.2.26
       axios: 0.25.0
       chalk: 4.1.2
+      dotenv: 14.3.2
+      dotenv-expand: 6.0.1
       html-minifier: 4.0.0
       http-proxy: 1.18.1
       js-cookie: 3.0.1
@@ -117,6 +123,7 @@ importers:
       koa-router: 10.1.1
       koa-send: 5.0.1
       koa-static: 5.0.0
+      lodash: 4.17.21
       lru-cache: 6.0.0
       maxmind: 4.3.3
       naive-ui: 2.23.1_vue@3.2.26
@@ -141,6 +148,7 @@ importers:
       '@types/koa-router': 7.4.4
       '@types/koa-send': 4.1.3
       '@types/koa-static': 4.0.2
+      '@types/lodash': 4.14.178
       '@types/lru-cache': 5.1.1
       '@types/node': 16.11.11
       '@types/uuid': 8.3.3
@@ -976,7 +984,6 @@ packages:
 
   /@types/lodash/4.14.178:
     resolution: {integrity: sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw==}
-    dev: false
 
   /@types/lru-cache/5.1.1:
     resolution: {integrity: sha512-ssE3Vlrys7sdIzs5LOxCzTVMsU7i9oa/IaW92wF32JFb3CVczqOkru2xspuKczHEbG3nvmPY7IFqVmGGHdNbYw==}
@@ -2482,6 +2489,16 @@ packages:
     dependencies:
       is-obj: 2.0.0
     dev: true
+
+  /dotenv-expand/6.0.1:
+    resolution: {integrity: sha512-GNHcCOyRKLCXWnH3L/+sJ04PQxxgTOZDCPuQQnqkqPMGIilyoxHZ2JUNmh2VWKCfzVKH/AZsqcbuSYlDDVb/xw==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /dotenv/14.3.2:
+    resolution: {integrity: sha512-vwEppIphpFdvaMCaHfCEv9IgwcxMljMw2TnAQBB4VWPvzXQLTb82jwmdOKzlEVUL3gNFT4l4TPKO+Bn+sqcrVQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /duplexer3/0.1.4:
     resolution: {integrity: sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=}
