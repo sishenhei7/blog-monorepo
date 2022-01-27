@@ -11,15 +11,6 @@ export default defineConfig((env) => ({
       '@': path.resolve(__dirname, './src')
     }
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: process.env.baseUrl,
-        changeOrigin: true,
-        rewrite: (path) => ''
-      }
-    }
-  },
   build: {
     target: 'esnext'
   },

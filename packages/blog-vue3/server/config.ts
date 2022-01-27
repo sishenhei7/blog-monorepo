@@ -30,6 +30,11 @@ const config: ServerConfig = {
   server: {
     isAddLangToUrl: false,
     proxy: {
+      '/api': {
+        target: process.env.VITE_API_URL,
+        changeOrigin: true,
+        rewrite: (path) => ''
+      },
       '/proxy-ping': 'http://localhost:9000/_ping',
       '/proxy_ping': {
         target: 'http://localhost:9000/_ping',
