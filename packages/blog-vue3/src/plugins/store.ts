@@ -12,15 +12,18 @@ export default ({ ctx, store, isClient }: PluginOptions) => {
   }
 
   const contextStore = useContextStore()
-  const { ipData, platform, language, isIOS, isSupportWebp, isBot } = ctx!.state
+  const { ipData, platform, language, isApp, isIOS, isSupportWebp, isBot } =
+    ctx!.state
   contextStore.$patch({
     language: language,
     ip: ipData.ip,
     country: ipData.country,
     platform: platform,
     webp: isSupportWebp,
+    isApp: isApp,
     isIOS: isIOS,
-    isBot: isBot
+    isBot: isBot,
+    host: ctx!.host
   })
   return
 }

@@ -8,6 +8,7 @@ import storePlugin from './store'
 import commonPlugin from './common'
 import asyncDataPlugin from './asyncData'
 import naiveUiPlugin from './naive-ui'
+import axiosPlugin from './axios'
 
 export type Plugin = (options: PluginOptions) => void
 
@@ -18,17 +19,19 @@ export interface PluginOptions {
   store: Pinia
   router: Router
   i18n: I18n
-  inject?: (name: string, instance: any) => void
-  redirect?: (url: string | Object, status?: number) => void
-  cookies?: {
+  $inject?: (name: string, instance: any) => void
+  $redirect?: (url: string | Object, status?: number) => void
+  $cookies?: {
     get: (name: string) => string | undefined
     set: (name: string, value: string, options?: any) => void
   }
 }
 
+// 顺序：modulePlugins > storePlugin > axiosPlugin > asyncDataPlugin
 export default [
   ...modulePlugins,
   storePlugin,
+  axiosPlugin,
   commonPlugin,
   asyncDataPlugin,
   naiveUiPlugin

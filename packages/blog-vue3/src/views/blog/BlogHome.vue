@@ -6,8 +6,9 @@
 import useBlogStore from '@/store/blog'
 
 export default {
-  async asyncData() {
+  async asyncData({ ctx }) {
     const blogStore = useBlogStore()
+    console.log('asyncData', ctx.state.$axios)
     const blogHomeData = [
       {
         name: 'oasis',
@@ -130,8 +131,11 @@ export default {
 
 <script lang="ts" setup>
 // import useBlogStore from '@/store/blog'
+import { getCurrentInstance } from 'vue'
 import BlogCardList from './components/BlogCardList.vue'
 
 const blogStore = useBlogStore()
 const blogListData = blogStore.blogHomeData
+const { proxy } = getCurrentInstance()
+console.log('===', proxy.$axios)
 </script>

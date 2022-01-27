@@ -8,8 +8,10 @@ export default defineStore('context', {
       country: 'US',
       platform: 'mobile',
       webp: false,
+      isApp: false,
       isIOS: false,
-      isBot: false
+      isBot: false,
+      host: ''
     }
   }
 })

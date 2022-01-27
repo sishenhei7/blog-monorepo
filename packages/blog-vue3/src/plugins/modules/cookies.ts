@@ -3,7 +3,7 @@ import { PluginOptions } from '@/plugins'
 
 export default (pluginCtx: PluginOptions) => {
   const { isClient, ctx, app } = pluginCtx
-  pluginCtx.cookies = {
+  pluginCtx.$cookies = {
     get: (key: string) => {
       if (isClient) {
         return Cookies.get(key)
