@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import chalk from 'chalk'
 import { performance } from 'perf_hooks'
 
@@ -19,4 +21,21 @@ export function isSearchBot(ua: string = '') {
   return /(Sogou web spider)|(bingbot)|(Googlebot)|(Baiduspider)|(AdsBot)|(TweetmemeBot)|(Slackbot)|(James BOT)|(Applebot)|(Facebot)|(YandexMobileBot)|(AhrefsBot)|(contxbot)|(Livechat OpenGraph Robot)|(Mail.RU_Bot)|(archive.org_bot)|(MojeekBot)|(Discordbot)|(startmebot)/i.test(
     ua
   )
+}
+
+export function lookupFile(
+  dir: string,
+  formats: string[],
+  pathOnly = false
+): string | undefined {
+  for (const format of formats) {
+    const fullPath = path.join(dir, format)
+    if (fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()) {
+      return pathOnly ? fullPath : fs.readFileSync(fullPath, 'utf-8')
+    }
+  }
+  const parentDir = path.dirname(dir)
+  if (parentDir !== dir) {
+    return lookupFile(parentDir, formats, pathOnly)
+  }
 }

@@ -3,6 +3,7 @@ import { createServer as createViteServer } from 'vite'
 import compressMiddleware from 'koa-compress'
 import helmetMiddeware from 'koa-helmet'
 
+import '~/server/loadEnv'
 import router from '~/server/router'
 import {
   requestIdMiddleware,
