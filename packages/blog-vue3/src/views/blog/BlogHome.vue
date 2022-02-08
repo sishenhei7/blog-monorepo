@@ -6,7 +6,7 @@
 import useBlogStore from '@/store/blog'
 
 export default {
-  async asyncData({ ctx }) {
+  async asyncData(ctx) {
     const blogStore = useBlogStore()
     console.log('asyncData', ctx.state.$axios)
     const blogHomeData = [
