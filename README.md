@@ -26,10 +26,6 @@
 2. 把各个组件根据 layout 组装到一起
 3. 收集统计数据（uv、ip、监控）
 
-## plan
-
-预计 1 月底完工（不包括博客后台）
-
 ## ongoing
 
 1.为了弄清除 Vue 的 ssr 的流程，目前正在逐句阅读 vue2 和 vue3 的源码，后续会整理出一篇博文说明 ssr 的流程。[每天进步一点点](https://github.com/sishenhei7/daily-progress)
