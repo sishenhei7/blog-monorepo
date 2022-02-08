@@ -15,20 +15,19 @@
     "sourceMap": true,
     "strict": true,
     "noEmit": true,
-    "types": ["vite/client", "unplugin-icons/types/vue"],
+    "types": [
+      "vite/client",
+      "unplugin-icons/types/vue",
+      "./types/env",
+      "./types/shims",
+      "./types/vue"
+    ],
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "types/**/*.d.ts",
-    "server/**/*.ts"
-  ],
+  "exclude": ["node_modules", "dist"],
   "ts-node": {
     "require": ["tsconfig-paths/register"],
     "compilerOptions": {
