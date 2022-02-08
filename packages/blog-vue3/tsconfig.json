@@ -19,8 +19,7 @@
       "vite/client",
       "unplugin-icons/types/vue",
       "./types/env",
-      "./types/shims",
-      "./types/vue"
+      "./types/shims"
     ],
     "paths": {
       "~/*": ["./*"],
